@@ -66,7 +66,9 @@
 	<div class="mt-3 flex flex-wrap gap-1">
 		{#each results as result}
 			<a href={result.link} class="flex flex-col p-2 rounded hover:bg-blue-50">
-				<div class="font-serif text-4xl text-center">{result.letter}</div>
+				<div class="font-hiragino text-4xl text-center">
+					{result.letter}&#8203;
+				</div>
 				<div class="mt-2 font-mono text-xs text-center text-gray-500">
 					{result.code}
 				</div>

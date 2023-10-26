@@ -11,3 +11,7 @@ h1, h2, h3, .palt {
 	font-feature-settings: "palt" 1;
 	letter-spacing: calc(1px - 0.025em);
 }
+
+.font-hiragino {
+	font-family: "Hiragino Mincho Pr6N", "Hiragino Mincho ProN", serif;
+}
