@@ -1,6 +1,7 @@
 <script>
 	import { Base64 } from "js-base64";
 	import { getKey } from "$lib/eventUtil.js";
+	import { supersub } from "$lib/supersub";
 
 	/** @type {HTMLTextAreaElement|null} */
 	let inputRef = null;
@@ -11,57 +12,63 @@
 	let copiedName = "";
 
 	/**
-	 * @type {Array<{name: string, fn: (input: string) => string|null}>}
+	 * @typedef {Object} Encoder
+	 * @property {string} name
+	 * @property {(input: string) => string|null} fn
+	 * @property {string} [description]
 	 */
-	const encoders = [
-		{
-			name: "Base64 encode (UTF-8)",
-			fn(input) {
-				return Base64.encode(input);
-			},
-		},
-		{
-			name: "Base64 decode (UTF-8)",
-			fn(input) {
-				try {
-					return Base64.decode(input);
-				} catch {
-					return null;
-				}
-			},
-		},
-		{
-			name: "URL encode",
-			fn(input) {
-				return encodeURIComponent(input);
-			},
-		},
-		{
-			name: "URL decode",
-			fn(input) {
-				try {
-					return decodeURIComponent(input);
-				} catch {
-					return null;
-				}
-			},
-		}
-	];
 
 	/**
 	 * @typedef {Object} Result
 	 * @property {string} name
 	 * @property {(input: string) => string|null} fn
 	 * @property {string|null} output
+	 * @property {string|null} error
+	 *  @property {string} [description]
 	 */
+
+	/** @type {Encoder[]} */
+	const encoders = [
+		{
+			name: "上付き・下付き・ゐ・ゑ・小書きカナ",
+			description: "^2 → ² / H_2O → H₂O​ / ^{235}U → ²³⁵U / ^い → ゐ / ^セ → セ゚ / _リ → ㇼ",
+			fn: supersub,
+		},
+		{
+			name: "Base64 encode (UTF-8)",
+			fn: Base64.encode,
+		},
+		{
+			name: "Base64 decode (UTF-8)",
+			fn: Base64.decode,
+		},
+		{
+			name: "URL encode",
+			fn: encodeURIComponent,
+		},
+		{
+			name: "URL decode",
+			fn: decodeURIComponent,
+		},
+	];
 
 	/** @type {Result[]} */
 	$: results = encoders
-		.map((encoder) => ({
-			...encoder,
-			output: encoder.fn(input),
-		}))
-		.filter((encoder) => encoder.output != null);
+		.map((encoder) => {
+			try {
+				return {
+					...encoder,
+					output: encoder.fn(input),
+					error: null,
+				};
+			} catch (error) {
+				return {
+					...encoder,
+					output: null,
+					error: error instanceof Error ? error.message : String(error),
+				};
+			}
+		});
 
 	/**
 	 * @param {MouseEvent} event
@@ -134,13 +141,15 @@
 				{result.name}
 			</h2>
 			<div
-				class="relative w-full text-sm bg-slate-50 rounded border px-3 py-2 whitespace-pre-line cursor-pointer"
-				tabindex="0"
+				class="relative w-full text-sm bg-slate-50 rounded border px-3 py-2 whitespace-pre-line"
+				class:text-red-500={result.error != null}
+				class:cursor-pointer={result.error != null}
+				tabindex={result.error != null ? 0 : -1}
 				role="button"
 				on:click={(event) => clickHandler(event, result)}
 				on:keydown={(event) => keydownHandler(event, result)}
 			>
-				{result.output}&#8203;
+				{result.output ?? ''}{result.error ?? ''}&#8203;
 				<span
 					class="absolute block top-2 right-3 bg-blue-500 text-white text-xs px-1 rounded transition"
 					class:opacity-0={copiedName !== result.name}
@@ -148,6 +157,9 @@
 					コピーしました
 				</span>
 			</div>
+			{#if result.description != null}
+				<p class="mt-1 text-xs text-gray-500">{result.description}</p>
+			{/if}
 		</section>
 	{/each}
 </main>
