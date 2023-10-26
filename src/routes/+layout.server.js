@@ -2,13 +2,13 @@ const tools = [
 	{
 		title: 'Unicode文字情報',
 		route: '/unicode',
-		description: '文字のUnicodeコードポイントと文字の詳細について調べるツールです',
+		description: '文字のUnicode符号位置と文字の詳細について調べるツールです',
 		disabled: false,
 	},
 	{
 		title: 'エンコード・デコード',
 		route: '/encode',
-		description: 'URL encode, Base64 などさまざまな形式のエンコード・デコードを行います',
+		description: 'URL encode, Base64 などさまざまな形式のエンコード・デコードや文字種の変換を行います',
 		disabled: false,
 	},
 	{
