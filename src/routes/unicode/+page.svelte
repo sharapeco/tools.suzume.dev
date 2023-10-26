@@ -27,8 +27,11 @@
 				});
 			}
 		} else {
-			for (const letter of input.split("")) {
-				const codePoint = letter.charCodeAt(0);
+			for (const letter of input) {
+				const codePoint = letter.codePointAt(0);
+				if (codePoint === undefined) {
+					continue;
+				}
 				const hex = codePoint.toString(16).padStart(4, "0").toUpperCase();
 				newResults.push({
 					letter,
