@@ -9,7 +9,7 @@
 <div class="mb-5 py-5 md:py-10 bg-slate-100 rounded-lg">
 	<div class="flex justify-center items-center max-w-screen-2xl px-4 md:px-8">
 		<div class="mr-3 w-20 md:mr-5 md:w-24">
-			<img alt="" src="https://images.unsplash.com/photo-1507477338202-487281e6c27e?auto=format&fit=crop&q=90&w=320&h=320" width="320" height="320" class="rounded-full" />
+			<img alt="" src="https://images.unsplash.com/photo-1507477338202-487281e6c27e?auto=format&fit=crop&q=90&w=192&h=192" width="96" height="96" class="rounded-full" />
 		</div>
 		<div>
 			<h1 class="text-2xl md:text-3xl font-bold">スズメツールズ</h1>

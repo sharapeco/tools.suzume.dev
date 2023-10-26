@@ -25,7 +25,7 @@
 
 				<a
 					href="/tos"
-					class="inline-flex items-center gap-1 text-sm font-semibold text-indigo-500"
+					class="inline-flex items-center gap-1 -mr-2 py-1 px-2 text-sm font-semibold text-indigo-500 hover:text-indigo-600"
 				>
 					利用規約
 				</a>
