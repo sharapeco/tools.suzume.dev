@@ -47,7 +47,7 @@
 				</div>
 
 				<div>
-					<h3 class="mb-0 text-lg font-semibold md:text-xl">{tool.title}</h3>
+					<h3 class="mb-1 text-lg leading-6 font-semibold md:text-xl">{tool.title}</h3>
 					<p class="mb-2 text-sm font-mono text-gray-500">{tool.route}</p>
 					<p class="text-gray-500">{tool.description ?? ""}</p>
 				</div>

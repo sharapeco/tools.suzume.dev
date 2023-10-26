@@ -6,7 +6,7 @@ const tools = [
 		disabled: false,
 	},
 	{
-		title: 'エンコード・デコード',
+		title: 'エンコード・デコード・文字種変換',
 		route: '/encode',
 		description: 'URL encode, Base64 などさまざまな形式のエンコード・デコードや文字種の変換を行います',
 		disabled: false,

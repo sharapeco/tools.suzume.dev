@@ -120,11 +120,11 @@
 </script>
 
 <svelte:head>
-	<title>エンコード・デコード</title>
+	<title>エンコード・デコード・文字種変換</title>
 </svelte:head>
 
 <main>
-	<h1 class="text-gray-800 mb-4 text-3xl font-bold">エンコード・デコード</h1>
+	<h1 class="text-gray-800 mb-4 text-3xl font-bold">エンコード・デコード・文字種変換</h1>
 
 	<textarea
 		name="input"
@@ -151,7 +151,7 @@
 			>
 				{result.output ?? ''}{result.error ?? ''}&#8203;
 				<span
-					class="absolute block top-2 right-3 bg-blue-500 text-white text-xs px-1 rounded transition"
+					class="absolute block top-2 right-3 bg-blue-500 text-white text-xs leading-5 px-1 rounded transition"
 					class:opacity-0={copiedName !== result.name}
 				>
 					コピーしました
