@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from "svelte";
 	import { clickOutside } from "$lib/clickOutside.js";
+	import { getKey } from "$lib/eventUtil.js";
 
 	/** @type {import('../$types.d.ts').ToolDef[]} */
 	export let tools;
@@ -58,21 +59,6 @@
 				}
 				break;
 		}
-	}
-
-	/**
-	 * @param {KeyboardEvent} event
-	 */
-	function getKey(event) {
-		const modifier = [
-			event.metaKey ? "meta" : "",
-			event.ctrlKey ? "ctrl" : "",
-			event.altKey ? "alt" : "",
-			event.shiftKey ? "shift" : "",
-		]
-			.filter((m) => m !== "")
-			.join("+");
-		return modifier ? `${modifier}+${event.key}` : event.key;
 	}
 </script>
 

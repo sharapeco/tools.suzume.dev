@@ -9,7 +9,7 @@ const tools = [
 		title: 'エンコード・デコード',
 		route: '/encode',
 		description: 'URL encode, Base64 などさまざまな形式のエンコード・デコードを行います',
-		disabled: true,
+		disabled: false,
 	},
 	{
 		title: 'QRコード',
