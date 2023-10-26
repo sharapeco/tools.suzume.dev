@@ -6,17 +6,17 @@
 	export let data;
 </script>
 
-<svelte:head>
-</svelte:head>
+<svelte:head />
 
 <div class="bg-white lg:pb-12">
 	<div class="mx-auto max-w-screen-2xl px-4 md:px-8">
-		<header class="flex items-center justify-between py-4 md:py-8">
-			<a
-				href="/"
-				class="text-base md:text-lg font-bold text-black"
-				aria-label="logo"
-			>
+		<header class="md:flex items-center justify-between py-4 md:py-8">
+			<a href="/" class="group inline-flex items-center gap-1 text-base md:text-lg font-bold text-black palt" aria-label="logo">
+				<div class="inline-block w-6 h-6 text-indigo-500 group-hover:text-indigo-600 transition-colors">
+					<svg width="24" height="24" viewBox="0 0 24 24" class="w-full">
+						<circle cx="12" cy="12" r="12" fill="currentColor" />
+					</svg>
+				</div>
 				スズメツールズ
 			</a>
 
