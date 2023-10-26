@@ -53,7 +53,7 @@ const subReplacer = new Replacer(
  * @returns {string}
  */
 export function supersub(str) {
-	const tokens = tokenize(str)
+	const tokens = tokenize(str.normalize())
 	const result = []
 	let isSup = false
 	let isSub = false

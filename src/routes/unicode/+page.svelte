@@ -15,9 +15,9 @@
 	function update(input) {
 		const newResults = [];
 
-		if (/^\s*(U\+[0-9a-f]{4}\s+)*U\+[0-9a-f]{4}\s*$/i.test(input)) {
-			for (const codeString of input.replace(/^\s+|\s+$/g, "").split(/\s+/)) {
-				const hex = codeString.replace(/^U\+/i, "").toUpperCase();
+		if (/^\s*(?:(?:U\+|\\u)[0-9a-f]{4}\b[\s-]*)+\s*$/i.test(input)) {
+			for (const codeString of input.replace(/^\s+|\s+$/g, "").split(/\s+|(?=U\+|\\u)/)) {
+				const hex = codeString.replace(/^(?:U\+|\\u)|[\s-]*$/ig, "").toUpperCase();
 				const codePoint = parseInt(hex, 16);
 				const letter = String.fromCodePoint(codePoint);
 				newResults.push({
