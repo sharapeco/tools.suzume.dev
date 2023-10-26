@@ -6,7 +6,8 @@
 	/** @type {import('../$types.d.ts').ToolDef[]} */
 	export let tools;
 
-	const isMac = true;
+	/** @type {string|null} */
+	let platform = null;
 
 	/** @type {HTMLInputElement|null} */
 	let inputRef = null;
@@ -21,9 +22,23 @@
 	);
 
 	onMount(() => {
+		const ua = navigator.userAgent;
+		if (/\b(?:Mac OS X|macOS|iOS|iPadOS)\b/.test(ua)) {
+			platform = "apple";
+		} else if (/\b(?:Windows)\b/.test(ua)) {
+			platform = "microsoft";
+		} else if (/\b(?:Chromebook)\b/.test(ua)) {
+			platform = "google";
+		} else {
+			platform = "unknown";
+		}
+
 		document.addEventListener("keydown", (event) => {
 			const key = getKey(event);
-			if ((!isMac && key === "ctrl+/") || (isMac && key === "meta+/")) {
+			if (
+				(platform !== "apple" && key === "ctrl+/") ||
+				(platform === "apple" && key === "meta+/")
+			) {
 				event.preventDefault();
 				inputRef && inputRef.focus();
 			}
@@ -36,7 +51,7 @@
 	function keydownHandler(event) {
 		const key = getKey(event);
 		switch (key) {
-			case 'ArrowDown':
+			case "ArrowDown":
 				event.preventDefault();
 				if (selectedIndex === results.length - 1) {
 					selectedIndex = 0;
@@ -44,7 +59,7 @@
 					selectedIndex = selectedIndex + 1;
 				}
 				break;
-			case 'ArrowUp':
+			case "ArrowUp":
 				event.preventDefault();
 				if (selectedIndex === 0) {
 					selectedIndex = results.length - 1;
@@ -52,7 +67,7 @@
 					selectedIndex = selectedIndex - 1;
 				}
 				break;
-			case 'Enter':
+			case "Enter":
 				event.preventDefault();
 				if (results[selectedIndex]) {
 					location.href = results[selectedIndex].route;
@@ -66,7 +81,7 @@
 	<input
 		type="text"
 		class="text-sm rounded border px-3 py-2 bg-slate-50"
-		placeholder="ツールを検索（{isMac ? '⌘' : 'Ctrl'}+/）"
+		placeholder="ツールを検索{platform == null ? '' : `（${platform === 'apple' ? '⌘' : 'Ctrl'}+/）`}"
 		on:focus={() => (open = true)}
 		on:input={() => inputRef && (q = inputRef.value)}
 		on:keydown={keydownHandler}
