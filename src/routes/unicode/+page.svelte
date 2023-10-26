@@ -66,7 +66,7 @@
 		bind:this={inputRef}
 	/>
 
-	<div class="mt-3 flex flex-wrap gap-1">
+	<div class="mt-3 pb-3 flex flex-wrap gap-1">
 		{#each results as result}
 			<a href={result.link} class="flex flex-col p-2 rounded hover:bg-blue-50">
 				<div class="font-hiragino text-4xl text-center">

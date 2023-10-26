@@ -18,7 +18,7 @@
 	</div>
 </div>
 
-<div class="grid gap-4 sm:grid-cols-2 md:gap-6 xl:grid-cols-3">
+<div class="grid gap-4 pb-4 sm:grid-cols-2 md:gap-6 xl:grid-cols-3">
 	{#each data.tools as tool}
 		{#if !tool.disabled}
 			<a
@@ -28,22 +28,9 @@
 				<div
 					class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg md:h-14 md:w-14 md:rounded-xl
 						bg-indigo-500 transition duration-100 group-hover:bg-indigo-600
-					 text-white shadow-lg"
+					 text-2xl text-white shadow-lg"
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-6 w-6"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-						/>
-					</svg>
+					{@html tool.icon}
 				</div>
 
 				<div>

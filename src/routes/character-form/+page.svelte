@@ -174,7 +174,7 @@
 		bind:this={inputRef}
 	/>
 
-	<div class="mt-5 md:columns-2 md:gap-8">
+	<div class="mt-5 pb-1 md:columns-2 md:gap-8">
 		{#each results as result, index}
 			<section
 				class="mb-3 break-inside-avoid"

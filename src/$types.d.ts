@@ -3,6 +3,7 @@ export type PageData = {
 }
 
 export type ToolDef = {
+	icon: string;
 	title: string;
 	route: string;
 	description: string;
