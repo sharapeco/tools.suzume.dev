@@ -17,11 +17,11 @@
 
 	let copiedName = "";
 
-	const sjisEncoder = new NaiveTextEncoder("Shift_JIS", 2);
-	const sjisDecoder = new TextDecoder("Shift_JIS");
+	const sjisEncoder = browser && new NaiveTextEncoder("Shift_JIS", 2);
+	const sjisDecoder = browser && new TextDecoder("Shift_JIS");
 
-	const eucjpEncoder = new NaiveTextEncoder("EUC-JP", 2);
-	const eucjpDecoder = new TextDecoder("EUC-JP");
+	const eucjpEncoder = browser && new NaiveTextEncoder("EUC-JP", 2);
+	const eucjpDecoder = browser && new TextDecoder("EUC-JP");
 
 	/**
 	 * @typedef {Object} Encoder
