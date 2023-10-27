@@ -16,6 +16,7 @@
 
 	let selectedIndex = 0;
 
+	/** @type {string} */
 	let q = "";
 	$: results = tools.filter(
 		(tool) => !tool.disabled && (q === "" || tool.route.toLocaleLowerCase().includes(q))
@@ -53,7 +54,7 @@
 		switch (key) {
 			case "ArrowDown":
 				event.preventDefault();
-				if (selectedIndex === results.length - 1) {
+				if (selectedIndex >= results.length - 1) {
 					selectedIndex = 0;
 				} else {
 					selectedIndex = selectedIndex + 1;
@@ -61,7 +62,7 @@
 				break;
 			case "ArrowUp":
 				event.preventDefault();
-				if (selectedIndex === 0) {
+				if (selectedIndex <= 0) {
 					selectedIndex = results.length - 1;
 				} else {
 					selectedIndex = selectedIndex - 1;
@@ -75,32 +76,48 @@
 				break;
 		}
 	}
+
+	/**
+	 * 入力文字列部分をHTMLハイライトする
+	 *
+	 * @param {string} text
+	 * @param {string} q
+	 */
+	function highlight(text, q) {
+		if (q === "") {
+			return text;
+		}
+		const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		const regex = new RegExp(escaped, "gi");
+		return text.replace(regex, (match) => `<span class="font-bold">${match}</span>`);
+	}
 </script>
 
 <div class="relative" use:clickOutside on:click_outside={() => (open = false)}>
 	<input
 		type="text"
-		class="text-sm rounded border px-3 py-2 bg-slate-50"
+		class="text-sm rounded border px-3 py-2 bg-slate-50 w-full"
 		placeholder="ツールを検索{platform == null ? '' : `（${platform === 'apple' ? '⌘' : 'Ctrl'}+/）`}"
-		on:focus={() => (open = true)}
-		on:input={() => inputRef && (q = inputRef.value)}
-		on:keydown={keydownHandler}
+		bind:value={q}
 		bind:this={inputRef}
+		on:focus={() => (open = true)}
+		on:keydown={keydownHandler}
 	/>
 	{#if open}
 		<div
-			class="absolute top-full left-0 right-0 mt-1 p-1 bg-white rounded border shadow-md"
+			class="absolute z-40 top-full left-0 right-0 mt-1 p-1 bg-white rounded border shadow-md"
 		>
 			{#each results as tool, index}
 				<a
 					href={tool.route}
-					class="block px-3 py-2 rounded text-sm
-						{index === selectedIndex ? 'text-white bg-blue-500' : 'text-gray-500 hover:bg-gray-100'}
+					class="block px-3 py-2 rounded text-sm leading-4
+						{index === selectedIndex ? 'text-white bg-blue-500' : 'text-gray-700 hover:bg-gray-100'}
 					"
 					on:mouseenter={() => (selectedIndex = index)}
 					on:click={() => (open = false)}
 				>
-					{tool.title}
+					<div class="">{tool.title}</div>
+					<div class="mt-1 font-mono text-xs opacity-70">{@html highlight(tool.route, q)}</div>
 				</a>
 			{/each}
 			{#if results.length === 0}
