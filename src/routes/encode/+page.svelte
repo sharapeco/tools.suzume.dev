@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from "svelte";
+	import { browser } from "$app/environment";
 	import { Base64 } from "js-base64";
 	import { getKey } from "$lib/eventUtil.js";
 	import {
@@ -59,46 +60,38 @@
 		{
 			name: "URL encode (Shift_JIS)",
 			fn: (input) =>
-				input === ""
-					? ""
-					: Array.from(sjisEncoder.encode(input.normalize()))
-							.map((c) => `%${c.toString(16)}`)
-							.join(""),
+				Array.from(sjisEncoder.encode(input.normalize()))
+					.map((c) => `%${c.toString(16)}`)
+					.join(""),
 		},
 		{
 			name: "URL decode (Shift_JIS)",
 			fn: (input) =>
-				input === ""
-					? ""
-					: sjisDecoder.decode(
-							new Uint8Array(
-								Array.from(input.matchAll(/%([0-9a-f]{2})/gi))
-									.map((m) => parseInt(m[1], 16))
-									.filter((n) => !isNaN(n))
-							)
-					  ),
+				sjisDecoder.decode(
+					new Uint8Array(
+						Array.from(input.matchAll(/%([0-9a-f]{2})/gi))
+							.map((m) => parseInt(m[1], 16))
+							.filter((n) => !isNaN(n))
+					)
+				),
 		},
 		{
 			name: "URL encode (EUC-JP)",
 			fn: (input) =>
-				input === ""
-					? ""
-					: Array.from(eucjpEncoder.encode(input.normalize()))
-							.map((c) => `%${c.toString(16)}`)
-							.join(""),
+				Array.from(eucjpEncoder.encode(input.normalize()))
+					.map((c) => `%${c.toString(16)}`)
+					.join(""),
 		},
 		{
 			name: "URL decode (EUC-JP)",
 			fn: (input) =>
-				input === ""
-					? ""
-					: eucjpDecoder.decode(
-							new Uint8Array(
-								Array.from(input.matchAll(/%([0-9a-f]{2})/gi))
-									.map((m) => parseInt(m[1], 16))
-									.filter((n) => !isNaN(n))
-							)
-					  ),
+				eucjpDecoder.decode(
+					new Uint8Array(
+						Array.from(input.matchAll(/%([0-9a-f]{2})/gi))
+							.map((m) => parseInt(m[1], 16))
+							.filter((n) => !isNaN(n))
+					)
+				),
 		},
 		{
 			name: "HTML予約文字をエスケープ",
@@ -112,6 +105,13 @@
 
 	/** @type {Result[]} */
 	$: results = encoders.map((encoder) => {
+		if (!browser) {
+			return {
+				...encoder,
+				output: "",
+				error: null,
+			};
+		}
 		try {
 			return {
 				...encoder,
