@@ -46,16 +46,8 @@
 			fn: (input) => Base64.encode(input.normalize()),
 		},
 		{
-			name: "Base64 decode (UTF-8)",
-			fn: Base64.decode,
-		},
-		{
 			name: "URL encode (UTF-8)",
 			fn: (input) => encodeURIComponent(input.normalize()),
-		},
-		{
-			name: "URL decode (UTF-8)",
-			fn: (input) => decodeURIComponent(input.normalize()),
 		},
 		{
 			name: "URL encode (Shift_JIS)",
@@ -63,6 +55,25 @@
 				Array.from(sjisEncoder.encode(input.normalize()))
 					.map((c) => `%${c.toString(16)}`)
 					.join(""),
+		},
+		{
+			name: "URL encode (EUC-JP)",
+			fn: (input) =>
+				Array.from(eucjpEncoder.encode(input.normalize()))
+					.map((c) => `%${c.toString(16)}`)
+					.join(""),
+		},
+		{
+			name: "HTML予約文字をエスケープ",
+			fn: escapeHTMLReservedCharacters,
+		},
+		{
+			name: "Base64 decode (UTF-8)",
+			fn: Base64.decode,
+		},
+		{
+			name: "URL decode (UTF-8)",
+			fn: (input) => decodeURIComponent(input.normalize()),
 		},
 		{
 			name: "URL decode (Shift_JIS)",
@@ -76,13 +87,6 @@
 				),
 		},
 		{
-			name: "URL encode (EUC-JP)",
-			fn: (input) =>
-				Array.from(eucjpEncoder.encode(input.normalize()))
-					.map((c) => `%${c.toString(16)}`)
-					.join(""),
-		},
-		{
 			name: "URL decode (EUC-JP)",
 			fn: (input) =>
 				eucjpDecoder.decode(
@@ -92,10 +96,6 @@
 							.filter((n) => !isNaN(n))
 					)
 				),
-		},
-		{
-			name: "HTML予約文字をエスケープ",
-			fn: escapeHTMLReservedCharacters,
 		},
 		{
 			name: "HTMLエンティティをデコード",
@@ -209,9 +209,12 @@
 		bind:this={inputRef}
 	/>
 
-	<div class="mt-5">
+	<div class="mt-5 md:columns-2 md:gap-8">
 		{#each results as result, index}
-			<section class="mb-3 break-inside-avoid">
+			<section
+				class="mb-3 break-inside-avoid"
+				class:break-after-column={index === Math.ceil(results.length / 2) - 1}
+			>
 				<h2 class="inline-block text-gray-700 mb-1 text-sm font-bold">
 					{result.name}
 				</h2>

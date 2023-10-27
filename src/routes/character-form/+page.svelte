@@ -180,7 +180,7 @@
 		{#each results as result, index}
 			<section
 				class="mb-3 break-inside-avoid"
-				class:break-after-column={index === Math.floor(results.length / 2)}
+				class:break-after-column={index === Math.ceil(results.length / 2) - 1}
 			>
 				<h2 class="inline-block text-gray-700 mb-1 text-sm font-bold">
 					{result.name}
