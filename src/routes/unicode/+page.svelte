@@ -57,7 +57,7 @@
 	<input
 		name="input"
 		type="text"
-		class="w-full text-sm bg-slate-50 rounded border px-3 py-2"
+		class="w-full md:text-sm bg-slate-50 rounded border px-3 py-2"
 		placeholder="文字や符号位置を入力..."
 		autofocus
 		on:input={() => inputRef && update(inputRef.value)}

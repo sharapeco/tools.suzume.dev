@@ -169,7 +169,7 @@
 	</header>
 
 	<textarea
-		class="w-full text-sm bg-slate-50 rounded border px-3 py-2"
+		class="w-full md:text-sm bg-slate-50 rounded border px-3 py-2"
 		placeholder="文字列を入力..."
 		autofocus
 		on:input={update}
@@ -186,7 +186,7 @@
 					{result.name}
 				</h2>
 				<div
-					class="relative w-full text-sm bg-slate-50 rounded border px-3 py-2 whitespace-pre-line break-words"
+					class="relative text-sm bg-slate-50 rounded border px-3 py-2 whitespace-pre-line break-words"
 					class:text-red-500={result.error != null}
 					class:cursor-pointer={result.error != null}
 					tabindex={result.error != null ? 0 : -1}
