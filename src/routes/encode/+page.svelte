@@ -16,7 +16,7 @@
 	const sjisEncoder = new NaiveTextEncoder("Shift_JIS", 2);
 	const sjisDecoder = new TextDecoder("Shift_JIS");
 
-	const eucjpEncoder = new NaiveTextEncoder("EUC-JP", 3);
+	const eucjpEncoder = new NaiveTextEncoder("EUC-JP", 2);
 	const eucjpDecoder = new TextDecoder("EUC-JP");
 
 	/**
