@@ -1,3 +1,10 @@
+import eucjpMapping from "./mappings/EUC-JP.js";
+
+/** @type {{[maxCodeLength: number]: {[encoding: string]: Map<string, Uint8Array>}}} */
+const mappings = {};
+mappings[3] = {};
+mappings[3]["euc-jp"] = eucjpMapping;
+
 /**
  * TextDecoderを利用したテキストエンコーダ
  */
@@ -9,7 +16,14 @@ export class NaiveTextEncoder {
 	constructor(encoding, maxCodeLength) {
 		this.encoding = encoding.toLocaleLowerCase();
 		this.maxCodeLength = maxCodeLength;
-		this.map = createMap(encoding, maxCodeLength);
+
+		if (!mappings[maxCodeLength]) {
+			mappings[maxCodeLength] = {};
+		}
+		if (!mappings[maxCodeLength][this.encoding]) {
+			mappings[maxCodeLength][this.encoding] = createMapping(this.encoding, maxCodeLength);
+		}
+		this.mapping = mappings[maxCodeLength][this.encoding];
 	}
 
 	/**
@@ -19,9 +33,9 @@ export class NaiveTextEncoder {
 	encode(str) {
 		const preprocessed = this.preprocess(str);
 
-		const bytesList = [];
+	 const bytesList = [];
 		for (const ch of preprocessed) {
-			const bytes = this.map.get(ch);
+			const bytes = this.mapping.get(ch);
 			if (bytes) {
 				bytesList.push(bytes);
 			}
@@ -63,21 +77,22 @@ export class NaiveTextEncoder {
  * @param {number} maxCodeLength
  * @returns {Map<string, Uint8Array>}
  */
-function createMap(encoding, maxCodeLength) {
-	const map = new Map();
+function createMapping(encoding, maxCodeLength) {
+	const mapping = new Map();
 	const decoder = new TextDecoder(encoding);
 	for (let len = 1; len <= maxCodeLength; len++) {
-		for (const code of range(0, 2 ** (8 * len) - 1)) {
+		const maxCode = 2 ** (8 * len) - 1;
+		for (let code = 0; code <= maxCode; code++) {
 			const bytes = new Uint8Array(
 				range(0, len - 1).map((b) => (code >> (8 * b)) & 0xff)
 			);
 			const ch = decoder.decode(bytes);
 			if (ch.length === 1) {
-				map.set(ch, bytes);
+				mapping.set(ch, bytes);
 			}
 		}
 	}
-	return map;
+	return mapping;
 }
 
 /**

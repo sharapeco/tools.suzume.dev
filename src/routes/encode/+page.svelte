@@ -7,7 +7,7 @@
 		decodeHTMLEntities,
 		encodeHTMLEntities as escapeHTMLReservedCharacters,
 	} from "$lib/htmlEntity";
-	import { NaiveTextEncoder } from "$lib/naiveTextEncoder";
+	import { NaiveTextEncoder } from "$lib/naiveTextEncoder/NaiveTextEncoder";
 
 	/** @type {HTMLTextAreaElement|null} */
 	let inputRef = null;
@@ -20,7 +20,7 @@
 	const sjisEncoder = browser && new NaiveTextEncoder("Shift_JIS", 2);
 	const sjisDecoder = browser && new TextDecoder("Shift_JIS");
 
-	const eucjpEncoder = browser && new NaiveTextEncoder("EUC-JP", 2);
+	const eucjpEncoder = browser && new NaiveTextEncoder("EUC-JP", 3);
 	const eucjpDecoder = browser && new TextDecoder("EUC-JP");
 
 	/**
