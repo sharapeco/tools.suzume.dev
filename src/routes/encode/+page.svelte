@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
 	import { Base64 } from "js-base64";
 	import { getKey } from "$lib/eventUtil.js";
+	import { decodeHTMLEntities, encodeHTMLEntities as escapeHTMLReservedCharacters } from "$lib/htmlEntity";
 
 	/** @type {HTMLTextAreaElement|null} */
 	let inputRef = null;
@@ -44,6 +45,14 @@
 		{
 			name: "URL decode",
 			fn: (input) => decodeURIComponent(input.normalize()),
+		},
+		{
+			name: "HTML予約文字をエスケープ",
+			fn: escapeHTMLReservedCharacters,
+		},
+		{
+			name: "HTMLエンティティをデコード",
+			fn: decodeHTMLEntities,
 		},
 	];
 
