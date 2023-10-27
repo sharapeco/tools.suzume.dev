@@ -57,8 +57,8 @@
 	<input
 		name="input"
 		type="text"
-		class="w-full md:text-sm bg-slate-50 rounded border px-3 py-2"
-		placeholder="文字や符号位置を入力..."
+		class="w-full bg-slate-50 rounded border px-3 py-2"
+		placeholder="文字 / U+XXXX / \\uXXXX"
 		autofocus
 		on:input={() => inputRef && update(inputRef.value)}
 		bind:this={inputRef}
