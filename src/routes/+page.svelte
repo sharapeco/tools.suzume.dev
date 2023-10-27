@@ -4,6 +4,10 @@
 
 <svelte:head>
 	<title>スズメツールズ</title>
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="スズメツールズ">
+	<meta property="og:description" content="小ぶりで、チュンとしたツール">
+	<meta property="og:image" content="%sveltekit.assets%/ogp.jpg">
 </svelte:head>
 
 <div class="mb-5 py-5 md:py-10 bg-slate-100 rounded-lg">
