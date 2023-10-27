@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount } from "svelte";
 
 	/** @type {HTMLInputElement|null} */
 	let inputRef = null;
@@ -15,30 +15,26 @@
 	function update(input) {
 		const newResults = [];
 
-		if (/^\s*(?:(?:U\+|\\u)[0-9a-f]{4}\b[\s-]*)+\s*$/i.test(input)) {
-			for (const codeString of input.replace(/^\s+|\s+$/g, "").split(/\s+|(?=U\+|\\u)/)) {
-				const hex = codeString.replace(/^(?:U\+|\\u)|[\s-]*$/ig, "").toUpperCase();
+		const pInput = input.replaceAll(
+			/(?:^ *| *\b)((?:U\+|\\u)[0-9a-f]{4,5})\b */gi,
+			(_, codeString) => {
+				const hex = codeString.replace(/^ *(?:U\+|\\u)| *$/gi, "");
 				const codePoint = parseInt(hex, 16);
 				const letter = String.fromCodePoint(codePoint);
-				newResults.push({
-					letter,
-					code: `U+${hex}`,
-					link: `https://www.compart.com/en/unicode/U+${hex}`,
-				});
+				return letter;
 			}
-		} else {
-			for (const letter of input) {
-				const codePoint = letter.codePointAt(0);
-				if (codePoint === undefined) {
-					continue;
-				}
-				const hex = codePoint.toString(16).padStart(4, "0").toUpperCase();
-				newResults.push({
-					letter,
-					code: `U+${hex}`,
-					link: `https://www.compart.com/en/unicode/U+${hex}`,
-				});
+		);
+		for (const letter of pInput) {
+			const codePoint = letter.codePointAt(0);
+			if (codePoint === undefined) {
+				continue;
 			}
+			const hex = codePoint.toString(16).padStart(4, "0").toUpperCase();
+			newResults.push({
+				letter,
+				code: `U+${hex}`,
+				link: `https://www.compart.com/en/unicode/U+${hex}`,
+			});
 		}
 
 		results = newResults;
