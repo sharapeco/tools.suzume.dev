@@ -3,6 +3,7 @@
 	import { Base64 } from "js-base64";
 	import { getKey } from "$lib/eventUtil.js";
 	import { decodeHTMLEntities, encodeHTMLEntities as escapeHTMLReservedCharacters } from "$lib/htmlEntity";
+	import { NaiveTextEncoder } from "$lib/naiveTextEncoder";
 
 	/** @type {HTMLTextAreaElement|null} */
 	let inputRef = null;
@@ -11,6 +12,12 @@
 	let input = "";
 
 	let copiedName = "";
+
+	const sjisEncoder = new NaiveTextEncoder("Shift_JIS", 2);
+	const sjisDecoder = new TextDecoder("Shift_JIS");
+
+	const eucjpEncoder = new NaiveTextEncoder("EUC-JP", 3);
+	const eucjpDecoder = new TextDecoder("EUC-JP");
 
 	/**
 	 * @typedef {Object} Encoder
@@ -39,12 +46,28 @@
 			fn: Base64.decode,
 		},
 		{
-			name: "URL encode",
+			name: "URL encode (UTF-8)",
 			fn: (input) => encodeURIComponent(input.normalize()),
 		},
 		{
-			name: "URL decode",
+			name: "URL decode (UTF-8)",
 			fn: (input) => decodeURIComponent(input.normalize()),
+		},
+		{
+			name: "URL encode (Shift_JIS)",
+			fn: (input) => Array.from(sjisEncoder.encode(input.normalize())).map((c) => `%${c.toString(16)}`).join(""),
+		},
+		{
+			name: "URL decode (Shift_JIS)",
+			fn: (input) => sjisDecoder.decode(new Uint8Array(Array.from(input.matchAll(/%([0-9a-f]{2})/gi)).map((m) => parseInt(m[1], 16)).filter((n) => !isNaN(n)))),
+		},
+		{
+			name: "URL encode (EUC-JP)",
+			fn: (input) => Array.from(eucjpEncoder.encode(input.normalize())).map((c) => `%${c.toString(16)}`).join(""),
+		},
+		{
+			name: "URL decode (EUC-JP)",
+			fn: (input) => eucjpDecoder.decode(new Uint8Array(Array.from(input.matchAll(/%([0-9a-f]{2})/gi)).map((m) => parseInt(m[1], 16)).filter((n) => !isNaN(n)))),
 		},
 		{
 			name: "HTML予約文字をエスケープ",
