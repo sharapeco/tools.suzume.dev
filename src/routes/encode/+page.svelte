@@ -133,8 +133,10 @@
 	<title>エンコード・デコード</title>
 </svelte:head>
 
-<main>
-	<h1 class="text-gray-800 mb-4 text-3xl font-bold">エンコード・デコード</h1>
+<main class="pt-2 pb-1">
+	<header class="mb-5">
+		<h1 class="text-gray-800 text-3xl leading-7 font-bold">エンコード・デコード</h1>
+	</header>
 
 	<textarea
 		class="w-full text-sm bg-slate-50 rounded border px-3 py-2"
@@ -144,7 +146,7 @@
 		bind:this={inputRef}
 	/>
 
-	<div class="mt-5 pb-1">
+	<div class="mt-5">
 		{#each results as result, index}
 			<section class="mb-3 break-inside-avoid">
 				<h2 class="inline-block text-gray-700 mb-1 text-sm font-bold">

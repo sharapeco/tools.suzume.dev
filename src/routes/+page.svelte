@@ -12,7 +12,7 @@
 			<img alt="" src="https://images.unsplash.com/photo-1507477338202-487281e6c27e?auto=format&fit=crop&q=90&w=192&h=192" width="96" height="96" class="rounded-full" />
 		</div>
 		<div>
-			<h1 class="text-2xl md:text-3xl font-bold">スズメツールズ</h1>
+			<h1 class="text-2xl md:text-3xl leading-7 font-bold">スズメツールズ</h1>
 			<p class="palt text-sm md:text-md text-gray-500">小ぶりで、チュンとしたツール</p>
 		</div>
 	</div>

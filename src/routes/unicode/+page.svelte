@@ -53,8 +53,10 @@
 	<title>Unicode文字情報</title>
 </svelte:head>
 
-<main>
-	<h1 class="text-gray-800 mb-4 text-3xl font-bold">Unicode文字情報</h1>
+<main class="pt-2 pb-3">
+	<header class="mb-5">
+		<h1 class="text-gray-800 text-3xl leading-7 font-bold">Unicode文字情報</h1>
+	</header>
 
 	<input
 		name="input"
@@ -66,7 +68,7 @@
 		bind:this={inputRef}
 	/>
 
-	<div class="mt-3 pb-3 flex flex-wrap gap-1">
+	<div class="mt-3 flex flex-wrap gap-1">
 		{#each results as result}
 			<a href={result.link} class="flex flex-col p-2 rounded hover:bg-blue-50">
 				<div class="font-hiragino text-4xl text-center">

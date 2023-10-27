@@ -2,8 +2,10 @@
 	<title>スズメツールズ 利用規約</title>
 </svelte:head>
 
-<main class="text-gray-500 py-6 sm:py-8 lg:py-12">
-	<h1 class="text-gray-800 mb-4 text-3xl font-bold">利用規約</h1>
+<main class="pt-2 pb-4 text-gray-500 py-6 sm:py-8 lg:py-12">
+	<header class="mb-5">
+		<h1 class="text-gray-800 text-3xl leading-7 font-bold">利用規約</h1>
+	</header>
 
 	<ol class="mb-6 sm:text-lg md:mb-8">
 		<li>スズメツールズはどなたでも無償でご利用いただけます。</li>
