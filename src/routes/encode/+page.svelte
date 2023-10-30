@@ -53,14 +53,14 @@
 			name: "URL encode (Shift_JIS)",
 			fn: (input) =>
 				Array.from(sjisEncoder.encode(input.normalize()))
-					.map((c) => `%${c.toString(16)}`)
+					.map((c) => `%${c.toString(16).toUpperCase()}`)
 					.join(""),
 		},
 		{
 			name: "URL encode (EUC-JP)",
 			fn: (input) =>
 				Array.from(eucjpEncoder.encode(input.normalize()))
-					.map((c) => `%${c.toString(16)}`)
+					.map((c) => `%${c.toString(16).toUpperCase()}`)
 					.join(""),
 		},
 		{
