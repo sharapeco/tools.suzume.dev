@@ -16,12 +16,16 @@
 		const newResults = [];
 
 		const pInput = input.replaceAll(
-			/(?:^ *| *\b)((?:U\+|\\u)[0-9a-f]{4,5})\b */gi,
-			(_, codeString) => {
-				const hex = codeString.replace(/^ *(?:U\+|\\u)| *$/gi, "");
+			/ *(?:\bU\+([0-9A-Fa-f]{4,6})\b|\\u([0-9A-Fa-f]{4})|\\u\{([0-9A-Fa-f]{1,6})\})/g,
+			(_, c1, c2, c3) => {
+				console.log('matched', c1, c2,c3);
+				const hex = c1 ?? c2 ?? c3;
 				const codePoint = parseInt(hex, 16);
-				const letter = String.fromCodePoint(codePoint);
-				return letter;
+				try {
+					return String.fromCodePoint(codePoint);
+				} catch {
+					return '?';
+				}
 			}
 		);
 		for (const letter of pInput) {
@@ -58,7 +62,7 @@
 		name="input"
 		type="text"
 		class="w-full bg-slate-50 rounded border px-3 py-2"
-		placeholder="文字 / U+XXXX / \\uXXXX"
+		placeholder="文字 / U+XXXX / &#92;uXXXX / &#92;u&#123;XXXXX&#125;"
 		autofocus
 		on:input={() => inputRef && update(inputRef.value)}
 		bind:this={inputRef}
