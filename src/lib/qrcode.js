@@ -1059,8 +1059,6 @@ export function QRCode(options) {
 			throw new Error("Content too long");
 		}
 
-		console.log(`QR ECL ${ecl} version ${type} content length ${length}`);
-
 		return type;
 	}
 
