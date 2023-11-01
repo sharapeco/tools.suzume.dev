@@ -23,3 +23,17 @@ export function encodeHTMLEntities(str) {
 		.replace(/>/g, "&gt;")
 		.replace(/"/g, "&quot;");
 }
+
+/**
+ * 数値文字参照に変換する
+ *
+ * @param {string} str
+ * @returns {string}
+ */
+export function convertToNumericCharacterReference(str) {
+	let result = "";
+	for (const ch of str) {
+		result += `&#${ch.codePointAt(0)};`;
+	}
+	return result;
+}

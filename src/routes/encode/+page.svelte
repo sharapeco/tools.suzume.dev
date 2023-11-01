@@ -4,6 +4,7 @@
 	import { Base64 } from "js-base64";
 	import { getKey } from "$lib/eventUtil.js";
 	import {
+	convertToNumericCharacterReference,
 		decodeHTMLEntities,
 		encodeHTMLEntities as escapeHTMLReservedCharacters,
 	} from "$lib/htmlEntity";
@@ -66,6 +67,10 @@
 		{
 			name: "HTML予約文字をエスケープ",
 			fn: escapeHTMLReservedCharacters,
+		},
+		{
+			name: "数値実体参照に変換",
+			fn: convertToNumericCharacterReference,
 		},
 		{
 			name: "Base64 decode (UTF-8)",
