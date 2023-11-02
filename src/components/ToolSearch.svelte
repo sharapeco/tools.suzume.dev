@@ -1,13 +1,15 @@
 <script>
-	import { onMount } from "svelte";
+	import { onDestroy, onMount } from "svelte";
 	import { clickOutside } from "$lib/clickOutside.js";
 	import { getKey } from "$lib/eventUtil.js";
+	import { getPlatform } from "$lib/platform.js";
+	import { browser } from "$app/environment";
 
 	/** @type {import('../$types.d.ts').ToolDef[]} */
 	export let tools;
 
-	/** @type {string|null} */
-	let platform = null;
+	/** @type {string} */
+	const platform = getPlatform();
 
 	/** @type {HTMLInputElement|null} */
 	let inputRef = null;
@@ -23,28 +25,30 @@
 	);
 
 	onMount(() => {
-		const ua = navigator.userAgent;
-		if (/\b(?:Mac OS X|macOS|iOS|iPadOS)\b/.test(ua)) {
-			platform = "apple";
-		} else if (/\b(?:Windows)\b/.test(ua)) {
-			platform = "microsoft";
-		} else if (/\b(?:Chromebook)\b/.test(ua)) {
-			platform = "google";
-		} else {
-			platform = "unknown";
+		if (browser) {
+			window.addEventListener("keydown", globalKeydownHandler);
 		}
-
-		document.addEventListener("keydown", (event) => {
-			const key = getKey(event);
-			if (
-				(platform !== "apple" && key === "ctrl+/") ||
-				(platform === "apple" && key === "meta+/")
-			) {
-				event.preventDefault();
-				inputRef && inputRef.focus();
-			}
-		});
 	});
+
+	onDestroy(() => {
+		if (browser) {
+			window.removeEventListener("keydown", globalKeydownHandler);
+		}
+	});
+
+	/**
+	 * @param {KeyboardEvent} event
+	 */
+	 function globalKeydownHandler(event) {
+		 const key = getKey(event);
+		if (
+			(platform !== "apple" && key === "ctrl+/") ||
+			(platform === "apple" && key === "meta+/")
+		) {
+			event.preventDefault();
+			inputRef && inputRef.focus();
+		}
+	}
 
 	/**
 	 * @param {KeyboardEvent} event
@@ -87,7 +91,7 @@
 		if (q === "") {
 			return text;
 		}
-		const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 		const regex = new RegExp(escaped, "gi");
 		return text.replace(regex, (match) => `<span class="font-bold">${match}</span>`);
 	}
@@ -97,7 +101,9 @@
 	<input
 		type="text"
 		class="text-sm rounded border px-3 py-2 bg-slate-50 w-full"
-		placeholder="ツールを検索{platform == null ? '' : `（${platform === 'apple' ? '⌘' : 'Ctrl'}+/）`}"
+		placeholder="ツールを検索{platform == null
+			? ''
+			: `（${platform === 'apple' ? '⌘' : 'Ctrl'}+/）`}"
 		bind:value={q}
 		bind:this={inputRef}
 		on:focus={() => (open = true)}
@@ -111,13 +117,15 @@
 				<a
 					href={tool.route}
 					class="block px-3 py-2 rounded text-sm leading-4
-						{index === selectedIndex ? 'text-white bg-blue-500' : 'text-gray-700 hover:bg-gray-100'}
+						{index === selectedIndex ? 'text-white bg-indigo-500' : 'text-gray-700 hover:bg-gray-100'}
 					"
 					on:mouseenter={() => (selectedIndex = index)}
 					on:click={() => (open = false)}
 				>
 					<div class="">{tool.title}</div>
-					<div class="mt-1 font-mono text-xs opacity-70">{@html highlight(tool.route, q)}</div>
+					<div class="mt-1 font-mono text-xs opacity-70">
+						{@html highlight(tool.route, q)}
+					</div>
 				</a>
 			{/each}
 			{#if results.length === 0}

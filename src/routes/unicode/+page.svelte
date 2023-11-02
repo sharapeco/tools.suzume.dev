@@ -1,13 +1,21 @@
 <script>
-	import { onMount } from "svelte";
+	import { browser } from "$app/environment";
+	import { getKey } from "$lib/eventUtil";
+	import { getPlatform } from "$lib/platform";
+	import { onMount, onDestroy } from "svelte";
+
+	/** @typedef {{letter: string, code: string, link: string, copied: boolean}} Result */
+
+	const platform = getPlatform();
 
 	/** @type {HTMLInputElement|null} */
 	let inputRef = null;
 
-	/**
-	 * @type {Array<{letter: string, code: string, link: string}>}
-	 */
+	/** @type {Array<Result>} */
 	let results = [];
+
+	/** @type {number} */
+	let hoveredIndex = -1;
 
 	/**
 	 * @param {string} input
@@ -18,13 +26,12 @@
 		const pInput = input.replaceAll(
 			/ *(?:\bU\+([0-9A-Fa-f]{4,6})\b|\\u([0-9A-Fa-f]{4})|\\u\{([0-9A-Fa-f]{1,6})\})/g,
 			(_, c1, c2, c3) => {
-				console.log('matched', c1, c2,c3);
 				const hex = c1 ?? c2 ?? c3;
 				const codePoint = parseInt(hex, 16);
 				try {
 					return String.fromCodePoint(codePoint);
 				} catch {
-					return '?';
+					return "?";
 				}
 			}
 		);
@@ -38,14 +45,53 @@
 				letter,
 				code: `U+${hex}`,
 				link: `https://www.compart.com/en/unicode/U+${hex}`,
+				copied: false,
 			});
 		}
 
 		results = newResults;
 	}
 
+	/**
+	 * @param {KeyboardEvent} event
+	 */
+	function keydownHandler(event) {
+		const key = getKey(event);
+		if (
+			(platform !== "apple" && key === "ctrl+c") ||
+			(platform === "apple" && key === "meta+c")
+		) {
+			const hovered = results[hoveredIndex];
+			if (hovered) {
+				event.preventDefault();
+				navigator.clipboard.writeText(hovered.letter);
+
+				results = results.map((result, index) => ({
+					...result,
+					copied: index === hoveredIndex,
+				}));
+
+				setTimeout(() => {
+					results = results.map((result, index) => ({
+						...result,
+						copied: false,
+					}));
+				}, 1200);
+			}
+		}
+	}
+
 	onMount(() => {
-		inputRef && update(inputRef.value);
+		if (browser) {
+			inputRef && update(inputRef.value);
+			document.addEventListener("keydown", keydownHandler);
+		}
+	});
+
+	onDestroy(() => {
+		if (browser) {
+			document.removeEventListener("keydown", keydownHandler);
+		}
 	});
 </script>
 
@@ -56,28 +102,60 @@
 <main class="pt-2 pb-3">
 	<header class="mb-5">
 		<h1 class="text-gray-800 text-3xl leading-7 font-bold">Unicode文字情報</h1>
+		<p class="mt-4 text-gray-500">
+			入力した文字のUnicodeコードポイントや、その文字の情報へのリンクを提供します。
+		</p>
+		<p class="mt-2 text-gray-500">
+			文字のかわりに <code class="bg-slate-50 border border-slate-300 rounded p-1">U+XXXX</code> <code class="bg-slate-50 border border-slate-300 rounded p-1">&#92;uXXXX</code> <code class="bg-slate-50 border border-slate-300 rounded p-1">&#92;u&#123;XXXXX&#125;</code>
+			の形式でコードポイントを入力することもできます。
+		</p>
+		<p class="mt-2 text-gray-500">
+			結果の文字にマウスポインタを合わせた状態で
+			{platform === "apple" ? "⌘" : "Ctrl"}+C を押すと、その文字をクリップボードにコピーできます。
+		</p>
 	</header>
 
 	<input
 		name="input"
 		type="text"
 		class="w-full bg-slate-50 rounded border px-3 py-2"
-		placeholder="文字 / U+XXXX / &#92;uXXXX / &#92;u&#123;XXXXX&#125;"
+		placeholder="調べたい文字またはコードを入力..."
 		autofocus
 		on:input={() => inputRef && update(inputRef.value)}
 		bind:this={inputRef}
 	/>
 
 	<div class="mt-3 flex flex-wrap gap-1">
-		{#each results as result}
-			<a href={result.link} class="flex flex-col p-2 rounded hover:bg-blue-50">
+		{#each results as result, index}
+			<a
+				href={result.link}
+				class="flex flex-col p-2 rounded hover:bg-blue-50 relative"
+				on:mouseenter={() => (hoveredIndex = index)}
+				on:mouseleave={() => (hoveredIndex = -1)}
+			>
 				<div class="font-hiragino text-4xl text-center">
 					{result.letter}&#8203;
 				</div>
 				<div class="mt-2 font-mono text-xs text-center text-gray-500">
 					{result.code}
 				</div>
+				{#if result.copied}
+					<div class="absolute top-full left-0 right-0 -mt-2 -mx-4 flex justify-center">
+						<div
+							class="copied p-1 rounded-sm bg-indigo-500 text-white text-xs palt"
+						>
+							Copied!
+						</div>
+					</div>
+				{/if}
 			</a>
 		{/each}
 	</div>
 </main>
+
+<style lang="postcss">
+	.copied {
+		animation: copy-animation 1200ms ease;
+		animation-fill-mode: both;
+	}
+</style>

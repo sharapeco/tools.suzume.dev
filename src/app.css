@@ -3,15 +3,45 @@
 @tailwind utilities;
 
 html {
+	display: flex;
+	flex-direction: column;
+	justify-content: stretch;
+	min-height: 100%;
 	color: theme(colors.gray.800);
 	background-color: theme(colors.white);
 }
 
-h1, h2, h3, .palt {
+body {
+	display: contents;
+}
+
+h1,
+h2,
+h3,
+.palt {
 	font-feature-settings: "palt" 1;
 	letter-spacing: calc(1px - 0.025em);
 }
 
 .font-hiragino {
 	font-family: "Hiragino Mincho Pr6N", "Hiragino Mincho ProN", serif;
+}
+
+@keyframes copy-animation {
+	0% {
+		transform: scale(0.8);
+		opacity: 0;
+	}
+	10% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	80% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(0.8);
+		opacity: 0;
+	}
 }
