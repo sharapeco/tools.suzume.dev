@@ -32,7 +32,7 @@ const tools = [
 		title: 'テキスト整形',
 		route: '/text-formatting',
 		description: 'DTPやWebページ向けのテキスト整形を行います',
-		disabled: true,
+		disabled: false,
 	},
 	{
 		icon: '<svg width="1em" height="1em" viewBox="0 0 96 96" fill="currentColor" aria-hidden="true"><path d="M36.026,2.507l-6.314,-0l-0,52.3c-0.99,-0.849 -3.474,-1.885 -7.552,-1.885c-10.196,0 -22.16,8.027 -22.16,19.799c0,7.893 5.438,11.772 13.595,11.772c11.148,0 22.431,-9.23 22.431,-21.538l0,-60.448Z"/><path d="M96,63.182l-39.636,-0l0,6.342l39.636,-0l0,-6.342Zm0,-20.932l-39.636,0l0,6.342l39.636,0l0,-6.342Z"/></svg>',

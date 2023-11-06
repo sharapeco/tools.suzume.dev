@@ -27,6 +27,12 @@ h3,
 	font-family: "Hiragino Mincho Pr6N", "Hiragino Mincho ProN", serif;
 }
 
+.codemirror-wrapper {
+	flex-grow: 1;
+	display: block flex;
+	flex-direction: column;
+}
+
 @keyframes copy-animation {
 	0% {
 		transform: scale(0.8);
