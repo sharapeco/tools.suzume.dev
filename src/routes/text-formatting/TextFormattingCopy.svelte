@@ -50,13 +50,13 @@
 
 	if (browser) {
 		onMount(() => {
-			window.addEventListener("keydown", keydownHandler);
-			window.addEventListener("keyup", keyupHandler);
+			document.addEventListener("keydown", keydownHandler);
+			document.addEventListener("keyup", keyupHandler);
 		});
 
 		onDestroy(() => {
-			window.removeEventListener("keydown", keydownHandler);
-			window.removeEventListener("keyup", keyupHandler);
+			document.removeEventListener("keydown", keydownHandler);
+			document.removeEventListener("keyup", keyupHandler);
 		});
 	}
 

@@ -24,23 +24,20 @@
 		(tool) => !tool.disabled && (q === "" || tool.route.toLocaleLowerCase().includes(q))
 	);
 
-	onMount(() => {
-		if (browser) {
-			window.addEventListener("keydown", globalKeydownHandler);
-		}
-	});
-
-	onDestroy(() => {
-		if (browser) {
-			window.removeEventListener("keydown", globalKeydownHandler);
-		}
-	});
+	if (browser) {
+		onMount(() => {
+			document.addEventListener("keydown", globalKeydownHandler);
+		});
+		onDestroy(() => {
+			document.removeEventListener("keydown", globalKeydownHandler);
+		});
+	}
 
 	/**
 	 * @param {KeyboardEvent} event
 	 */
-	 function globalKeydownHandler(event) {
-		 const key = getKey(event);
+	function globalKeydownHandler(event) {
+		const key = getKey(event);
 		if (
 			(platform !== "apple" && key === "ctrl+/") ||
 			(platform === "apple" && key === "meta+/")
