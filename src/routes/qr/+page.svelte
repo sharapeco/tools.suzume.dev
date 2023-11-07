@@ -93,7 +93,7 @@
 	/>
 
 	{#if results}
-		<div class="mt-5 grid gap-4 grid-cols-4 md:gap-6">
+		<div class="mt-5 grid gap-4 grid-cols-2 md:grid-cols-4 md:gap-6">
 			{#each results as result}
 				<div
 					class="relative flex flex-col items-stretch overflow-hidden rounded-lg bg-slate-100 p-4 shadow-lg"
@@ -121,7 +121,7 @@
 						<div class="flex-1">
 							<button
 								type="button"
-								class="w-full text-sm py-2 px-3 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
+								class="w-full text-sm py-2 px-1 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
 								on:click={() => download(result)}
 							>
 								保存
@@ -130,7 +130,7 @@
 						<div class="flex-1">
 							<button
 								type="button"
-								class="w-full text-sm py-2 px-3 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
+								class="w-full text-sm py-2 px-1 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
 								on:click={() => copy(result)}
 							>
 								コピー
