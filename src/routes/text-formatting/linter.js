@@ -2,6 +2,9 @@ import { linter } from "@codemirror/lint";
 import { TextlintKernel } from "@textlint/kernel";
 import textlintText from "@textlint/textlint-plugin-text";
 import noControlCharacter from "./rule-noControlCharacter";
+import noKangxiRadical from "./rule-noKangxiRadical";
+import noPrivateUseArea from "./rule-noPrivateUseArea";
+import noVerticalForms from "./rule-noVerticalForms";
 
 /** @typedef {import('@codemirror/lint').Diagnostic} Diagnostic */
 /** @typedef {import('@textlint/kernel').TextlintMessage} TextlintMessage */
@@ -22,6 +25,18 @@ export const textLinter = linter(async (view) => {
 			{
 				ruleId: "no-control-character",
 				rule: noControlCharacter,
+			},
+			{
+				ruleId: "no-kangxi-radical",
+				rule: noKangxiRadical,
+			},
+			{
+				ruleId: "no-private-use-area",
+				rule: noPrivateUseArea,
+			},
+			{
+				ruleId: "no-vertical-forms",
+				rule: noVerticalForms,
 			},
 		],
 	});

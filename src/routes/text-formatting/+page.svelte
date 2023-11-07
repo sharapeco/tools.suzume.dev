@@ -1,17 +1,52 @@
 <script>
 	import TextFormattingCopy from "./TextFormattingCopy.svelte";
 	import TextFormattingEditor from "./TextFormattingEditor.svelte";
+	import { formatRules } from "./formatRules";
+	import { browser } from "$app/environment";
 
-	/*
-	私用領域 [\u{E000}-\u{F8FF}\u{FFF80}-\u{FFFFF}\u{10FF80}-\u{10FFFF}]
-	*/
-
-	let input = "";
+	let input = browser ? localStorage.getItem("text-formatting.input") ?? "" : "";
 
 	/** @type {"edit" | "copy"} */
 	let mode = "edit";
 
-	function format() {}
+	/** @type {{ [key: string]: string }} */
+	let options = restoreOptions();
+
+	function restoreOptions() {
+		const savedOptions = browser
+			? JSON.parse(localStorage.getItem("text-formatting.options") ?? "{}")
+			: {};
+		return formatRules.reduce((options, rule) => {
+			// @ts-ignore
+			options[rule.id] = savedOptions[rule.id] ?? rule.default;
+			return options;
+		}, {});
+	}
+
+	/**
+	 * @param {string} newValue
+	 */
+	function updateInput(newValue) {
+		input = newValue;
+		if (browser) {
+			localStorage.setItem("text-formatting.input", input);
+		}
+	}
+
+	$: {
+		if (browser) {
+			localStorage.setItem("text-formatting.options", JSON.stringify(options));
+		}
+	}
+
+	function format() {
+		let value = input;
+		for (const rule of formatRules) {
+			const option = options[rule.id];
+			value = rule.fn(value, option);
+		}
+		input = value;
+	}
 </script>
 
 <svelte:head>
@@ -56,7 +91,7 @@
 					mode = "copy";
 				}}
 			>
-				整形結果
+				結果をコピー
 			</button>
 		</div>
 	</div>
@@ -64,18 +99,53 @@
 	<div class="content border border-slate-200 rounded-lg flex">
 		<div class="flex-1 flex flex-col">
 			{#if mode === "edit"}
-				<TextFormattingEditor {input} />
+				<TextFormattingEditor
+					{input}
+					on:change={(event) => {
+						updateInput(event.detail);
+					}}
+				/>
 			{:else}
 				<TextFormattingCopy {input} />
 			{/if}
 		</div>
-		<div class="w-64 p-4 border-l border-slate-200 bg-slate-50">Options</div>
+		<div class="w-64 border-l border-slate-200 bg-slate-50 flex flex-col">
+			<div class="flex-1 p-4 h-full overflow-auto">
+				{#each formatRules as rule (rule.id)}
+					<div class="mb-3">
+						<label for={rule.id} class="text-xs font-bold text-gray-600"
+							>{rule.name}</label
+						>
+						<select
+							id={rule.id}
+							bind:value={options[rule.id]}
+							class="w-full mt-1 px-2 py-1 rounded border border-slate-200 bg-white text-gray-900 text-sm"
+						>
+							{#each Object.entries(rule.options) as [key, label] (key)}
+								<option value={key}>
+									{label}
+								</option>
+							{/each}
+						</select>
+					</div>
+				{/each}
+			</div>
+			<div class="p-4">
+				<button
+					type="button"
+					class="w-full px-4 py-2 text-sm font-medium border rounded-md shadow-sm bg-indigo-500 text-white hover:bg-indigo-600 hover:text-white active:bg-indigo-800 active:text-slate-100"
+					on:click={format}
+				>
+					整形
+				</button>
+			</div>
+		</div>
 	</div>
 </main>
 
 <style lang="postcss">
 	.content {
-		height: calc(100vh - 248px);
+		height: calc(100vh - 200px);
 		overflow: auto;
 	}
 </style>

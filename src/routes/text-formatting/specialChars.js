@@ -67,6 +67,7 @@ export const specialChars = {
 	0x009D: ["control", "OSC"],
 	0x009E: ["control", "PM"],
 	0x009F: ["control", "APC"],
+	0x00AD: ["control", "SHY"],
 	0x200B: ["control", "ZWSP"],
 	0x200C: ["control", "ZWNJ"],
 	0x200D: ["control", "ZWJ"],

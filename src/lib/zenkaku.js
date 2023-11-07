@@ -267,3 +267,16 @@ export function toJISX0201Kana(value) {
 		return jisx0201Kana.chars[index]
 	})
 }
+
+const verticalForms = "︐︑︒︓︔︕︖︗︘︙︰︱︲︳︴︵︶︷︸︹︺︻︼︽︾︿﹀﹁﹂﹃﹄﹇﹈";
+const regularForms = "，、。：；！？〖〗…‥―‐＿﹏（）｛｝〔〕【】《》〈〉「」『』［］";
+
+/**
+ * @param {string} value
+ * @returns {string}
+ */
+export function stripVerticalForms(value) {
+	return value.replace(new RegExp(`[${verticalForms}]`, "g"), (match) =>
+		regularForms[verticalForms.indexOf(match)]
+	);
+}
