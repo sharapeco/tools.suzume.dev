@@ -1,3 +1,5 @@
+import { normalize } from "./zenkaku"
+
 class Replacer {
 	/**
 	 * @param {string} fromCharList
@@ -53,7 +55,7 @@ const subReplacer = new Replacer(
  * @returns {string}
  */
 export function supersub(str) {
-	const tokens = tokenize(str.normalize())
+	const tokens = tokenize(normalize(str))
 	const result = []
 	let isSup = false
 	let isSub = false

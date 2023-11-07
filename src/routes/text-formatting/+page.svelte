@@ -44,6 +44,7 @@
 		for (const rule of formatRules) {
 			const option = options[rule.id];
 			value = rule.fn(value, option);
+			console.log(`after rule ${rule.id}: ${value}`);
 		}
 		input = value;
 	}

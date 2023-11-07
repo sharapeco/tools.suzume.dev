@@ -1,9 +1,19 @@
 /**
+ * 結合文字を合成
+ *
+ * @param {string} value
+ * @returns {string}
+ */
+export function normalize(value) {
+	return value.replaceAll(/[^\u{212B}\u{F900}-\u{FAD9}]+/gu, (match) => match.normalize("NFC"));
+}
+
+/**
  * @param {string} value
  * @returns {string}
  */
 export function hiraganaToKatakana(value) {
-	return value.normalize().replace(/[\u3041-\u3096\u309D\u309E]/g, (match) =>
+	return normalize(value).replace(/[\u3041-\u3096\u309D\u309E]/g, (match) =>
 		String.fromCharCode(match.charCodeAt(0) + 0x60)
 	)
 }
@@ -13,7 +23,7 @@ export function hiraganaToKatakana(value) {
  * @returns {string}
  */
 export function katakanaToHiragana(value) {
-	return value.normalize().replace(/[\u30A1-\u30F6\u30FD\u30FE]/g, (match) =>
+	return normalize(value).replace(/[\u30A1-\u30F6\u30FD\u30FE]/g, (match) =>
 		String.fromCharCode(match.charCodeAt(0) - 0x60)
 	)
 }
@@ -23,7 +33,7 @@ export function katakanaToHiragana(value) {
  * @returns {string}
  */
 export function stripFullwidthForm(value) {
-	return value.normalize().replace(/[！-｝]/gu, (match) =>
+	return normalize(value).replace(/[！-｝]/gu, (match) =>
 		String.fromCharCode(match.charCodeAt(0) - 0xfee0)
 	)
 }
@@ -33,7 +43,7 @@ export function stripFullwidthForm(value) {
  * @returns {string}
  */
 export function toFullwidthForm(value) {
-	return value.normalize().replace(/[!-}]/gu, (match) =>
+	return normalize(value).replace(/[!-}]/gu, (match) =>
 		String.fromCharCode(match.charCodeAt(0) + 0xfee0)
 	)
 }
@@ -45,7 +55,7 @@ export function toFullwidthForm(value) {
  * @returns {string}
  */
 export function stripFullwidthFormJP(value) {
-	return value.normalize().replace(/[＂-＇＊-／０-９＠Ａ-Ｚ＾-｀ａ-ｚ]/gu, (match) =>
+	return normalize(value).replace(/[＂-＇＊-／０-９＠Ａ-Ｚ＾-｀ａ-ｚ]/gu, (match) =>
 		String.fromCharCode(match.charCodeAt(0) - 0xfee0)
 	)
 }
@@ -249,7 +259,7 @@ const regularKana = {
  * @returns {string}
  */
 export function stripJISX0201Kana(value) {
-	return value.normalize().replace(jisx0201Kana.re, (match) => {
+	return normalize(value).replace(jisx0201Kana.re, (match) => {
 		const index = jisx0201Kana.chars.indexOf(match)
 		if (index < 0) return match
 		return regularKana.chars[index]
@@ -261,7 +271,7 @@ export function stripJISX0201Kana(value) {
  * @returns {string}
  */
 export function toJISX0201Kana(value) {
-	return value.normalize().replace(regularKana.re, (match) => {
+	return normalize(value).replace(regularKana.re, (match) => {
 		const index = regularKana.chars.indexOf(match)
 		if (index < 0) return match
 		return jisx0201Kana.chars[index]

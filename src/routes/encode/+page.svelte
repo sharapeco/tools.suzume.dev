@@ -9,6 +9,7 @@
 		encodeHTMLEntities as escapeHTMLReservedCharacters,
 	} from "$lib/htmlEntity";
 	import { NaiveTextEncoder } from "$lib/naiveTextEncoder/NaiveTextEncoder";
+	import { normalize } from "$lib/zenkaku";
 
 	/** @type {HTMLTextAreaElement|null} */
 	let inputRef = null;
@@ -44,23 +45,23 @@
 	const encoders = [
 		{
 			name: "Base64 encode (UTF-8)",
-			fn: (input) => Base64.encode(input.normalize()),
+			fn: (input) => Base64.encode(normalize(input)),
 		},
 		{
 			name: "URL encode (UTF-8)",
-			fn: (input) => encodeURIComponent(input.normalize()),
+			fn: (input) => encodeURIComponent(normalize(input)),
 		},
 		{
 			name: "URL encode (Shift_JIS)",
 			fn: (input) =>
-				Array.from(sjisEncoder.encode(input.normalize()))
+				Array.from(sjisEncoder.encode(normalize(input)))
 					.map((c) => `%${c.toString(16).toUpperCase()}`)
 					.join(""),
 		},
 		{
 			name: "URL encode (EUC-JP)",
 			fn: (input) =>
-				Array.from(eucjpEncoder.encode(input.normalize()))
+				Array.from(eucjpEncoder.encode(normalize(input)))
 					.map((c) => `%${c.toString(16).toUpperCase()}`)
 					.join(""),
 		},
@@ -78,7 +79,7 @@
 		},
 		{
 			name: "URL decode (UTF-8)",
-			fn: (input) => decodeURIComponent(input.normalize()),
+			fn: (input) => decodeURIComponent(normalize(input)),
 		},
 		{
 			name: "URL decode (Shift_JIS)",

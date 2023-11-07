@@ -3,6 +3,7 @@
  */
 
 import {
+	normalize,
 	stripFullwidthForm,
 	stripJISX0201Kana,
 	stripVerticalForms,
@@ -16,13 +17,13 @@ export const formatRules = [
 		name: "結合文字",
 		options: {
 			keep: "そのまま",
-			normalize: "合成（NFC正規化）",
+			normalize: "合成",
 		},
 		default: "normalize",
 		fn(text, option) {
 			switch (option) {
 				case "normalize":
-					return text.normalize("NFC");
+					return normalize(text);
 			}
 			return text;
 		},
