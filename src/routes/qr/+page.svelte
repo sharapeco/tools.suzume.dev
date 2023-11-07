@@ -39,6 +39,7 @@
 		return new QRCode({
 			content,
 			ecl,
+			container: "svg-viewbox",
 			swap: true,
 			join: false,
 			predefined: true,
