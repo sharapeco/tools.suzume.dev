@@ -15,7 +15,7 @@ export const formatRules = [
 		id: "normalize-nfc",
 		name: "結合文字",
 		options: {
-			keep: "変換しない",
+			keep: "そのまま",
 			normalize: "合成（NFC正規化）",
 		},
 		default: "normalize",
@@ -31,7 +31,7 @@ export const formatRules = [
 		id: "halfwidth-katakana",
 		name: "半角カタカナ",
 		options: {
-			keep: "変換しない",
+			keep: "そのまま",
 			normalize: "正規化",
 		},
 		default: "normalize",
@@ -47,7 +47,7 @@ export const formatRules = [
 		id: "vertical-forms",
 		name: "縦組用約物",
 		options: {
-			keep: "変換しない",
+			keep: "そのまま",
 			normalize: "横組用に変換",
 		},
 		default: "normalize",
@@ -63,7 +63,7 @@ export const formatRules = [
 		id: "control-characters",
 		name: "制御文字",
 		options: {
-			keep: "変換しない",
+			keep: "そのまま",
 			remove: "除去",
 		},
 		default: "remove",
@@ -82,7 +82,7 @@ export const formatRules = [
 		id: "private-use-area",
 		name: "私用領域",
 		options: {
-			keep: "変換しない",
+			keep: "そのまま",
 			remove: "除去",
 		},
 		default: "keep",
@@ -98,7 +98,7 @@ export const formatRules = [
 		id: "kangxi-radical",
 		name: "康煕部首",
 		options: {
-			keep: "変換しない",
+			keep: "そのまま",
 			normalize: "正規化",
 		},
 		default: "normalize",
@@ -114,7 +114,7 @@ export const formatRules = [
 		id: "trim-leading-spaces",
 		name: "行頭のスペース",
 		options: {
-			keep: "変換しない",
+			keep: "そのまま",
 			all: "除去",
 			ideographic: "全角スペースのみ残す",
 		},
@@ -135,7 +135,7 @@ export const formatRules = [
 		id: "trim-trailing-spaces",
 		name: "行末のスペース",
 		options: {
-			keep: "変換しない",
+			keep: "そのまま",
 			all: "除去",
 		},
 		default: "all",
@@ -151,7 +151,7 @@ export const formatRules = [
 		id: "parentheses",
 		name: "括弧 （）［］｛｝",
 		options: {
-			keep: "変換しない",
+			keep: "そのまま",
 			fullwidth: "全角",
 			halfwidth: "半角",
 			halfwidthSpace: "半角（スペースを追加）",
@@ -191,7 +191,7 @@ export const formatRules = [
 		id: "latin",
 		name: "ラテン文字",
 		options: {
-			keep: "変換しない",
+			keep: "そのまま",
 			halfwidth: "半角",
 			fullwidth: "全角",
 			fullwidth1c: "1文字のみ全角",
@@ -218,7 +218,7 @@ export const formatRules = [
 		id: "figure",
 		name: "数字",
 		options: {
-			keep: "変換しない",
+			keep: "そのまま",
 			halfwidth: "半角",
 			fullwidth: "全角",
 			fullwidth1c: "1桁のみ全角",
@@ -245,7 +245,7 @@ export const formatRules = [
 		id: "text-spacing",
 		name: "和欧間スペース",
 		options: {
-			keep: "変換しない",
+			keep: "そのまま",
 			strip: "スペースなし",
 			hair: "Hair space",
 			thin: "Thin space",
