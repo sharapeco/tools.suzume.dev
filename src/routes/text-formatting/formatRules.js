@@ -64,7 +64,7 @@ export const formatRules = [
 		name: "制御文字",
 		options: {
 			keep: "そのまま",
-			remove: "除去",
+			remove: "削除",
 		},
 		default: "remove",
 		fn(text, option) {
@@ -83,7 +83,7 @@ export const formatRules = [
 		name: "私用領域",
 		options: {
 			keep: "そのまま",
-			remove: "除去",
+			remove: "削除",
 		},
 		default: "keep",
 		fn(text, option) {
@@ -115,7 +115,7 @@ export const formatRules = [
 		name: "行頭のスペース",
 		options: {
 			keep: "そのまま",
-			all: "除去",
+			all: "削除",
 			ideographic: "全角スペースのみ残す",
 		},
 		default: "ideographic",
@@ -136,7 +136,7 @@ export const formatRules = [
 		name: "行末のスペース",
 		options: {
 			keep: "そのまま",
-			all: "除去",
+			all: "削除",
 		},
 		default: "all",
 		fn(text, option) {
