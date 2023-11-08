@@ -5,6 +5,8 @@
  * @returns {string}
  */
 export function normalize(value) {
+	// U+212B: Å
+	// U+F900–U+FAD9: CJK Compatibility Ideographs
 	return value.replaceAll(/[^\u{212B}\u{F900}-\u{FAD9}]+/gu, (match) => match.normalize("NFC"));
 }
 
