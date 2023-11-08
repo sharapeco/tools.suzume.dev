@@ -4,7 +4,7 @@ import { specialChars } from "./specialChars";
 /** @typedef {import('@textlint/ast-node-types').TxtNode} TxtNode */
 
 const controlCharacterRE =
-	/[\u{0}-\u{08}\u{0B}-\u{1F}\u{7F}-\u{9F}\u{AD}\u{200B}-\u{200F}\u{202A}-\u{202F}\u{205F}-\u{206F}]/gu;
+	/[\u{0}-\u{08}\u{0B}-\u{1F}\u{7F}-\u{9F}\u{AD}\u{200B}-\u{200F}\u{202A}-\u{202F}\u{2060}-\u{206F}]/gu;
 
 /**
  * @param {RuleContext} context
