@@ -117,17 +117,25 @@ export const formatRules = [
 		options: {
 			keep: "そのまま",
 			all: "削除",
-			ideographic: "全角スペースのみ残す",
+			tabs: "タブを残す",
+			ideographic: "全角スペースを残す",
+			ideographicTabs: "全角スペースとタブを残す",
 		},
-		default: "ideographic",
+		default: "ideographicTabs",
 		fn(text, option) {
 			switch (option) {
 				case "all":
 					return text.replace(/^[^\S\n]+/gm, "");
+				case "tabs":
+					return text.replace(/^[^\S\n\u3000]+/gm, "");
 				case "ideographic":
 					return text
 						.replace(/^[^\S\n\u3000]+/gm, "")
 						.replace(/^(\u3000+)[^\S\n\u3000]+/gm, "$1");
+				case "ideographicTabs":
+					return text
+						.replace(/^[^\S\n\t\u3000]+/gm, "")
+						.replace(/^([\t\u3000]+)[^\S\n\t\u3000]+/gm, "$1");
 			}
 			return text;
 		},
@@ -162,28 +170,28 @@ export const formatRules = [
 			switch (option) {
 				case "fullwidth":
 					return text
-						.replace(/[^\S\n]*[\(（][^\S\n]*/gu, "（")
-						.replace(/[^\S\n]*[\)）][^\S\n]*/gu, "）")
-						.replace(/[^\S\n]*[\[［][^\S\n]*/gu, "［")
-						.replace(/[^\S\n]*[\]］][^\S\n]*/gu, "］")
-						.replace(/[^\S\n]*[\{｛][^\S\n]*/gu, "｛")
-						.replace(/[^\S\n]*[\}｝][^\S\n]*/gu, "｝");
+						.replace(/[^\S\n\t]*[\(（][^\S\n\t]*/gu, "（")
+						.replace(/[^\S\n\t]*[\)）][^\S\n\t]*/gu, "）")
+						.replace(/[^\S\n\t]*[\[［][^\S\n\t]*/gu, "［")
+						.replace(/[^\S\n\t]*[\]］][^\S\n\t]*/gu, "］")
+						.replace(/[^\S\n\t]*[\{｛][^\S\n\t]*/gu, "｛")
+						.replace(/[^\S\n\t]*[\}｝][^\S\n\t]*/gu, "｝");
 				case "halfwidth":
 					return text
-						.replace(/[^\S\n]*[\(（][^\S\n]*/gu, "(")
-						.replace(/[^\S\n]*[\)）][^\S\n]*/gu, ")")
-						.replace(/[^\S\n]*[\[［][^\S\n]*/gu, "[")
-						.replace(/[^\S\n]*[\]］][^\S\n]*/gu, "]")
-						.replace(/[^\S\n]*[\{｛][^\S\n]*/gu, "{")
-						.replace(/[^\S\n]*[\}｝][^\S\n]*/gu, "}");
+						.replace(/[^\S\n\t]*[\(（][^\S\n\t]*/gu, "(")
+						.replace(/[^\S\n\t]*[\)）][^\S\n\t]*/gu, ")")
+						.replace(/[^\S\n\t]*[\[［][^\S\n\t]*/gu, "[")
+						.replace(/[^\S\n\t]*[\]］][^\S\n\t]*/gu, "]")
+						.replace(/[^\S\n\t]*[\{｛][^\S\n\t]*/gu, "{")
+						.replace(/[^\S\n\t]*[\}｝][^\S\n\t]*/gu, "}");
 				case "halfwidthSpace":
 					return text
-						.replace(/([\S]?)[^\S\n]*[\(（][^\S\n]*/gu, (_, p1) => p1 !== "" ? `${p1} (` : "(")
-						.replace(/[^\S\n]*[\)）][^\S\n]*([\S]?)/gu, (_, p1) => p1 !== "" ? `) ${p1}` : ")")
-						.replace(/([\S]?)[^\S\n]*[\[［][^\S\n]*/gu, (_, p1) => p1 !== "" ? `${p1} [` : "[")
-						.replace(/[^\S\n]*[\]］][^\S\n]*([\S]?)/gu, (_, p1) => p1 !== "" ? `] ${p1}` : "]")
-						.replace(/([\S]?)[^\S\n]*[\{｛][^\S\n]*/gu, (_, p1) => p1 !== "" ? `${p1} {` : "{")
-						.replace(/[^\S\n]*[\}｝][^\S\n]*([\S]?)/gu, (_, p1) => p1 !== "" ? `} ${p1}` : "}");
+						.replace(/([\S]?)[^\S\n\t]*[\(（][^\S\n\t]*/gu, (_, p1) => p1 !== "" ? `${p1} (` : "(")
+						.replace(/[^\S\n\t]*[\)）][^\S\n\t]*([\S]?)/gu, (_, p1) => p1 !== "" ? `) ${p1}` : ")")
+						.replace(/([\S]?)[^\S\n\t]*[\[［][^\S\n\t]*/gu, (_, p1) => p1 !== "" ? `${p1} [` : "[")
+						.replace(/[^\S\n\t]*[\]］][^\S\n\t]*([\S]?)/gu, (_, p1) => p1 !== "" ? `] ${p1}` : "]")
+						.replace(/([\S]?)[^\S\n\t]*[\{｛][^\S\n\t]*/gu, (_, p1) => p1 !== "" ? `${p1} {` : "{")
+						.replace(/[^\S\n\t]*[\}｝][^\S\n\t]*([\S]?)/gu, (_, p1) => p1 !== "" ? `} ${p1}` : "}");
 			}
 			return text;
 		},
