@@ -3,8 +3,9 @@
 	import { getKey } from "$lib/eventUtil";
 	import { getPlatform } from "$lib/platform";
 	import { onMount, onDestroy } from "svelte";
+	import { specialChars } from "../text-formatting/specialChars";
 
-	/** @typedef {{letter: string, code: string, link: string, copied: boolean}} Result */
+	/** @typedef {{letter: string, sp?: [string, string], code: string, link: string, copied: boolean}} Result */
 
 	const platform = getPlatform();
 
@@ -43,6 +44,7 @@
 			const hex = codePoint.toString(16).padStart(4, "0").toUpperCase();
 			newResults.push({
 				letter,
+				sp: specialChars[codePoint],
 				code: `U+${hex}`,
 				link: `https://www.compart.com/en/unicode/U+${hex}`,
 				copied: false,
@@ -133,8 +135,12 @@
 				on:mouseenter={() => (hoveredIndex = index)}
 				on:mouseleave={() => (hoveredIndex = -1)}
 			>
-				<div class="font-hiragino text-4xl text-center">
-					{result.letter}&#8203;
+				<div class="font-hiragino letter text-4xl text-center">
+					{#if result.sp != null}
+					<span class="sp sp-{result.sp[0]}">{result.sp[1]}</span>
+					{:else}
+					{result.letter}
+					{/if}
 				</div>
 				<div class="mt-2 font-mono text-xs text-center text-gray-500">
 					{result.code}
@@ -157,5 +163,37 @@
 	.copied {
 		animation: copy-animation 1200ms ease;
 		animation-fill-mode: both;
+	}
+
+	.letter {
+		line-height: 1;
+		min-height: 1.1em;
+	}
+
+	.sp {
+		display: inline-block;
+		vertical-align: middle;
+		line-height: 1;
+		opacity: 0.5;
+	}
+
+	.sp-control {
+		padding: 0.2em;
+		font-family: monospace;
+		font-size: 40%;
+		color: theme(colors.slate.700);
+		border: dashed 1px;
+	}
+
+	.sp-undefined {
+		padding: 0.2em;
+		font-family: monospace;
+		font-size: 40%;
+		color: theme(colors.red.500);
+		border: dashed 1px;
+	}
+
+	.sp-fullwidth {
+		color: theme(colors.amber.300);
 	}
 </style>
