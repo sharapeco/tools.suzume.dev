@@ -1,16 +1,19 @@
-import { defaultKeymap } from "@codemirror/commands";
+import { defaultKeymap, historyKeymap } from "@codemirror/commands";
+import { lintKeymap } from "@codemirror/lint"
+import { searchKeymap } from "@codemirror/search";
 import { keymap } from "@codemirror/view";
 
 /**
  * 任意の文字を挿入するカスタムキーバインディング
+ *
  * @param {string} text
+ * @returns {import('@codemirror/view').Command}
  */
 function insertText(text) {
-	/** @param {EditorView} view */
 	return (view) => {
 		const { state, dispatch } = view;
 		if (!state.selection.ranges[0]) {
-			return;
+			return false;
 		}
 		dispatch(
 			state.update({
@@ -22,13 +25,17 @@ function insertText(text) {
 				selection: {
 					anchor: state.selection.ranges[0].from + text.length,
 				},
+				scrollIntoView: true,
+				userEvent: "input",
 			})
 		);
+		return true;
 	};
 }
 
+const removeKeys = ["Enter", "Mod-Enter"];
 export const plainTextKeymap = keymap.of(
-	defaultKeymap.concat([
+	[
 		{
 			key: "Tab",
 			preventDefault: true,
@@ -39,5 +46,9 @@ export const plainTextKeymap = keymap.of(
 			preventDefault: true,
 			run: insertText("\n"),
 		},
-	])
+		...defaultKeymap.filter((keymap) => !removeKeys.includes(keymap.key ?? "")),
+		...searchKeymap,
+		...historyKeymap,
+		...lintKeymap,
+	]
 );

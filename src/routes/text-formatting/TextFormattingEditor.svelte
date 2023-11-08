@@ -1,16 +1,39 @@
 <script>
 	import { createEventDispatcher } from "svelte";
 	import CodeMirror from "svelte-codemirror-editor";
+	import {
+		lineNumbers,
+		highlightActiveLine,
+		highlightActiveLineGutter,
+		drawSelection,
+		dropCursor,
+	} from "@codemirror/view";
+	import { history } from "@codemirror/commands";
+	import { EditorState } from "@codemirror/state";
+	import { highlightSelectionMatches } from "@codemirror/search";
 	import { specialCharsHighlighter } from "./specialCharsHighlighter";
 	import { plainTextKeymap } from "./plainTextKeymap";
 	import { textLinter } from "./linter";
+	import tabIcon from "$lib/assets/tab.svg";
 
 	/** @type {string} */
 	export let input;
 
 	const dispatch = createEventDispatcher();
 
-	const extensions = [plainTextKeymap, specialCharsHighlighter, textLinter];
+	const extensions = [
+		lineNumbers(),
+		highlightActiveLine(),
+		highlightActiveLineGutter(),
+		history(),
+		drawSelection(),
+		dropCursor(),
+		EditorState.allowMultipleSelections.of(true),
+		highlightSelectionMatches(),
+		plainTextKeymap,
+		specialCharsHighlighter,
+		textLinter,
+	];
 </script>
 
 <CodeMirror
@@ -18,6 +41,7 @@
 	on:change={(event) => {
 		dispatch("change", event.detail);
 	}}
+	basic={false}
 	useTab={false}
 	tabSize={4}
 	{extensions}
@@ -46,7 +70,16 @@
 			paddingBottom: "3px",
 		},
 		".cm-specialChar": {
-			color: "#ba4",
+			color: "#f59e0b",
+		},
+		".cm-tab": {
+			minWidth: "0.5em",
+			maxWidth: "1em",
+			color: "#f59e0b",
+			backgroundImage: `url(${tabIcon})`,
+			backgroundSize: "0.7em 0.7em",
+			backgroundPosition: "0.15em 50%",
+			backgroundRepeat: "no-repeat",
 		},
 		".cm-charType-fullwidth": {
 			fontFamily: '"ヒラギノ角ゴシック", "ヒラギノ角ゴ ProN", sans-serif',

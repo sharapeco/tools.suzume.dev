@@ -10,7 +10,10 @@ export const specialCharsHighlighter = highlightSpecialChars({
 		span.setAttribute("aria-label", description ?? "");
 		span.setAttribute("contenteditable", "false");
 		span.classList.add("cm-specialChar");
-		if (type === "control") {
+		if (code === 0x09) {
+			// HT, TAB
+			span.classList.add("cm-charType-tab");
+		} else if (type === "control") {
 			span.classList.add("cm-lintRange", "cm-lintRange-error");
 			span.appendChild(createControlCharacter(replacer ?? placeholder));
 		} else if (code >= 0x2F00 && code <= 0x2FDF) {
