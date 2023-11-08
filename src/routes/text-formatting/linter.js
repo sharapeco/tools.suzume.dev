@@ -2,9 +2,10 @@ import { linter } from "@codemirror/lint";
 import { TextlintKernel } from "@textlint/kernel";
 import textlintText from "@textlint/textlint-plugin-text";
 import noControlCharacter from "./rule-noControlCharacter";
-import noKangxiRadical from "./rule-noKangxiRadical";
+import noRadical from "./rule-noRadical";
 import noPrivateUseArea from "./rule-noPrivateUseArea";
 import noVerticalForms from "./rule-noVerticalForms";
+import noRegionalIndicatorSymbol from "./rule-noRegionalIndicatorSymbol";
 
 /** @typedef {import('@codemirror/lint').Diagnostic} Diagnostic */
 /** @typedef {import('@textlint/kernel').TextlintMessage} TextlintMessage */
@@ -27,8 +28,8 @@ export const textLinter = linter(async (view) => {
 				rule: noControlCharacter,
 			},
 			{
-				ruleId: "no-kangxi-radical",
-				rule: noKangxiRadical,
+				ruleId: "no-radical",
+				rule: noRadical,
 			},
 			{
 				ruleId: "no-private-use-area",
@@ -37,6 +38,10 @@ export const textLinter = linter(async (view) => {
 			{
 				ruleId: "no-vertical-forms",
 				rule: noVerticalForms,
+			},
+			{
+				ruleId: "no-regioanl-indicator-symbol",
+				rule: noRegionalIndicatorSymbol,
 			},
 		],
 	});

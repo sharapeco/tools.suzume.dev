@@ -1,8 +1,25 @@
 import { highlightSpecialChars } from "@codemirror/view";
 import { specialChars } from "./specialChars";
 
+const re = new RegExp("[" + [
+	// 制御文字; HT, LF を除く
+	"\u{0}-\u{09}\u{0B}-\u{1F}\u{7F}-\u{9F}",
+	// SHY
+	"\u{00AD}",
+	// ZWSP, ZWNJ, ZWJ, LRM, RLM
+	"\u{200B}-\u{200F}",
+	// CJK部首補助, 康熙部首
+	"\u{2E80}-\u{2EF3}\u{2F00}-\u{2FDF}",
+	// 全角スペース
+	"\u{3000}",
+	// 私用領域
+	"\u{E000}-\u{F8FF}\u{FFF80}-\u{FFFFF}\u{10FF80}-\u{10FFFF}",
+	// Vertical Forms, CJK Compatibility Forms
+	"\u{FE10}-\u{FE19}\u{FE30}-\u{FE44}\u{FE47}-\u{FE48}",
+].join("") + "]", "gu");
+
 export const specialCharsHighlighter = highlightSpecialChars({
-	specialChars: /[\u{0}-\u{09}\u{0B}-\u{1F}\u{7F}-\u{9F}\u{00AD}\u{200B}-\u{200F}\u{2F00}-\u{2FDF}\u{3000}\u{E000}-\u{F8FF}\u{FE10}-\u{FE19}\u{FE30}-\u{FE44}\u{FE47}-\u{FE48}\u{FFF80}-\u{FFFFF}\u{10FF80}-\u{10FFFF}]/gu,
+	specialChars: re,
 	render(code, description, placeholder) {
 		// @ts-ignore
 		const [type, replacer] = specialChars[code] ?? ["unknown", null];
@@ -16,9 +33,9 @@ export const specialCharsHighlighter = highlightSpecialChars({
 		} else if (type === "control") {
 			span.classList.add("cm-lintRange", "cm-lintRange-error");
 			span.appendChild(createControlCharacter(replacer ?? placeholder));
-		} else if (code >= 0x2F00 && code <= 0x2FDF) {
-			// 康煕部首
-			span.classList.add("cm-charType-kangxi", "cm-lintRange", "cm-lintRange-warning");
+		} else if ((code >= 0x2E80 && code <= 0x3EF3) || (code >= 0x2F00 && code <= 0x2FDF)) {
+			// CJK部首補助, 康煕部首
+			span.classList.add("cm-charType-radical", "cm-lintRange", "cm-lintRange-warning");
 			span.textContent = String.fromCodePoint(code);
 		} else if ((code >= 0xE000 && code <= 0xF8FF) || (code >= 0xFFF80 && code <= 0xFFFFF) || (code >= 0x10FF80 && code <= 0x10FFFF)) {
 			// 私用領域

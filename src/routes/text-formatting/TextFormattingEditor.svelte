@@ -84,7 +84,7 @@
 		".cm-charType-fullwidth": {
 			fontFamily: '"ヒラギノ角ゴシック", "ヒラギノ角ゴ ProN", sans-serif',
 		},
-		".cm-charType-kangxi": {
+		".cm-charType-radical": {
 			color: "#d946ef",
 		},
 		".cm-charType-vertical": {
