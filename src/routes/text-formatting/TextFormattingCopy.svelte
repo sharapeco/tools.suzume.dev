@@ -1,11 +1,13 @@
 <script>
 	import { browser } from "$app/environment";
+	import { getPlatform } from "$lib/platform";
 	import { onDestroy, onMount } from "svelte";
 
 	/** @type {string} */
 	export let input;
 
-	$: paragraphs = input.split(/\n{2,}/).map((text) => {
+	$: paragraphs = input.split(/\n{2,}/).map((aText) => {
+		const text = aText.replace(/\n+$/, "");
 		const divisions = [];
 		for (let pos = 0; pos < text.length; ) {
 			const substr = text.substring(pos);
@@ -36,8 +38,11 @@
 		};
 	});
 
+	const platform = getPlatform();
+	const mod = platform === "apple" ? "Meta" : "Ctrl";
+
 	/** @type {string[]} */
-	const handleModifiers = ["Shift"];
+	const handleModifiers = [mod];
 
 	/** @type {Set<string>} */
 	let modifiers = new Set();
@@ -46,7 +51,7 @@
 	let copied = false;
 
 	/** @type {"paragraph" | "word"} */
-	$: mode = modifiers.has("Shift") ? "word" : "paragraph";
+	$: mode = modifiers.has(mod) ? "word" : "paragraph";
 
 	if (browser) {
 		onMount(() => {
