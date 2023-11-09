@@ -33,7 +33,7 @@ export const specialCharsHighlighter = highlightSpecialChars({
 		} else if (type === "control") {
 			span.classList.add("cm-lintRange", "cm-lintRange-error");
 			span.appendChild(createControlCharacter(replacer ?? placeholder));
-		} else if ((code >= 0x2E80 && code <= 0x3EF3) || (code >= 0x2F00 && code <= 0x2FDF)) {
+		} else if ((code >= 0x2E80 && code <= 0x2EF3) || (code >= 0x2F00 && code <= 0x2FDF)) {
 			// CJK部首補助, 康煕部首
 			span.classList.add("cm-charType-radical", "cm-lintRange", "cm-lintRange-warning");
 			span.textContent = String.fromCodePoint(code);
