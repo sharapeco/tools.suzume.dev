@@ -2,6 +2,7 @@ import { linter } from "@codemirror/lint";
 import { TextlintKernel } from "@textlint/kernel";
 import textlintText from "@textlint/textlint-plugin-text";
 import noControlCharacter from "./rule-noControlCharacter";
+import noDumbQuotes from "./rule-noDumpQuotes";
 import noRadical from "./rule-noRadical";
 import noPrivateUseArea from "./rule-noPrivateUseArea";
 import noVerticalForms from "./rule-noVerticalForms";
@@ -26,6 +27,10 @@ export const textLinter = linter(async (view) => {
 			{
 				ruleId: "no-control-character",
 				rule: noControlCharacter,
+			},
+			{
+				ruleId: "no-dumb-quotes",
+				rule: noDumbQuotes,
 			},
 			{
 				ruleId: "no-radical",
