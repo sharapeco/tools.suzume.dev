@@ -44,13 +44,15 @@
 	basic={false}
 	useTab={false}
 	tabSize={4}
+	lineWrapping={true}
 	{extensions}
 	styles={{
 		"&": {
+			height: "100%",
 			flexGrow: 1,
 		},
 		".cm-gutters": {
-			paddingLeft: "0.4em",
+			paddingLeft: "8px",
 			fontSize: "80%",
 			lineHeight: "19px",
 			fontFamily: "sans-serif",
@@ -60,10 +62,12 @@
 			borderColor: "rgb(226 232 240)",
 		},
 		".cm-content": {
+			padding: "8px 4px 8px 0",
 			fontFamily: '"ヒラギノ角ゴシック", "ヒラギノ角ゴ ProN", "Segoe UI", sans-serif',
 			fontFeatureSettings: '"lnum", "tnum"',
 		},
 		".cm-line": {
+			padding: "0 2px 0 8px",
 			lineHeight: "19px",
 		},
 		".cm-lintRange": {

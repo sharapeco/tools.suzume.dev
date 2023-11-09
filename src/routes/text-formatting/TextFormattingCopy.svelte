@@ -118,12 +118,12 @@
 	}
 </script>
 
-<div class="p-4 {copied ? 'copied' : ''}">
+<div class="p-4 h-full overflow-auto {copied ? 'copied' : ''}">
 	{#each paragraphs as paragraph}
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 		<pre
-			class="mb-4 py-1 rounded font-sans {mode === 'paragraph'
+			class="mb-4 py-1 whitespace-pre-wrap rounded font-sans {mode === 'paragraph'
 				? 'hover:bg-indigo-100 cursor-pointer'
 				: ''}"
 			tabindex={mode === "paragraph" ? 0 : -1}

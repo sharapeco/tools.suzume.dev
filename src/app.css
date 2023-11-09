@@ -28,6 +28,7 @@ h3,
 }
 
 .codemirror-wrapper {
+	height: 100%;
 	flex-grow: 1;
 	display: block flex;
 	flex-direction: column;
