@@ -84,7 +84,7 @@ export default {
 
 ### 6. SvelteテンプレートからTailwindを使用する
 
-`./src/routes/+layout.svelte` を編集し、先ほど作成した `app.css` をインポートします。
+`./src/routes/+layout.svelte` を作成し、先ほど作成した `app.css` をインポートします。
 
 ```svelte
 <script>
