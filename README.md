@@ -1,17 +1,97 @@
-# create-svelte
+# スズメツールズ
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+小ぶりで、チュンとしたツール。
 
-## Creating a project
+## どのように始めたか
 
-If you're seeing this, you've probably already done this step. Congrats!
+スズメツールズはフレームワークとしてSvelteKitとTailwind CSSを使って作られています。
+以下に、SvelteKitとTailwind CSSを使用したプロジェクトの作成方法を示します。
+
+### 1. プロジェクトの作成
+
+SvelteKitのプロジェクトを作成するには、次のコマンドを実行します。
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
+npm create svelte@latest tools.suzume.dev.
+cd tools.suzume.dev.
+```
 
-# create a new project in my-app
-npm create svelte@latest my-app
+このコマンドは次と等価です。
+
+```bash
+mkdir tools.suzume.dev.
+cd tools.suzume.dev.
+npm init svelte@latest
+```
+
+続いて、npmを使用して依存関係をインストールし、Gitのリポジトリを初期化します。
+
+```bash
+npm install
+git init && git add -A && git commit -m 🐤
+```
+
+### 2. Tailwind CSSのインストール
+
+Tailwind CSSをインストールするには、次のコマンドを実行します（→[Install Tailwind CSS with SvelteKit - Tailwind CSS](https://tailwindcss.com/docs/guides/sveltekit)）。
+
+```bash
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+
+### 3. `<style>` ブロックでPostCSSを有効にする
+
+`svelte.config.js` を編集し、`vitePreprocess` をプリプロセッサとして使用するよう設定します。
+
+```js
+import adapter from '@sveltejs/adapter-auto';
+import { vitePreprocess } from '@sveltejs/kit/vite';
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  kit: {
+    adapter: adapter()
+  },
+  preprocess: vitePreprocess()
+};
+export default config;
+```
+
+### 4. テンプレートファイルのパスを設定
+
+`tailwind.config.js` を編集し、Tailwind CSSを使用するテンプレートファイルのパスを設定します。
+
+```js
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./src/**/*.{html,js,svelte,ts}'],
+  theme: {
+    extend: {}
+  },
+  plugins: []
+};
+```
+
+### 5. Tailwindを有効にする
+
+`./src/app.css` を作成し、`@tailwind` ディレクティブを追加します。
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+### 6. SvelteテンプレートからTailwindを使用する
+
+`./src/routes/+layout.svelte` を編集し、先ほど作成した `app.css` をインポートします。
+
+```svelte
+<script>
+  import "../app.css";
+</script>
+
+<slot />
 ```
 
 ## Developing
