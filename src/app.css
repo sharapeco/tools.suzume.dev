@@ -7,6 +7,7 @@ html {
 	flex-direction: column;
 	justify-content: stretch;
 	min-height: 100%;
+	font-family: "Meiryo", sans-serif;
 	color: theme(colors.gray.800);
 	background-color: theme(colors.white);
 }
