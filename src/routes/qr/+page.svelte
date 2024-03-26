@@ -6,6 +6,13 @@
 	/** @type {string} 入力文字列 */
 	let input = "";
 
+	/** @type {string} 改行コード */
+	let newline = "CRLF";
+
+	function onNewlineChange(event) {
+		newline = event.target.value;
+	}
+
 	const ECLs = ["L", "M", "Q", "H"];
 
 	const svgSize = 256;
@@ -16,7 +23,7 @@
 	$: results =
 		input !== ""
 			? ECLs.map((ecl) => {
-				const svg = buildQRCode(input, ecl)
+				const svg = buildQRCode(convertNewline(input), ecl)
 				return {
 					content: input,
 					ecl,
@@ -29,6 +36,15 @@
 			  }
 			})
 			: null;
+
+	const newlines = {
+		CRLF: "\r\n",
+		LF: "\n",
+		CR: "\r",
+	};
+	function convertNewline(input) {
+		return input.replace(/\r\n|\r|\n/g, newlines[newline]);
+	}
 
 	/**
 	 * @param {string} content
@@ -86,12 +102,28 @@
 		</p>
 	</header>
 
-	<input
+	<textarea
 		class="w-full bg-slate-50 rounded border px-3 py-2"
 		placeholder="内容を入力..."
 		autofocus
 		bind:value={input}
 	/>
+
+	<div class="mt-2 flex gap-4">
+		<span>改行コード</span>
+		<label>
+			<input checked={newline === "CRLF"} on:change={onNewlineChange} type="radio" name="newline" value="CRLF" />
+			CRLF
+		</label>
+		<label>
+			<input checked={newline === "LF"} on:change={onNewlineChange} type="radio" name="newline" value="LF" />
+			LF
+		</label>
+		<label>
+			<input checked={newline === "CR"} on:change={onNewlineChange} type="radio" name="newline" value="CR" />
+			CR
+		</label>
+	</div>
 
 	{#if results}
 		<div class="mt-5 grid gap-4 grid-cols-2 md:grid-cols-4 md:gap-6">
