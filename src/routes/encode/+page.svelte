@@ -10,6 +10,7 @@
 	} from "$lib/htmlEntity";
 	import { NaiveTextEncoder } from "$lib/naiveTextEncoder/NaiveTextEncoder";
 	import { normalize } from "$lib/zenkaku";
+	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
 	/** @type {HTMLTextAreaElement|null} */
 	let inputRef = null;
@@ -202,11 +203,7 @@
 	<title>エンコード・デコード</title>
 </svelte:head>
 
-<main class="pt-2 pb-1">
-	<header class="mb-5">
-		<h1 class="text-gray-800 text-3xl leading-7 font-bold">エンコード・デコード</h1>
-	</header>
-
+<SimpleToolLayout title="エンコード・デコード">
 	<textarea
 		class="w-full bg-slate-50 rounded border px-3 py-2"
 		placeholder="エンコード／デコードする文字列を入力..."
@@ -251,7 +248,7 @@
 			</section>
 		{/each}
 	</div>
-</main>
+</SimpleToolLayout>
 
 <style lang="postcss">
 	.copied {

@@ -1,5 +1,6 @@
 <script>
 	import { QRCode } from "$lib/qrcode.js";
+	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
 	/** @typedef {{ content: string, ecl: string, svg: string, url: string }} Result */
 
@@ -91,16 +92,15 @@
 	<title>QRコード生成</title>
 </svelte:head>
 
-<main class="pt-2 pb-4">
-	<header class="mb-5">
-		<h1 class="text-gray-800 text-3xl leading-7 font-bold">QRコード生成</h1>
-		<p class="mt-4 text-gray-500">
+<SimpleToolLayout title="QRコード生成">
+	<svelte:fragment slot="description">
+		<p class="mt-2">
 			4種のエラー訂正レベルのQRコードを生成し、SVG形式でダウンロードできます。
 		</p>
-		<p class="mt-2 text-gray-500">
+		<p class="mt-2">
 			SVGコードをコピーし、Adobe Illustratorなどのグラフィックソフトに直接貼り付けることもできます。
 		</p>
-	</header>
+	</svelte:fragment>
 
 	<textarea
 		class="w-full bg-slate-50 rounded border px-3 py-2"
@@ -174,7 +174,7 @@
 			{/each}
 		</div>
 	{/if}
-</main>
+</SimpleToolLayout>
 
 <style lang="postcss">
 	.copied {

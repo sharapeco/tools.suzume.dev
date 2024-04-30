@@ -10,6 +10,7 @@
 		toFullwidthForm,
 		toJISX0201Kana,
 	} from "$lib/zenkaku";
+	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
 	/** @type {HTMLTextAreaElement|null} */
 	let inputRef = null;
@@ -163,11 +164,7 @@
 	<title>文字種変換</title>
 </svelte:head>
 
-<main class="pt-2 pb-1">
-	<header class="mb-5">
-		<h1 class="text-gray-800 text-3xl leading-7 font-bold">文字種変換</h1>
-	</header>
-
+<SimpleToolLayout title="文字種変換">
 	<textarea
 		class="w-full bg-slate-50 rounded border px-3 py-2"
 		placeholder="文字列を入力..."
@@ -212,7 +209,7 @@
 			</section>
 		{/each}
 	</div>
-</main>
+</SimpleToolLayout>
 
 <style lang="postcss">
 	.copied {

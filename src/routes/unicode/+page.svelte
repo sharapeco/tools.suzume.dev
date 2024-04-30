@@ -4,6 +4,7 @@
 	import { getPlatform } from "$lib/platform";
 	import { onMount, onDestroy } from "svelte";
 	import { specialChars } from "../text-formatting/specialChars";
+	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
 	/** @typedef {{letter: string, sp?: [string, string], code: string, link: string, copied: boolean}} Result */
 
@@ -101,21 +102,26 @@
 	<title>Unicode文字情報</title>
 </svelte:head>
 
-<main class="pt-2 pb-3">
-	<header class="mb-5">
-		<h1 class="text-gray-800 text-3xl leading-7 font-bold">Unicode文字情報</h1>
-		<p class="mt-4 text-gray-500">
+<SimpleToolLayout title="Unicode文字情報">
+	<svelte:fragment slot="description">
+		<p class="mt-2">
 			入力した文字のUnicodeコードポイントや、その文字の情報へのリンクを提供します。
 		</p>
-		<p class="mt-2 text-gray-500">
-			文字のかわりに <code class="bg-slate-50 border border-slate-300 rounded p-1">U+XXXX</code> <code class="bg-slate-50 border border-slate-300 rounded p-1">&#92;uXXXX</code> <code class="bg-slate-50 border border-slate-300 rounded p-1">&#92;u&#123;XXXXX&#125;</code>
+		<p class="mt-2">
+			文字のかわりに <code class="bg-slate-50 border border-slate-300 rounded p-1"
+				>U+XXXX</code
+			> <code class="bg-slate-50 border border-slate-300 rounded p-1">&#92;uXXXX</code>
+			<code class="bg-slate-50 border border-slate-300 rounded p-1"
+				>&#92;u&#123;XXXXX&#125;</code
+			>
 			の形式でコードポイントを入力することもできます。
 		</p>
-		<p class="mt-2 text-gray-500">
+		<p class="mt-2">
 			結果の文字にマウスポインタを合わせた状態で
-			{platform === "apple" ? "⌘" : "Ctrl"}+C を押すと、その文字をクリップボードにコピーできます。
+			{platform === "apple" ? "⌘" : "Ctrl"}+C
+			を押すと、その文字をクリップボードにコピーできます。
 		</p>
-	</header>
+	</svelte:fragment>
 
 	<input
 		name="input"
@@ -137,16 +143,18 @@
 			>
 				<div class="font-hiragino letter text-4xl text-center">
 					{#if result.sp != null}
-					<span class="sp sp-{result.sp[0]}">{result.sp[1]}</span>
+						<span class="sp sp-{result.sp[0]}">{result.sp[1]}</span>
 					{:else}
-					{result.letter}
+						{result.letter}
 					{/if}
 				</div>
 				<div class="mt-2 font-mono text-xs text-center text-gray-500">
 					{result.code}
 				</div>
 				{#if result.copied}
-					<div class="absolute top-full left-0 right-0 -mt-2 -mx-4 flex justify-center">
+					<div
+						class="absolute top-full left-0 right-0 -mt-2 -mx-4 flex justify-center"
+					>
 						<div
 							class="copied p-1 rounded-sm bg-indigo-500 text-white text-xs palt"
 						>
@@ -157,7 +165,7 @@
 			</a>
 		{/each}
 	</div>
-</main>
+</SimpleToolLayout>
 
 <style lang="postcss">
 	.copied {
