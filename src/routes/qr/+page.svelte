@@ -1,5 +1,6 @@
 <script>
 	import { QRCode } from "$lib/qrcode.js";
+	import NavPills from "../../components/NavPills.svelte";
 	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
 	/** @typedef {{ content: string, ecl: string, svg: string, url: string }} Result */
@@ -7,12 +8,29 @@
 	/** @type {string} 入力文字列 */
 	let input = "";
 
-	/** @type {string} 改行コード */
+	/** @type {{ to: string, subject: string, body: string }} */
+	let mailto = { to: "", subject: "", body: "" };
+
+	/** @type {{ ssid: string, password: string }} */
+	let ssid = { ssid: "", password: "" };
+
+	/** @type {"string" | "mailto" | "ssid"} モード */
+	let mode = "string";
+
+	const modes = [
+		{ value: "string", label: "文字列" },
+		{ value: "mailto", label: "メール" },
+		{ value: "ssid", label: "Wi-Fi SSID" },
+	];
+
+	/** @type {"CRLF" | "LF" | "CR"} 改行コード */
 	let newline = "CRLF";
 
-	function onNewlineChange(event) {
-		newline = event.target.value;
-	}
+	const newlines = [
+		{ value: "CRLF", label: "CRLF" },
+		{ value: "LF", label: "LF" },
+		{ value: "CR", label: "CR" },
+	];
 
 	const ECLs = ["L", "M", "Q", "H"];
 
@@ -21,30 +39,61 @@
 	/** @type {string} */
 	let copiedECL = "";
 
+	$: content = getInput(mode, input, mailto, ssid);
+
 	$: results =
-		input !== ""
+		content !== ""
 			? ECLs.map((ecl) => {
-				const svg = buildQRCode(convertNewline(input), ecl)
-				return {
-					content: input,
-					ecl,
-					svg,
-					url: URL.createObjectURL(
-						new Blob([svg], {
-							type: "image/svg+xml",
-						})
-					),
-			  }
-			})
+					const svg = buildQRCode(content, ecl);
+					return {
+						content,
+						ecl,
+						svg,
+						url: URL.createObjectURL(
+							new Blob([svg], {
+								type: "image/svg+xml",
+							})
+						),
+					};
+				})
 			: null;
 
-	const newlines = {
+	/**
+	 * @param {string} mode
+	 * @param {string} input
+	 * @param {{ to: string, subject: string, body: string }} mailto
+	 * @param {{ ssid: string, password: string }} ssid
+	 */
+	function getInput(mode, input, mailto, ssid) {
+		console.log("getInput() called")
+		switch (mode) {
+			case "string":
+				return convertNewline(input);
+			case "mailto":
+				if (mailto.to === "") {
+					return "";
+				}
+				if (mailto.subject === "" && mailto.body === "") {
+					return `mailto:${mailto.to}`;
+				}
+				return `mailto:${mailto.to}?subject=${mailto.subject}&body=${mailto.body.replace(/\r\n|\r|\n/g, "\r\n")}`;
+			case "ssid":
+				if (ssid.ssid === "" || ssid.password === "") {
+					return "";
+				}
+				return `WIFI:T:WPA;S:${ssid.ssid};P:${ssid.password};;`;
+			default:
+				return "";
+		}
+	}
+
+	const newlinesMap = {
 		CRLF: "\r\n",
 		LF: "\n",
 		CR: "\r",
 	};
 	function convertNewline(input) {
-		return input.replace(/\r\n|\r|\n/g, newlines[newline]);
+		return input.replace(/\r\n|\r|\n/g, newlinesMap[newline]);
 	}
 
 	/**
@@ -79,7 +128,7 @@
 	/**
 	 * @param {Result} result
 	 */
-	 function copy(result) {
+	function copy(result) {
 		navigator.clipboard.writeText(result.svg);
 		copiedECL = result.ecl;
 		setTimeout(() => {
@@ -98,32 +147,75 @@
 			4種のエラー訂正レベルのQRコードを生成し、SVG形式でダウンロードできます。
 		</p>
 		<p class="mt-2">
-			SVGコードをコピーし、Adobe Illustratorなどのグラフィックソフトに直接貼り付けることもできます。
+			SVGコードをコピーし、Adobe
+			Illustratorなどのグラフィックソフトに直接貼り付けることもできます。
 		</p>
 	</svelte:fragment>
 
-	<textarea
-		class="w-full bg-slate-50 rounded border px-3 py-2"
-		placeholder="内容を入力..."
-		autofocus
-		bind:value={input}
-	/>
-
-	<div class="mt-2 flex gap-4">
-		<span>改行コード</span>
-		<label>
-			<input checked={newline === "CRLF"} on:change={onNewlineChange} type="radio" name="newline" value="CRLF" />
-			CRLF
-		</label>
-		<label>
-			<input checked={newline === "LF"} on:change={onNewlineChange} type="radio" name="newline" value="LF" />
-			LF
-		</label>
-		<label>
-			<input checked={newline === "CR"} on:change={onNewlineChange} type="radio" name="newline" value="CR" />
-			CR
-		</label>
+	<div class="mb-3">
+		<NavPills items={modes} value={mode} on:change={(e) => (mode = e.detail)} />
 	</div>
+
+	{#if mode === "string"}
+		<textarea
+			class="w-full bg-slate-50 rounded border px-3 py-2"
+			placeholder="内容を入力..."
+			autofocus
+			bind:value={input}
+		/>
+		<div class="mt-2">
+			<NavPills
+				title="改行コード"
+				items={newlines}
+				value={newline}
+				on:change={(e) => (newline = e.detail)}
+			/>
+		</div>
+	{:else if mode === "mailto"}
+		<div>
+			<input
+				class="w-full bg-slate-50 rounded border px-3 py-2"
+				placeholder="宛先"
+				autofocus
+				bind:value={mailto.to}
+			/>
+		</div>
+		<div class="mt-2">
+			<input
+				class="w-full bg-slate-50 rounded border px-3 py-2"
+				placeholder="件名"
+				bind:value={mailto.subject}
+			/>
+		</div>
+		<div class="mt-2">
+			<textarea
+				class="w-full bg-slate-50 rounded border px-3 py-2"
+				placeholder="本文"
+				bind:value={mailto.body}
+				rows="7"
+			/>
+		</div>
+	{:else if mode === "ssid"}
+		<div>
+			<input
+				class="w-full bg-slate-50 rounded border px-3 py-2"
+				placeholder="SSID"
+				autofocus
+				bind:value={ssid.ssid}
+			/>
+		</div>
+		<div class="mt-2">
+			<input
+				class="w-full bg-slate-50 rounded border px-3 py-2"
+				placeholder="パスワード"
+				bind:value={ssid.password}
+			/>
+		</div>
+		<p class="mt-2 text-xs text-slate-500">
+			Webサービスに本当にパスワードを入力しても大丈夫？　
+			自身で判断できないならやめておきましょう。
+		</p>
+	{/if}
 
 	{#if results}
 		<div class="mt-5 grid gap-4 grid-cols-2 md:grid-cols-4 md:gap-6">
@@ -141,14 +233,16 @@
 							class="w-full rounded-lg"
 						/>
 						{#if copiedECL === result.ecl}
-						<div
-							class="absolute flex justify-center top-full -mt-6 left-0 right-0"
-						>
-							<span class="copied bg-indigo-500 text-white text-xs leading-5 px-1 rounded">
-								コピーしました
-							</span>
-						</div>
-					{/if}
+							<div
+								class="absolute flex justify-center top-full -mt-6 left-0 right-0"
+							>
+								<span
+									class="copied bg-indigo-500 text-white text-xs leading-5 px-1 rounded"
+								>
+									コピーしました
+								</span>
+							</div>
+						{/if}
 					</div>
 					<div class="mt-3 flex gap-2">
 						<div class="flex-1">
