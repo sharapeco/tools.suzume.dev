@@ -32,6 +32,14 @@
 		{ value: "CR", label: "CR" },
 	];
 
+	/** @type {"normal" | "predefined"} predefined: <def> と <use> を使う */
+	let drawMethod = "normal";
+
+	const drawMethods = [
+		{ value: "normal", label: "通常（Illustratorで使用する場合）" },
+		{ value: "predefined", label: "<def> を使用" },
+	];
+
 	const ECLs = ["L", "M", "Q", "H"];
 
 	const svgSize = 256;
@@ -39,12 +47,12 @@
 	/** @type {string} */
 	let copiedECL = "";
 
-	$: content = getInput(mode, input, mailto, ssid);
+	$: content = getInput({ mode, input, mailto, ssid });
 
 	$: results =
 		content !== ""
 			? ECLs.map((ecl) => {
-					const svg = buildQRCode(content, ecl);
+					const svg = buildQRCode(content, ecl, drawMethod);
 					return {
 						content,
 						ecl,
@@ -59,13 +67,17 @@
 			: null;
 
 	/**
-	 * @param {string} mode
-	 * @param {string} input
-	 * @param {{ to: string, subject: string, body: string }} mailto
-	 * @param {{ ssid: string, password: string }} ssid
+	 * @typedef {object} InputProps
+	 * @property {string} mode
+	 * @property {string} input
+	 * @property {{ to: string, subject: string, body: string }} mailto
+	 * @property {{ ssid: string, password: string }} ssid
 	 */
-	function getInput(mode, input, mailto, ssid) {
-		console.log("getInput() called")
+	/**
+	 * @param {InputProps} props
+	 */
+	function getInput(props) {
+		const { mode, input, mailto, ssid } = props;
 		switch (mode) {
 			case "string":
 				return convertNewline(input);
@@ -99,16 +111,17 @@
 	/**
 	 * @param {string} content
 	 * @param {string} ecl
+	 * @param {string} drawMethod
 	 * @returns {string}
 	 */
-	function buildQRCode(content, ecl) {
+	function buildQRCode(content, ecl, drawMethod) {
 		return new QRCode({
 			content,
 			ecl,
 			container: "svg-viewbox",
 			swap: true,
 			join: false,
-			predefined: true,
+			predefined: drawMethod === "predefined",
 			pretty: true,
 			width: svgSize,
 			height: svgSize,
@@ -216,6 +229,14 @@
 			自身で判断できないならやめておきましょう。
 		</p>
 	{/if}
+	<div class="mt-2">
+		<NavPills
+			title="出力方法"
+			items={drawMethods}
+			value={drawMethod}
+			on:change={(e) => (drawMethod = e.detail)}
+		/>
+	</div>
 
 	{#if results}
 		<div class="mt-5 grid gap-4 grid-cols-2 md:grid-cols-4 md:gap-6">
