@@ -93,8 +93,8 @@
 			for (let i = 0; i < imageData.length; i += 4) {
 				const [sr, sg, sb, sa] = srcData.slice(i, i + 4);
 				const [mr, mg, mb, ma] = imageData.slice(i, i + 4);
-				imageData[i + 0] = (mr & 0b11110000) | (sb >>> 4);
-				imageData[i + 1] = (mg & 0b11110000) | (sr >>> 4);
+				imageData[i + 0] = (mr & 0b11100000) | (sr >>> 3);
+				imageData[i + 1] = (mg & 0b11110000) | (sb >>> 4);
 				imageData[i + 2] = (mb & 0b11100000) | (sg >>> 3);
 				imageData[i + 3] = (ma & 0b11100000) | (sa >>> 3);
 			}
@@ -136,9 +136,9 @@
 			const imageData = destCtx.getImageData(0, 0, w, h).data;
 			for (let i = 0; i < imageData.length; i += 4) {
 				const [sr, sg, sb, sa] = srcData.slice(i, i + 4);
-				imageData[i + 0] = ((sg << 4) & 0xFF) | (sg >>> 4);
+				imageData[i + 0] = ((sr << 3) & 0xFF) | (sr >>> 5);
 				imageData[i + 1] = ((sb << 3) & 0xFF) | (sb >>> 5);
-				imageData[i + 2] = ((sr << 4) & 0xFF) | (sr >>> 4);
+				imageData[i + 2] = ((sg << 4) & 0xFF) | (sg >>> 4);
 				imageData[i + 3] = ((sa << 3) & 0xFF) | (sa >>> 5);
 			}
 
@@ -158,7 +158,7 @@
 <SimpleToolLayout title="画像中画像">
 	<svelte:fragment slot="description">
 		<p class="mt-2">
-			画像に画像を埋め込むことができます（ステガノグラフィー）。非可逆変換ですが、リサイズや圧縮にも耐えます。
+			画像に画像を埋め込むことができます（ステガノグラフィー）。非可逆変換ですが、リサイズや圧縮にも（ある程度）耐えます。
 		</p>
 	</svelte:fragment>
 
