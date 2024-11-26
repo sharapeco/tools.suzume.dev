@@ -1,5 +1,5 @@
 <script>
-	import DropFile from "@svelte-parts/drop-file";
+	import Dropzone from "svelte-file-dropzone";
 
 	/** @type {({ file, blobURL }: { file: File, blobURL: string }) => any} */
 	export let onDrop;
@@ -9,24 +9,29 @@
 	/** @type {string?} */
 	let previewURL = null;
 
-	/** @type {(files: File[]) => any}*/
-	function handleDrop(files) {
-		const imageFiles = files.filter((file) => file.type.startsWith("image/"));
-		if (imageFiles.length === 0) {
+	/** @type {(event: CustomEvent<any>) => any}*/
+	function handleDrop(event) {
+		const { acceptedFiles } = event.detail;
+		if (acceptedFiles.length === 0) {
 			alert("画像ファイルを選択してください。");
 			return;
 		}
 
-		const blobURL = URL.createObjectURL(imageFiles[0]);
+		const blobURL = URL.createObjectURL(acceptedFiles[0]);
 		previewURL = blobURL;
 
-		onDrop({ file: imageFiles[0], blobURL });
+		onDrop({ file: acceptedFiles[0], blobURL });
 
 		fileOver = false;
 	}
 </script>
 
-<DropFile onDrop={handleDrop} onEnter={() => (fileOver = true)} onLeave={() => (fileOver = false)}>
+<Dropzone
+	on:drop={handleDrop}
+	accept="image/*"
+	on:dragenter={() => (fileOver = true)}
+	on:dragleave={() => (fileOver = false)}
+>
 	<div class="flex flex-col items-center justify-center h-full">
 		{#if fileOver}
 			<p class="text-neutral-500">ここにファイルをドロップ</p>
@@ -34,7 +39,7 @@
 			<p class="text-neutral-500">ファイルをドロップ</p>
 		{/if}
 		{#if previewURL != null}
-			<img src={previewURL} alt="プレビュー" class="max-w-full">
+			<img src={previewURL} alt="プレビュー" class="max-w-full" />
 		{/if}
 	</div>
-</DropFile>
+</Dropzone>
