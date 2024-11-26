@@ -99,6 +99,9 @@
 				imageData[i + 3] = (ma & 0b11100000) | (sa >>> 3);
 			}
 
+			// Twitterでできるだけ透過PNGにする
+			imageData[3] &= 0b11111110;
+
 			destCtx.putImageData(new ImageData(imageData, w, h), 0, 0);
 
 			encodedImage = destCanvas.toDataURL("image/png");
@@ -133,16 +136,17 @@
 			}
 
 			const srcData = srcCtx.getImageData(0, 0, w, h).data;
-			const imageData = destCtx.getImageData(0, 0, w, h).data;
-			for (let i = 0; i < imageData.length; i += 4) {
+			const imageData = destCtx.getImageData(0, 0, w, h);
+			const data = imageData.data;
+			for (let i = 0; i < data.length; i += 4) {
 				const [sr, sg, sb, sa] = srcData.slice(i, i + 4);
-				imageData[i + 0] = ((sr << 3) & 0xFF) | (sr >>> 5);
-				imageData[i + 1] = ((sb << 3) & 0xFF) | (sb >>> 5);
-				imageData[i + 2] = ((sg << 4) & 0xFF) | (sg >>> 4);
-				imageData[i + 3] = ((sa << 3) & 0xFF) | (sa >>> 5);
+				data[i + 0] = ((sr << 3) & 0xFF) | (sr >>> 5);
+				data[i + 1] = ((sb << 3) & 0xFF) | (sb >>> 5);
+				data[i + 2] = ((sg << 4) & 0xFF) | (sg >>> 4);
+				data[i + 3] = ((sa << 3) & 0xFF) | (sa >>> 5);
 			}
 
-			destCtx.putImageData(new ImageData(imageData, w, h), 0, 0);
+			destCtx.putImageData(imageData, 0, 0);
 
 			restoreOutputImage = destCanvas.toDataURL("image/png");
 		} catch (e) {
