@@ -222,7 +222,7 @@
 					{result.name}
 				</h2>
 				<div
-					class="group relative text-sm bg-slate-50 rounded border px-3 py-2 whitespace-pre-line break-words"
+					class="group relative text-sm bg-slate-50 rounded border px-3 py-2 whitespace-pre-line break-all"
 					class:text-red-500={result.error != null}
 					class:cursor-pointer={result.error != null}
 					tabindex={result.error != null ? 0 : -1}
