@@ -31,6 +31,13 @@ export const tools = [
 		disabled: false,
 	},
 	{
+		icon: '<svg width="1em" height="1em" viewBox="0 0 100 100" version="1.1" focusable="false" data-icon="round-rect" aria-hidden="true"><g transform="matrix(0.913545,-0.406737,0.406737,0.913545,-21.3234,34.082)"><path d="M46,10L74,10C103.25,10 110,16.75 110,46L110,74C110,103.25 103.25,110 74,110L46,110C16.75,110 10,103.25 10,74L10,46C10,16.75 16.75,10 46,10" fill="currentColor"/></g></svg>',
+		title: "角丸図形",
+		route: "/squircle",
+		description: "角丸図形を生成します",
+		disabled: false,
+	},
+	{
 		icon: "組",
 		title: "テキスト整形",
 		route: "/text-formatting",
