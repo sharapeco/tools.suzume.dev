@@ -35,29 +35,12 @@
 		</p>
 	</svelte:fragment>
 
-	<div class="layout">
+	<div class="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
 		<div class="controls">
 			<SquircleControls bind:params />
 		</div>
-		<div class="preview bg-slate-50 rounded-lg p-4">
+		<div class="preview bg-slate-50 rounded-lg p-4 sticky top-8 h-[calc(100vh-232px)] overflow-hidden">
 			<SquirclePreview {params} />
 		</div>
 	</div>
 </SimpleToolLayout>
-
-<style>
-	.layout {
-		display: grid;
-		grid-template-columns: 300px 1fr;
-		grid-template-rows: 1fr;
-		gap: 2rem;
-	}
-
-	.preview {
-		position: sticky;
-		top: 2rem;
-		height: calc(100vh - 232px);
-		flex: 1;
-		overflow: hidden;
-	}
-</style>

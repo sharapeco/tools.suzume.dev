@@ -77,7 +77,7 @@
 			/>
 		</label>
 		<label class="text-gray-700 text-sm mb-1">
-			角のオフセット
+			角のオフセット比率
 			<input
 				type="number"
 				class="w-full bg-slate-50 rounded border px-3 py-2"
