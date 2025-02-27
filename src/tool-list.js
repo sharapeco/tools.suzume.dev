@@ -1,3 +1,13 @@
+/**
+ * @typedef {Object} Tool
+ * @property {string} icon
+ * @property {string} title
+ * @property {string} route
+ * @property {string} description
+ * @property {boolean} [disabled]
+ */
+
+/** @type {Tool[]} */
 export const tools = [
 	{
 		icon: "U+",
@@ -69,6 +79,7 @@ export const tools = [
 		icon: "",
 		title: "日付",
 		route: "/date",
+		description: "日付用のツールを考え中…💭",
 		disabled: true,
 	},
 ];

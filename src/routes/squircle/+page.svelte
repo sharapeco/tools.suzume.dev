@@ -4,10 +4,17 @@
 	import { tools } from "../../tool-list";
 	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
+	/** @typedef {import("../../tool-list").Tool} Tool */
+
+	/** @type {Tool|undefined} */
 	const tool = tools.find((t) => t.route === "/squircle");
+	if (!tool) {
+		throw new Error("Tool not found");
+	}
 
 	/** @typedef {import("./params").Params} Params */
 	/** @type {Params} */
+	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 	let params = {
 		type: "clothoid",
 		dpi: 300,
@@ -31,7 +38,7 @@
 <SimpleToolLayout title={tool.title}>
 	<svelte:fragment slot="description">
 		<p class="mt-2">
-			クロソイド曲線や、スーパー楕円を用いた角丸図形のSVGを生成します。
+			クロソイド曲線や、スーパー楕円を用いた（3次ベジエ曲線による近似）角丸図形のSVGを生成します。
 		</p>
 	</svelte:fragment>
 
@@ -39,7 +46,9 @@
 		<div class="controls">
 			<SquircleControls bind:params />
 		</div>
-		<div class="preview bg-slate-50 rounded-lg p-4 sticky top-8 h-[calc(100vh-232px)] overflow-hidden">
+		<div
+			class="preview bg-slate-50 rounded-lg p-4 sticky top-8 h-[calc(100vh-232px)] overflow-hidden"
+		>
 			<SquirclePreview {params} />
 		</div>
 	</div>
