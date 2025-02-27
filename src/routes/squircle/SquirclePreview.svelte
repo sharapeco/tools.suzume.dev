@@ -36,10 +36,11 @@
 		const tension = params.tension;
 
 		// 緩和係数が1より大きい場合は角が辺をはみ出すので、viewBoxを大きくして角を表示する
-		const viewBox = tension > 1 ? `${width * -0.1} ${height * -0.1} ${width * 1.2} ${height * 1.2}` : `0 0 ${width} ${height}`;
+		const sizeRatio = tension > 1 ? 1.2 : 1;
+		const viewBox = `${width * (1 - sizeRatio) / 2} ${height * (1 - sizeRatio) / 2} ${width * sizeRatio} ${height * sizeRatio}`;
 
 		// xmlns をつけることで macOS のアイコンおよび Quick Look で表示される
-		return `<svg width="${width}" height="${height}" viewBox="${viewBox}" xmlns="http://www.w3.org/2000/svg">
+		return `<svg width="${width * sizeRatio}" height="${height * sizeRatio}" viewBox="${viewBox}" xmlns="http://www.w3.org/2000/svg">
 	<path d="${getClothoidSquircle(width, height, radius, borderOffset, tension, 3)}" fill="${params.color}" />
 </svg>`;
 	}
