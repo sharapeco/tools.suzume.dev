@@ -21,7 +21,10 @@ export class NaiveTextEncoder {
 			mappings[maxCodeLength] = {};
 		}
 		if (!mappings[maxCodeLength][this.encoding]) {
-			mappings[maxCodeLength][this.encoding] = createMapping(this.encoding, maxCodeLength);
+			mappings[maxCodeLength][this.encoding] = createMapping(
+				this.encoding,
+				maxCodeLength,
+			);
 		}
 		this.mapping = mappings[maxCodeLength][this.encoding];
 	}
@@ -33,7 +36,7 @@ export class NaiveTextEncoder {
 	encode(str) {
 		const preprocessed = this.preprocess(str);
 
-	 const bytesList = [];
+		const bytesList = [];
 		for (const ch of preprocessed) {
 			const bytes = this.mapping.get(ch);
 			if (bytes) {
@@ -41,7 +44,9 @@ export class NaiveTextEncoder {
 			}
 		}
 
-		const encoded = new Uint8Array(bytesList.reduce((acc, bytes) => acc + bytes.length, 0));
+		const encoded = new Uint8Array(
+			bytesList.reduce((acc, bytes) => acc + bytes.length, 0),
+		);
 		let pos = 0;
 		for (const bytes of bytesList) {
 			encoded.set(bytes, pos);
@@ -62,8 +67,8 @@ export class NaiveTextEncoder {
 			case "shift_jis":
 			case "euc-jp":
 				return str
-				.replace(/\u301c/g, "\uFF5E") // Wave Dash → Fullwidth Tilde
-				.replace(/\u2212/g, "\uFF0D"); // Minus Sign → Fullwidth Hyphen-Minus
+					.replace(/\u301c/g, "\uFF5E") // Wave Dash → Fullwidth Tilde
+					.replace(/\u2212/g, "\uFF0D"); // Minus Sign → Fullwidth Hyphen-Minus
 			default:
 				return str;
 		}
@@ -84,7 +89,7 @@ function createMapping(encoding, maxCodeLength) {
 		const maxCode = 2 ** (8 * len) - 1;
 		for (let code = 0; code <= maxCode; code++) {
 			const bytes = new Uint8Array(
-				range(0, len - 1).map((b) => (code >> (8 * b)) & 0xff)
+				range(0, len - 1).map((b) => (code >> (8 * b)) & 0xff),
 			);
 			const ch = decoder.decode(bytes);
 			if (ch.length === 1) {

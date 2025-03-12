@@ -72,8 +72,9 @@ export const formatRules = [
 			switch (option) {
 				case "remove":
 					return text.replace(
+						// biome-ignore lint/suspicious/noControlCharactersInRegex: 制御文字を取り除くため
 						/[\u{0}-\u{08}\u{0B}-\u{1F}\u{7F}-\u{9F}\u{AD}\u{200B}-\u{200F}\u{202A}-\u{202F}\u{205F}-\u{206F}]/gu,
-						""
+						"",
 					);
 			}
 			return text;
@@ -90,7 +91,10 @@ export const formatRules = [
 		fn(text, option) {
 			switch (option) {
 				case "remove":
-					return text.replace(/[\u{E000}-\u{F8FF}\u{FFF80}-\u{FFFFF}\u{10FF80}-\u{10FFFF}]/gu, "");
+					return text.replace(
+						/[\u{E000}-\u{F8FF}\u{FFF80}-\u{FFFFF}\u{10FF80}-\u{10FFFF}]/gu,
+						"",
+					);
 			}
 			return text;
 		},
@@ -106,7 +110,9 @@ export const formatRules = [
 		fn(text, option) {
 			switch (option) {
 				case "normalize":
-					return text.replace(/[\u{2F00}-\u{2FD5}]/ug, (match) => match.normalize("NFKC"));
+					return text.replace(/[\u{2F00}-\u{2FD5}]/gu, (match) =>
+						match.normalize("NFKC"),
+					);
 			}
 			return text;
 		},
@@ -186,12 +192,24 @@ export const formatRules = [
 						.replace(/[^\S\n\t]*[\}｝][^\S\n\t]*/gu, "}");
 				case "halfwidthSpace":
 					return text
-						.replace(/([\S]?)[^\S\n\t]*[\(（][^\S\n\t]*/gu, (_, p1) => p1 !== "" ? `${p1} (` : "(")
-						.replace(/[^\S\n\t]*[\)）][^\S\n\t]*([\S]?)/gu, (_, p1) => p1 !== "" ? `) ${p1}` : ")")
-						.replace(/([\S]?)[^\S\n\t]*[\[［][^\S\n\t]*/gu, (_, p1) => p1 !== "" ? `${p1} [` : "[")
-						.replace(/[^\S\n\t]*[\]］][^\S\n\t]*([\S]?)/gu, (_, p1) => p1 !== "" ? `] ${p1}` : "]")
-						.replace(/([\S]?)[^\S\n\t]*[\{｛][^\S\n\t]*/gu, (_, p1) => p1 !== "" ? `${p1} {` : "{")
-						.replace(/[^\S\n\t]*[\}｝][^\S\n\t]*([\S]?)/gu, (_, p1) => p1 !== "" ? `} ${p1}` : "}");
+						.replace(/([\S]?)[^\S\n\t]*[\(（][^\S\n\t]*/gu, (_, p1) =>
+							p1 !== "" ? `${p1} (` : "(",
+						)
+						.replace(/[^\S\n\t]*[\)）][^\S\n\t]*([\S]?)/gu, (_, p1) =>
+							p1 !== "" ? `) ${p1}` : ")",
+						)
+						.replace(/([\S]?)[^\S\n\t]*[\[［][^\S\n\t]*/gu, (_, p1) =>
+							p1 !== "" ? `${p1} [` : "[",
+						)
+						.replace(/[^\S\n\t]*[\]］][^\S\n\t]*([\S]?)/gu, (_, p1) =>
+							p1 !== "" ? `] ${p1}` : "]",
+						)
+						.replace(/([\S]?)[^\S\n\t]*[\{｛][^\S\n\t]*/gu, (_, p1) =>
+							p1 !== "" ? `${p1} {` : "{",
+						)
+						.replace(/[^\S\n\t]*[\}｝][^\S\n\t]*([\S]?)/gu, (_, p1) =>
+							p1 !== "" ? `} ${p1}` : "}",
+						);
 			}
 			return text;
 		},
@@ -210,7 +228,7 @@ export const formatRules = [
 			switch (option) {
 				case "halfwidth":
 					return text.replace(/[Ａ-Ｚａ-ｚ]+/gu, (match) =>
-						stripFullwidthForm(match)
+						stripFullwidthForm(match),
 					);
 				case "fullwidth":
 					return text.replace(/[A-Za-z]+/g, (match) => toFullwidthForm(match));
@@ -237,7 +255,7 @@ export const formatRules = [
 			switch (option) {
 				case "halfwidth":
 					return text.replace(/[０-９]+/gu, (match) =>
-						stripFullwidthForm(match)
+						stripFullwidthForm(match),
 					);
 				case "fullwidth":
 					return text.replace(/[0-9]+/g, (match) => toFullwidthForm(match));
@@ -272,11 +290,11 @@ export const formatRules = [
 				return text
 					.replace(
 						/([#$%&0-9A-Za-z¢-¥©ª®²³µ¶¹º¼-¾À-ʯ])[^\S\n]*([〃々ぁ-゚ゝ-ヿ㐀-鿕豈-舘])/gu,
-						(_, p1, p2) => `${p1}${sp}${p2}`
+						(_, p1, p2) => `${p1}${sp}${p2}`,
 					)
 					.replace(
 						/([〃々ぁ-゚ゝ-ヿ㐀-鿕豈-舘])[^\S\n]*([#$%&0-9A-Za-z¢-¥©ª®²³µ¶¹º¼-¾À-ʯ])/gu,
-						(_, p1, p2) => `${p1}${sp}${p2}`
+						(_, p1, p2) => `${p1}${sp}${p2}`,
 					);
 			}
 			return text;

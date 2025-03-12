@@ -1,29 +1,29 @@
 <script>
-	import Dropzone from "svelte-file-dropzone";
+import Dropzone from "svelte-file-dropzone";
 
-	/** @type {({ file, blobURL }: { file: File, blobURL: string }) => any} */
-	export let onDrop;
+/** @type {({ file, blobURL }: { file: File, blobURL: string }) => any} */
+export let onDrop;
 
-	let fileOver = false;
+let fileOver = false;
 
-	/** @type {string?} */
-	let previewURL = null;
+/** @type {string?} */
+let previewURL = null;
 
-	/** @type {(event: CustomEvent<any>) => any}*/
-	function handleDrop(event) {
-		const { acceptedFiles } = event.detail;
-		if (acceptedFiles.length === 0) {
-			alert("画像ファイルを選択してください。");
-			return;
-		}
-
-		const blobURL = URL.createObjectURL(acceptedFiles[0]);
-		previewURL = blobURL;
-
-		onDrop({ file: acceptedFiles[0], blobURL });
-
-		fileOver = false;
+/** @type {(event: CustomEvent<any>) => any}*/
+function handleDrop(event) {
+	const { acceptedFiles } = event.detail;
+	if (acceptedFiles.length === 0) {
+		alert("画像ファイルを選択してください。");
+		return;
 	}
+
+	const blobURL = URL.createObjectURL(acceptedFiles[0]);
+	previewURL = blobURL;
+
+	onDrop({ file: acceptedFiles[0], blobURL });
+
+	fileOver = false;
+}
 </script>
 
 <Dropzone

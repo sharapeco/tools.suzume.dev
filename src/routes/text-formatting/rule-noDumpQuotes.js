@@ -15,7 +15,7 @@ export default function noDumbQuotes(context) {
 		[Syntax.Str](node) {
 			const text = getSource(node);
 
-			[...text.matchAll(dumbQuotesRE)].forEach((match) => {
+			for (const match of [...text.matchAll(dumbQuotesRE)]) {
 				if (match.index == null) return;
 				report(
 					node,
@@ -23,7 +23,7 @@ export default function noDumbQuotes(context) {
 						index: match.index,
 					})
 				);
-			});
+			}
 		},
 	};
 }

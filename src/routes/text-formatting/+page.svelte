@@ -1,52 +1,56 @@
 <script>
-	import TextFormattingCopy from "./TextFormattingCopy.svelte";
-	import TextFormattingEditor from "./TextFormattingEditor.svelte";
-	import { formatRules } from "./formatRules";
-	import { browser } from "$app/environment";
+import TextFormattingCopy from "./TextFormattingCopy.svelte";
+import TextFormattingEditor from "./TextFormattingEditor.svelte";
+import { formatRules } from "./formatRules";
+import { browser } from "$app/environment";
 
-	let input = browser ? localStorage.getItem("text-formatting.input") ?? "" : "";
+let input = browser
+	? (localStorage.getItem("text-formatting.input") ?? "")
+	: "";
 
-	/** @type {"edit" | "copy"} */
-	let mode = "edit";
+/** @type {"edit" | "copy"} */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let mode = "edit";
 
-	/** @type {{ [key: string]: string }} */
-	let options = restoreOptions();
+/** @type {{ [key: string]: string }} */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let options = restoreOptions();
 
-	function restoreOptions() {
-		const savedOptions = browser
-			? JSON.parse(localStorage.getItem("text-formatting.options") ?? "{}")
-			: {};
-		return formatRules.reduce((options, rule) => {
-			// @ts-ignore
-			options[rule.id] = savedOptions[rule.id] ?? rule.default;
-			return options;
-		}, {});
+function restoreOptions() {
+	const savedOptions = browser
+		? JSON.parse(localStorage.getItem("text-formatting.options") ?? "{}")
+		: {};
+	return formatRules.reduce((options, rule) => {
+		// @ts-ignore
+		options[rule.id] = savedOptions[rule.id] ?? rule.default;
+		return options;
+	}, {});
+}
+
+/**
+ * @param {string} newValue
+ */
+function updateInput(newValue) {
+	input = newValue;
+	if (browser) {
+		localStorage.setItem("text-formatting.input", input);
 	}
+}
 
-	/**
-	 * @param {string} newValue
-	 */
-	function updateInput(newValue) {
-		input = newValue;
-		if (browser) {
-			localStorage.setItem("text-formatting.input", input);
-		}
+$: {
+	if (browser) {
+		localStorage.setItem("text-formatting.options", JSON.stringify(options));
 	}
+}
 
-	$: {
-		if (browser) {
-			localStorage.setItem("text-formatting.options", JSON.stringify(options));
-		}
+function format() {
+	let value = input;
+	for (const rule of formatRules) {
+		const option = options[rule.id];
+		value = rule.fn(value, option);
 	}
-
-	function format() {
-		let value = input;
-		for (const rule of formatRules) {
-			const option = options[rule.id];
-			value = rule.fn(value, option);
-		}
-		input = value;
-	}
+	input = value;
+}
 </script>
 
 <svelte:head>

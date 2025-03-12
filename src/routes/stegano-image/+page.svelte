@@ -1,158 +1,172 @@
 <script>
-	import NavPills from "../../components/NavPills.svelte";
-	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
-	import DropImage from "../../components/DropImage.svelte";
+import NavPills from "../../components/NavPills.svelte";
+import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import DropImage from "../../components/DropImage.svelte";
 
-	/** @type {"encode" | "decode"} モード */
-	let mode = "encode";
+/** @type {"encode" | "decode"} モード */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let mode = "encode";
 
-	const modes = [
-		{ value: "encode", label: "埋め込む" },
-		{ value: "decode", label: "復元" },
-	];
+const modes = [
+	{ value: "encode", label: "埋め込む" },
+	{ value: "decode", label: "復元" },
+];
 
-	/** @type {string?} 隠れ蓑画像のURL */
-	let minoImage = null;
+/** @type {string?} 隠れ蓑画像のURL */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let minoImage = null;
 
-	/** @type {string?} 埋め込む画像のURL */
-	let srcImage = null;
+/** @type {string?} 埋め込む画像のURL */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let srcImage = null;
 
-	/** @type {string?} 出力画像のURL */
-	let encodedImage = null;
+/** @type {string?} 出力画像のURL */
+let encodedImage = null;
 
-	/** @type {string?} 復元の入力画像URL */
-	let restoreInputImage = null;
+/** @type {string?} 復元の入力画像URL */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let restoreInputImage = null;
 
-	/** @type {string?} 復元された画像のURL */
-	let restoreOutputImage = null;
+/** @type {string?} 復元された画像のURL */
+let restoreOutputImage = null;
 
-	/**
-	 * @param {string} url
-	 * @returns {Promise<HTMLCanvasElement>}
-	 */
-	function readImageAsCanvas(url) {
-		return new Promise((resolve, reject) => {
-			const img = new Image();
-			img.onload = () => {
-				const canvas = document.createElement("canvas");
-				canvas.width = img.width;
-				canvas.height = img.height;
-				const ctx = canvas.getContext("2d");
-				if (ctx == null) {
-					reject(new Error("2D コンテキストの取得に失敗しました。"));
-					return;
-				}
-				ctx.drawImage(img, 0, 0);
-				resolve(canvas);
-			};
-			img.onerror	= () => {
-				reject(new Error("画像の読み込みに失敗しました。"));
-			};
-			img.src = url;
-		});
+/**
+ * @param {string} url
+ * @returns {Promise<HTMLCanvasElement>}
+ */
+function readImageAsCanvas(url) {
+	return new Promise((resolve, reject) => {
+		const img = new Image();
+		img.onload = () => {
+			const canvas = document.createElement("canvas");
+			canvas.width = img.width;
+			canvas.height = img.height;
+			const ctx = canvas.getContext("2d");
+			if (ctx == null) {
+				reject(new Error("2D コンテキストの取得に失敗しました。"));
+				return;
+			}
+			ctx.drawImage(img, 0, 0);
+			resolve(canvas);
+		};
+		img.onerror = () => {
+			reject(new Error("画像の読み込みに失敗しました。"));
+		};
+		img.src = url;
+	});
+}
+
+async function encode() {
+	if (minoImage == null || srcImage == null) {
+		return;
 	}
 
-	async function encode() {
-		if (minoImage == null || srcImage == null) {
-			return;
+	try {
+		const [minoCanvas, srcCanvas] = await Promise.all([
+			readImageAsCanvas(minoImage),
+			readImageAsCanvas(srcImage),
+		]);
+
+		const w = srcCanvas.width;
+		const h = srcCanvas.height;
+
+		const destCanvas = document.createElement("canvas");
+		destCanvas.width = w;
+		destCanvas.height = h;
+
+		const destCtx = destCanvas.getContext("2d");
+		if (destCtx == null) {
+			throw new Error("2D コンテキストの取得に失敗しました。");
 		}
 
-		try {
-			const [minoCanvas, srcCanvas] = await Promise.all([
-				readImageAsCanvas(minoImage),
-				readImageAsCanvas(srcImage),
-			]);
+		const [pw, ph, px, py] = ((mw, mh, sw, sh) => {
+			const scale = Math.max(sw / mw, sh / mh);
+			const pw = mw * scale;
+			const ph = mh * scale;
+			return [pw, ph, (sw - pw) / 2, (sh - ph) / 2];
+		})(minoCanvas.width, minoCanvas.height, w, h);
+		destCtx.drawImage(
+			minoCanvas,
+			0,
+			0,
+			minoCanvas.width,
+			minoCanvas.height,
+			px,
+			py,
+			pw,
+			ph,
+		);
 
-			const w = srcCanvas.width;
-			const h = srcCanvas.height;
-
-			const destCanvas = document.createElement("canvas");
-			destCanvas.width = w;
-			destCanvas.height = h;
-
-			const destCtx = destCanvas.getContext("2d");
-			if (destCtx == null) {
-				throw new Error("2D コンテキストの取得に失敗しました。");
-			}
-
-			const [pw, ph, px, py] = ((mw, mh, sw, sh) => {
-				const scale = Math.max(sw / mw, sh / mh);
-				const pw = mw * scale;
-				const ph = mh * scale;
-				return [pw, ph, (sw - pw) / 2, (sh - ph) / 2];
-			})(minoCanvas.width, minoCanvas.height, w, h);
-			destCtx.drawImage(minoCanvas, 0, 0, minoCanvas.width, minoCanvas.height, px, py, pw, ph);
-
-			const srcCtx = srcCanvas.getContext("2d");
-			if (srcCtx == null) {
-				throw new Error("2D コンテキストの取得に失敗しました。");
-			}
-
-			const srcData = srcCtx.getImageData(0, 0, w, h).data;
-			const imageData = destCtx.getImageData(0, 0, w, h).data;
-			for (let i = 0; i < imageData.length; i += 4) {
-				const [sr, sg, sb, sa] = srcData.slice(i, i + 4);
-				const [mr, mg, mb, ma] = imageData.slice(i, i + 4);
-				imageData[i + 0] = (mr & 0b11100000) | (sr >>> 3);
-				imageData[i + 1] = (mg & 0b11110000) | (sb >>> 4);
-				imageData[i + 2] = (mb & 0b11100000) | (sg >>> 3);
-				imageData[i + 3] = (ma & 0b11100000) | (sa >>> 3);
-			}
-
-			// Twitterでできるだけ透過PNGにする
-			imageData[3] &= 0b11111110;
-
-			destCtx.putImageData(new ImageData(imageData, w, h), 0, 0);
-
-			encodedImage = destCanvas.toDataURL("image/png");
-		} catch (e) {
-			console.error(e);
+		const srcCtx = srcCanvas.getContext("2d");
+		if (srcCtx == null) {
+			throw new Error("2D コンテキストの取得に失敗しました。");
 		}
+
+		const srcData = srcCtx.getImageData(0, 0, w, h).data;
+		const imageData = destCtx.getImageData(0, 0, w, h).data;
+		for (let i = 0; i < imageData.length; i += 4) {
+			const [sr, sg, sb, sa] = srcData.slice(i, i + 4);
+			const [mr, mg, mb, ma] = imageData.slice(i, i + 4);
+			imageData[i + 0] = (mr & 0b11100000) | (sr >>> 3);
+			imageData[i + 1] = (mg & 0b11110000) | (sb >>> 4);
+			imageData[i + 2] = (mb & 0b11100000) | (sg >>> 3);
+			imageData[i + 3] = (ma & 0b11100000) | (sa >>> 3);
+		}
+
+		// Twitterでできるだけ透過PNGにする
+		imageData[3] &= 0b11111110;
+
+		destCtx.putImageData(new ImageData(imageData, w, h), 0, 0);
+
+		encodedImage = destCanvas.toDataURL("image/png");
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+async function decode() {
+	if (restoreInputImage == null) {
+		return;
 	}
 
-	async function decode() {
-		if (restoreInputImage == null) {
-			return;
+	try {
+		const srcCanvas = await readImageAsCanvas(restoreInputImage);
+
+		const w = srcCanvas.width;
+		const h = srcCanvas.height;
+
+		const destCanvas = document.createElement("canvas");
+		destCanvas.width = w;
+		destCanvas.height = h;
+
+		const srcCtx = srcCanvas.getContext("2d");
+		if (srcCtx == null) {
+			throw new Error("2D コンテキストの取得に失敗しました。");
 		}
 
-		try {
-			const srcCanvas = await readImageAsCanvas(restoreInputImage);
-
-			const w = srcCanvas.width;
-			const h = srcCanvas.height;
-
-			const destCanvas = document.createElement("canvas");
-			destCanvas.width = w;
-			destCanvas.height = h;
-
-			const srcCtx = srcCanvas.getContext("2d");
-			if (srcCtx == null) {
-				throw new Error("2D コンテキストの取得に失敗しました。");
-			}
-
-			const destCtx = destCanvas.getContext("2d");
-			if (destCtx == null) {
-				throw new Error("2D コンテキストの取得に失敗しました。");
-			}
-
-			const srcData = srcCtx.getImageData(0, 0, w, h).data;
-			const imageData = destCtx.getImageData(0, 0, w, h);
-			const data = imageData.data;
-			for (let i = 0; i < data.length; i += 4) {
-				const [sr, sg, sb, sa] = srcData.slice(i, i + 4);
-				data[i + 0] = ((sr << 3) & 0xFF) | (sr >>> 5);
-				data[i + 1] = ((sb << 3) & 0xFF) | (sb >>> 5);
-				data[i + 2] = ((sg << 4) & 0xFF) | (sg >>> 4);
-				data[i + 3] = ((sa << 3) & 0xFF) | (sa >>> 5);
-			}
-
-			destCtx.putImageData(imageData, 0, 0);
-
-			restoreOutputImage = destCanvas.toDataURL("image/png");
-		} catch (e) {
-			console.error(e);
+		const destCtx = destCanvas.getContext("2d");
+		if (destCtx == null) {
+			throw new Error("2D コンテキストの取得に失敗しました。");
 		}
+
+		const srcData = srcCtx.getImageData(0, 0, w, h).data;
+		const imageData = destCtx.getImageData(0, 0, w, h);
+		const data = imageData.data;
+		for (let i = 0; i < data.length; i += 4) {
+			const [sr, sg, sb, sa] = srcData.slice(i, i + 4);
+			data[i + 0] = ((sr << 3) & 0xff) | (sr >>> 5);
+			data[i + 1] = ((sb << 3) & 0xff) | (sb >>> 5);
+			data[i + 2] = ((sg << 4) & 0xff) | (sg >>> 4);
+			data[i + 3] = ((sa << 3) & 0xff) | (sa >>> 5);
+		}
+
+		destCtx.putImageData(imageData, 0, 0);
+
+		restoreOutputImage = destCanvas.toDataURL("image/png");
+	} catch (e) {
+		console.error(e);
 	}
+}
 </script>
 
 <svelte:head>

@@ -1,100 +1,104 @@
 <script>
-	import { onDestroy, onMount } from "svelte";
-	import { clickOutside } from "$lib/clickOutside.js";
-	import { getKey } from "$lib/eventUtil.js";
-	import { getPlatform } from "$lib/platform.js";
-	import { browser } from "$app/environment";
+import { onDestroy, onMount } from "svelte";
+import { clickOutside } from "$lib/clickOutside.js";
+import { getKey } from "$lib/eventUtil.js";
+import { getPlatform } from "$lib/platform.js";
+import { browser } from "$app/environment";
 
-	/** @type {import('../$types.d.ts').ToolDef[]} */
-	export let tools;
+/** @type {import('../$types.d.ts').ToolDef[]} */
+export let tools;
 
-	/** @type {string} */
-	const platform = getPlatform();
+/** @type {string} */
+const platform = getPlatform();
 
-	/** @type {HTMLInputElement|null} */
-	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let inputRef = null;
+/** @type {HTMLInputElement|null} */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let inputRef = null;
 
-	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let open = false;
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let open = false;
 
-	let selectedIndex = 0;
+let selectedIndex = 0;
 
-	/** @type {string} */
-	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let q = "";
-	$: results = tools.filter(
-		(tool) => !tool.disabled && (q === "" || tool.route.toLocaleLowerCase().includes(q))
-	);
+/** @type {string} */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let q = "";
+$: results = tools.filter(
+	(tool) =>
+		!tool.disabled && (q === "" || tool.route.toLocaleLowerCase().includes(q)),
+);
 
-	if (browser) {
-		onMount(() => {
-			document.addEventListener("keydown", globalKeydownHandler);
-		});
-		onDestroy(() => {
-			document.removeEventListener("keydown", globalKeydownHandler);
-		});
+if (browser) {
+	onMount(() => {
+		document.addEventListener("keydown", globalKeydownHandler);
+	});
+	onDestroy(() => {
+		document.removeEventListener("keydown", globalKeydownHandler);
+	});
+}
+
+/**
+ * @param {KeyboardEvent} event
+ */
+function globalKeydownHandler(event) {
+	const key = getKey(event);
+	if (
+		(platform !== "apple" && key === "ctrl+/") ||
+		(platform === "apple" && key === "meta+/")
+	) {
+		event.preventDefault();
+		inputRef?.focus();
 	}
+}
 
-	/**
-	 * @param {KeyboardEvent} event
-	 */
-	function globalKeydownHandler(event) {
-		const key = getKey(event);
-		if (
-			(platform !== "apple" && key === "ctrl+/") ||
-			(platform === "apple" && key === "meta+/")
-		) {
+/**
+ * @param {KeyboardEvent} event
+ */
+function keydownHandler(event) {
+	const key = getKey(event);
+	switch (key) {
+		case "ArrowDown":
 			event.preventDefault();
-			inputRef?.focus();
-		}
+			if (selectedIndex >= results.length - 1) {
+				selectedIndex = 0;
+			} else {
+				selectedIndex = selectedIndex + 1;
+			}
+			break;
+		case "ArrowUp":
+			event.preventDefault();
+			if (selectedIndex <= 0) {
+				selectedIndex = results.length - 1;
+			} else {
+				selectedIndex = selectedIndex - 1;
+			}
+			break;
+		case "Enter":
+			event.preventDefault();
+			if (results[selectedIndex]) {
+				location.href = results[selectedIndex].route;
+			}
+			break;
 	}
+}
 
-	/**
-	 * @param {KeyboardEvent} event
-	 */
-	function keydownHandler(event) {
-		const key = getKey(event);
-		switch (key) {
-			case "ArrowDown":
-				event.preventDefault();
-				if (selectedIndex >= results.length - 1) {
-					selectedIndex = 0;
-				} else {
-					selectedIndex = selectedIndex + 1;
-				}
-				break;
-			case "ArrowUp":
-				event.preventDefault();
-				if (selectedIndex <= 0) {
-					selectedIndex = results.length - 1;
-				} else {
-					selectedIndex = selectedIndex - 1;
-				}
-				break;
-			case "Enter":
-				event.preventDefault();
-				if (results[selectedIndex]) {
-					location.href = results[selectedIndex].route;
-				}
-				break;
-		}
+/**
+ * 入力文字列部分をHTMLハイライトする
+ *
+ * @param {string} text
+ * @param {string} q
+ */
+function highlight(text, q) {
+	if (q === "") {
+		return text;
 	}
-
-	/**
-	 * 入力文字列部分をHTMLハイライトする
-	 *
-	 * @param {string} text
-	 * @param {string} q
-	 */
-	function highlight(text, q) {
-		if (q === "") {
-			return text;
-		}
-		const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-		const regex = new RegExp(escaped, "gi");
-		return text.replace(regex, (match) => `<span class="font-bold">${match}</span>`);
-	}
+	const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	const regex = new RegExp(escaped, "gi");
+	return text.replace(
+		regex,
+		(match) => `<span class="font-bold">${match}</span>`,
+	);
+}
 </script>
 
 <div class="relative" use:clickOutside on:click_outside={() => (open = false)}>

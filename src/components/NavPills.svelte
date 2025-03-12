@@ -1,25 +1,26 @@
 <script>
-	import { createEventDispatcher } from 'svelte'
+import { createEventDispatcher } from "svelte";
 
-	/** @typedef {{ value: string, label: string }} Item */
+/** @typedef {{ value: string, label: string }} Item */
 
-	/** @type {string} */
-	export let value;
+/** @type {string} */
+export let value;
 
-	/** @type {Item[]} */
-	export let items;
+/** @type {Item[]} */
+export let items;
 
-	/** @type {string | null}*/
-	export let title = null;
+/** @type {string | null}*/
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+export let title = null;
 
-	const dispatch = createEventDispatcher()
+const dispatch = createEventDispatcher();
 
-	/**
-	 * @param {string} newValue
-	 */
-	function onChange(newValue) {
-		dispatch("change", newValue);
-	}
+/**
+ * @param {string} newValue
+ */
+function onChange(newValue) {
+	dispatch("change", newValue);
+}
 </script>
 
 <ul

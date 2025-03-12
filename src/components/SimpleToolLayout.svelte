@@ -1,6 +1,6 @@
 <script>
-	/** @type string */
-	export let title;
+/** @type string */
+export let title;
 </script>
 
 <main class="pt-2 pb-4">

@@ -11,12 +11,14 @@
 	const platform = getPlatform();
 
 	/** @type {HTMLInputElement|null} */
+	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 	let inputRef = null;
 
 	/** @type {Array<Result>} */
 	let results = [];
 
 	/** @type {number} */
+	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 	let hoveredIndex = -1;
 
 	/**
@@ -29,7 +31,7 @@
 			/ *(?:\bU\+([0-9A-Fa-f]{4,6})\b|\\u([0-9A-Fa-f]{4})|\\u\{([0-9A-Fa-f]{1,6})\})/g,
 			(_, c1, c2, c3) => {
 				const hex = c1 ?? c2 ?? c3;
-				const codePoint = parseInt(hex, 16);
+				const codePoint = Number.parseInt(hex, 16);
 				try {
 					return String.fromCodePoint(codePoint);
 				} catch {

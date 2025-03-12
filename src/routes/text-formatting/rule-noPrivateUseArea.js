@@ -13,7 +13,7 @@ export default function noPrivateUseArea(context) {
 		[Syntax.Str](node) {
 			const text = getSource(node);
 
-			[...text.matchAll(privateUseAreaRE)].forEach((match) => {
+			for (const match of [...text.matchAll(privateUseAreaRE)]) {
 				if (match.index == null) return;
 				report(
 					node,
@@ -25,7 +25,7 @@ export default function noPrivateUseArea(context) {
 						),
 					})
 				);
-			});
+			}
 		},
 	};
 }

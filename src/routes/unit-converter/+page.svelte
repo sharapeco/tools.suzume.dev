@@ -2,10 +2,15 @@
 	import { converters, convert } from "./unitConverter";
 	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
+	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 	let converter = converters[0];
+	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 	let fromUnit = converter?.units[0];
+	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 	let toUnit = converter?.units[1] ?? converter?.units[0];
+	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 	let fromValue = "1";
+	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 	let toValue = convert(fromValue, fromUnit, toUnit);
 </script>
 

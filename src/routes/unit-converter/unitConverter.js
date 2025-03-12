@@ -27,9 +27,9 @@ export const converters = [
 			{ name: "ha", value: 1000 },
 			{ name: "km²", value: 1000000 },
 			{ name: "坪", value: 400 / 121 },
-			{ name: "畝", value: 30 * 400 / 121 },
-			{ name: "反", value: 10 * 30 * 400 / 121 },
-			{ name: "町", value: 100 * 30 * 400 / 121 },
+			{ name: "畝", value: (30 * 400) / 121 },
+			{ name: "反", value: (10 * 30 * 400) / 121 },
+			{ name: "町", value: (100 * 30 * 400) / 121 },
 			{ name: "東京ドーム", value: 46755 },
 			{ name: "甲子園球場", value: 38500 },
 		],
@@ -45,6 +45,6 @@ export const converters = [
  */
 export function convert(valueStr, fromUnit, toUnit) {
 	const value = Number.parseFloat(valueStr);
-	const convertedValue = value * fromUnit.value / toUnit.value;
+	const convertedValue = (value * fromUnit.value) / toUnit.value;
 	return convertedValue.toFixed(6).replace(/\.?0+$/, "");
 }

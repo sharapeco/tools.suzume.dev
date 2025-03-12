@@ -1,6 +1,7 @@
 import { highlightSpecialChars } from "@codemirror/view";
 import { specialChars } from "./specialChars";
 
+// biome-ignore lint/style/useTemplate: 読みやすさのため
 const re = new RegExp("[" + [
 	// 制御文字; HT, LF を除く
 	"\u{0}-\u{09}\u{0B}-\u{1F}\u{7F}-\u{9F}",

@@ -13,15 +13,18 @@ export default function noRegionalIndicatorSymbol(context) {
 		[Syntax.Str](node) {
 			const text = getSource(node);
 
-			[...text.matchAll(re)].forEach((match) => {
+			for (const match of [...text.matchAll(re)]) {
 				if (match.index == null) return;
 				report(
 					node,
 					new RuleError("Found regional indicator symbol", {
-						padding: locator.range([match.index, match.index + match[0].length]),
-					})
+						padding: locator.range([
+							match.index,
+							match.index + match[0].length,
+						]),
+					}),
 				);
-			});
+			}
 		},
 	};
 }

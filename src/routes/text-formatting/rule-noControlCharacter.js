@@ -4,6 +4,7 @@ import { specialChars } from "./specialChars";
 /** @typedef {import('@textlint/ast-node-types').TxtNode} TxtNode */
 
 const controlCharacterRE =
+	// biome-ignore lint/suspicious/noControlCharactersInRegex: 制御文字を取り除くため
 	/[\u{0}-\u{08}\u{0B}-\u{1F}\u{7F}-\u{9F}\u{AD}\u{200B}-\u{200F}\u{202A}-\u{202F}\u{2060}-\u{206F}]/gu;
 
 /**
@@ -16,23 +17,23 @@ export default function noControlCharacter(context) {
 		[Syntax.Str](node) {
 			const text = getSource(node);
 
-			[...text.matchAll(controlCharacterRE)].forEach((match) => {
+			for (const match of [...text.matchAll(controlCharacterRE)]) {
 				if (match.index == null) return;
 
 				const codePoint = match[0].codePointAt(0);
-				const name = (codePoint != null) ? specialChars[codePoint][1] : null;
+				const name = codePoint != null ? specialChars[codePoint][1] : null;
 
 				report(
 					node,
-					new RuleError(`Found control character ${name ?? ''}`, {
+					new RuleError(`Found control character ${name ?? ""}`, {
 						index: match.index,
 						fix: fixer.replaceTextRange(
 							[match.index, match.index + match[0].length],
-							""
+							"",
 						),
-					})
+					}),
 				);
-			});
+			}
 		},
 	};
 }

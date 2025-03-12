@@ -1,153 +1,164 @@
 <script>
-	import { QRCode } from "$lib/qrcode.js";
-	import NavPills from "../../components/NavPills.svelte";
-	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import { QRCode } from "$lib/qrcode.js";
+import NavPills from "../../components/NavPills.svelte";
+import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
-	/** @typedef {{ content: string, ecl: string, svg: string, url: string }} Result */
+/** @typedef {{ content: string, ecl: string, svg: string, url: string }} Result */
 
-	/** @type {string} 入力文字列 */
-	let input = "";
+/** @type {string} 入力文字列 */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let input = "";
 
-	/** @type {{ to: string, subject: string, body: string }} */
-	let mailto = { to: "", subject: "", body: "" };
+/** @type {{ to: string, subject: string, body: string }} */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let mailto = { to: "", subject: "", body: "" };
 
-	/** @type {{ ssid: string, password: string }} */
-	let ssid = { ssid: "", password: "" };
+/** @type {{ ssid: string, password: string }} */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let ssid = { ssid: "", password: "" };
 
-	/** @type {"string" | "mailto" | "ssid"} モード */
-	let mode = "string";
+/** @type {"string" | "mailto" | "ssid"} モード */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let mode = "string";
 
-	const modes = [
-		{ value: "string", label: "文字列" },
-		{ value: "mailto", label: "メール" },
-		{ value: "ssid", label: "Wi-Fi SSID" },
-	];
+const modes = [
+	{ value: "string", label: "文字列" },
+	{ value: "mailto", label: "メール" },
+	{ value: "ssid", label: "Wi-Fi SSID" },
+];
 
-	/** @type {"CRLF" | "LF" | "CR"} 改行コード */
-	let newline = "CRLF";
+/** @type {"CRLF" | "LF" | "CR"} 改行コード */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let newline = "CRLF";
 
-	const newlines = [
-		{ value: "CRLF", label: "CRLF" },
-		{ value: "LF", label: "LF" },
-		{ value: "CR", label: "CR" },
-	];
+const newlines = [
+	{ value: "CRLF", label: "CRLF" },
+	{ value: "LF", label: "LF" },
+	{ value: "CR", label: "CR" },
+];
 
-	/** @type {"normal" | "predefined"} predefined: <def> と <use> を使う */
-	let drawMethod = "normal";
+/** @type {"normal" | "predefined"} predefined: <def> と <use> を使う */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let drawMethod = "normal";
 
-	const drawMethods = [
-		{ value: "normal", label: "通常（Illustratorで使用する場合）" },
-		{ value: "predefined", label: "<def> を使用" },
-	];
+const drawMethods = [
+	{ value: "normal", label: "通常（Illustratorで使用する場合）" },
+	{ value: "predefined", label: "<def> を使用" },
+];
 
-	const ECLs = ["L", "M", "Q", "H"];
+const ECLs = ["L", "M", "Q", "H"];
 
-	const svgSize = 256;
+const svgSize = 256;
 
-	/** @type {string} */
-	let copiedECL = "";
+/** @type {string} */
+let copiedECL = "";
 
-	$: content = getInput({ mode, input, mailto, ssid });
+$: content = getInput({ mode, input, mailto, ssid });
 
-	$: results =
-		content !== ""
-			? ECLs.map((ecl) => {
-					const svg = buildQRCode(content, ecl, drawMethod);
-					return {
-						content,
-						ecl,
-						svg,
-						url: URL.createObjectURL(
-							new Blob([svg], {
-								type: "image/svg+xml",
-							})
-						),
-					};
-				})
-			: null;
+$: results =
+	content !== ""
+		? ECLs.map((ecl) => {
+				const svg = buildQRCode(content, ecl, drawMethod);
+				return {
+					content,
+					ecl,
+					svg,
+					url: URL.createObjectURL(
+						new Blob([svg], {
+							type: "image/svg+xml",
+						}),
+					),
+				};
+			})
+		: null;
 
-	/**
-	 * @typedef {object} InputProps
-	 * @property {string} mode
-	 * @property {string} input
-	 * @property {{ to: string, subject: string, body: string }} mailto
-	 * @property {{ ssid: string, password: string }} ssid
-	 */
-	/**
-	 * @param {InputProps} props
-	 */
-	function getInput(props) {
-		const { mode, input, mailto, ssid } = props;
-		switch (mode) {
-			case "string":
-				return convertNewline(input);
-			case "mailto":
-				if (mailto.to === "") {
-					return "";
-				}
-				if (mailto.subject === "" && mailto.body === "") {
-					return `mailto:${mailto.to}`;
-				}
-				return `mailto:${mailto.to}?subject=${mailto.subject}&body=${mailto.body.replace(/\r\n|\r|\n/g, "\r\n")}`;
-			case "ssid":
-				if (ssid.ssid === "" || ssid.password === "") {
-					return "";
-				}
-				return `WIFI:T:WPA;S:${ssid.ssid};P:${ssid.password};;`;
-			default:
+/**
+ * @typedef {object} InputProps
+ * @property {string} mode
+ * @property {string} input
+ * @property {{ to: string, subject: string, body: string }} mailto
+ * @property {{ ssid: string, password: string }} ssid
+ */
+/**
+ * @param {InputProps} props
+ */
+function getInput(props) {
+	const { mode, input, mailto, ssid } = props;
+	switch (mode) {
+		case "string":
+			return convertNewline(input);
+		case "mailto":
+			if (mailto.to === "") {
 				return "";
-		}
+			}
+			if (mailto.subject === "" && mailto.body === "") {
+				return `mailto:${mailto.to}`;
+			}
+			return `mailto:${mailto.to}?subject=${mailto.subject}&body=${mailto.body.replace(/\r\n|\r|\n/g, "\r\n")}`;
+		case "ssid":
+			if (ssid.ssid === "" || ssid.password === "") {
+				return "";
+			}
+			return `WIFI:T:WPA;S:${ssid.ssid};P:${ssid.password};;`;
+		default:
+			return "";
 	}
+}
 
-	const newlinesMap = {
-		CRLF: "\r\n",
-		LF: "\n",
-		CR: "\r",
-	};
-	function convertNewline(input) {
-		return input.replace(/\r\n|\r|\n/g, newlinesMap[newline]);
-	}
+const newlinesMap = {
+	CRLF: "\r\n",
+	LF: "\n",
+	CR: "\r",
+};
 
-	/**
-	 * @param {string} content
-	 * @param {string} ecl
-	 * @param {string} drawMethod
-	 * @returns {string}
-	 */
-	function buildQRCode(content, ecl, drawMethod) {
-		return new QRCode({
-			content,
-			ecl,
-			container: "svg-viewbox",
-			swap: true,
-			join: false,
-			predefined: drawMethod === "predefined",
-			pretty: true,
-			width: svgSize,
-			height: svgSize,
-		}).svg();
-	}
+/**
+ * @param {string} input 入力文字列
+ * @returns {string} 改行コードを変換した文字列
+ */
+function convertNewline(input) {
+	return input.replace(/\r\n|\r|\n/g, newlinesMap[newline]);
+}
 
-	/**
-	 * @param {Result} result
-	 */
-	function download(result) {
-		const link = document.createElement("a");
-		link.href = result.url;
-		link.download = `${result.content}.svg`;
-		link.click();
-	}
+/**
+ * @param {string} content
+ * @param {string} ecl
+ * @param {string} drawMethod
+ * @returns {string}
+ */
+function buildQRCode(content, ecl, drawMethod) {
+	return new QRCode({
+		content,
+		ecl,
+		container: "svg-viewbox",
+		swap: true,
+		join: false,
+		predefined: drawMethod === "predefined",
+		pretty: true,
+		width: svgSize,
+		height: svgSize,
+	}).svg();
+}
 
-	/**
-	 * @param {Result} result
-	 */
-	function copy(result) {
-		navigator.clipboard.writeText(result.svg);
-		copiedECL = result.ecl;
-		setTimeout(() => {
-			copiedECL = "";
-		}, 1200);
-	}
+/**
+ * @param {Result} result
+ */
+function download(result) {
+	const link = document.createElement("a");
+	link.href = result.url;
+	link.download = `${result.content}.svg`;
+	link.click();
+}
+
+/**
+ * @param {Result} result
+ */
+function copy(result) {
+	navigator.clipboard.writeText(result.svg);
+	copiedECL = result.ecl;
+	setTimeout(() => {
+		copiedECL = "";
+	}, 1200);
+}
 </script>
 
 <svelte:head>

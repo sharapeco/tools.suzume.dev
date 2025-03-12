@@ -7,11 +7,11 @@ class Replacer {
 	 */
 	constructor(fromCharList, toCharList) {
 		if (fromCharList.length !== toCharList.length) {
-			throw new Error('Length of fromCharList and toCharList must be same.')
+			throw new Error("Length of fromCharList and toCharList must be same.")
 		}
 		this.fr = fromCharList
 		this.to = toCharList
-		this.re = new RegExp('[' + fromCharList + ']', 'g')
+		this.re = new RegExp(`[${fromCharList}]`, 'g')
 	}
 
 	/**
@@ -105,7 +105,7 @@ function tokenize(str) {
 				continue
 			}
 			if (ch === '{' || ch === '^' || ch === '_') {
-				throw new Error('Unexpected ' + ch)
+				throw new Error(`Unexpected ${ch}`)
 			}
 		}
 		if (ch === '\\') {
@@ -126,7 +126,7 @@ function tokenize(str) {
 				inBrace = true
 				i++
 			} else if (next === '^' || next === '_') {
-				throw new Error('Unexpected ' + next)
+				throw new Error(`Unexpected ${next}`)
 			} else {
 				tokens.push(next)
 				i++

@@ -1,39 +1,39 @@
 <script>
-	import { createEventDispatcher } from "svelte";
-	import CodeMirror from "svelte-codemirror-editor";
-	import {
-		lineNumbers,
-		highlightActiveLine,
-		highlightActiveLineGutter,
-		drawSelection,
-		dropCursor,
-	} from "@codemirror/view";
-	import { history } from "@codemirror/commands";
-	import { EditorState } from "@codemirror/state";
-	import { highlightSelectionMatches } from "@codemirror/search";
-	import { specialCharsHighlighter } from "./specialCharsHighlighter";
-	import { plainTextKeymap } from "./plainTextKeymap";
-	import { textLinter } from "./linter";
-	import tabIcon from "$lib/assets/tab.svg";
+import { createEventDispatcher } from "svelte";
+import CodeMirror from "svelte-codemirror-editor";
+import {
+	lineNumbers,
+	highlightActiveLine,
+	highlightActiveLineGutter,
+	drawSelection,
+	dropCursor,
+} from "@codemirror/view";
+import { history } from "@codemirror/commands";
+import { EditorState } from "@codemirror/state";
+import { highlightSelectionMatches } from "@codemirror/search";
+import { specialCharsHighlighter } from "./specialCharsHighlighter";
+import { plainTextKeymap } from "./plainTextKeymap";
+import { textLinter } from "./linter";
+import tabIcon from "$lib/assets/tab.svg";
 
-	/** @type {string} */
-	export let input;
+/** @type {string} */
+export let input;
 
-	const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
-	const extensions = [
-		lineNumbers(),
-		highlightActiveLine(),
-		highlightActiveLineGutter(),
-		history(),
-		drawSelection(),
-		dropCursor(),
-		EditorState.allowMultipleSelections.of(true),
-		highlightSelectionMatches(),
-		plainTextKeymap,
-		specialCharsHighlighter,
-		textLinter,
-	];
+const extensions = [
+	lineNumbers(),
+	highlightActiveLine(),
+	highlightActiveLineGutter(),
+	history(),
+	drawSelection(),
+	dropCursor(),
+	EditorState.allowMultipleSelections.of(true),
+	highlightSelectionMatches(),
+	plainTextKeymap,
+	specialCharsHighlighter,
+	textLinter,
+];
 </script>
 
 <CodeMirror

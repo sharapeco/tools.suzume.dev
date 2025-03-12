@@ -1,5 +1,5 @@
 import { defaultKeymap, historyKeymap } from "@codemirror/commands";
-import { lintKeymap } from "@codemirror/lint"
+import { lintKeymap } from "@codemirror/lint";
 import { searchKeymap } from "@codemirror/search";
 import { keymap } from "@codemirror/view";
 
@@ -27,28 +27,26 @@ function insertText(text) {
 				},
 				scrollIntoView: true,
 				userEvent: "input",
-			})
+			}),
 		);
 		return true;
 	};
 }
 
 const removeKeys = ["Enter", "Mod-Enter"];
-export const plainTextKeymap = keymap.of(
-	[
-		{
-			key: "Tab",
-			preventDefault: true,
-			run: insertText("\t"),
-		},
-		{
-			key: "Enter",
-			preventDefault: true,
-			run: insertText("\n"),
-		},
-		...defaultKeymap.filter((keymap) => !removeKeys.includes(keymap.key ?? "")),
-		...searchKeymap,
-		...historyKeymap,
-		...lintKeymap,
-	]
-);
+export const plainTextKeymap = keymap.of([
+	{
+		key: "Tab",
+		preventDefault: true,
+		run: insertText("\t"),
+	},
+	{
+		key: "Enter",
+		preventDefault: true,
+		run: insertText("\n"),
+	},
+	...defaultKeymap.filter((keymap) => !removeKeys.includes(keymap.key ?? "")),
+	...searchKeymap,
+	...historyKeymap,
+	...lintKeymap,
+]);

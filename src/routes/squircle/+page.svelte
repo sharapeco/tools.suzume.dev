@@ -1,34 +1,34 @@
 <script>
-	import SquircleControls from "./SquircleControls.svelte";
-	import SquirclePreview from "./SquirclePreview.svelte";
-	import { tools } from "../../tool-list";
-	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import SquircleControls from "./SquircleControls.svelte";
+import SquirclePreview from "./SquirclePreview.svelte";
+import { tools } from "../../tool-list";
+import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
-	/** @typedef {import("../../tool-list").Tool} Tool */
+/** @typedef {import("../../tool-list").Tool} Tool */
 
-	/** @type {Tool|undefined} */
-	const tool = tools.find((t) => t.route === "/squircle");
-	if (!tool) {
-		throw new Error("Tool not found");
-	}
+/** @type {Tool|undefined} */
+const tool = tools.find((t) => t.route === "/squircle");
+if (!tool) {
+	throw new Error("Tool not found");
+}
 
-	/** @typedef {import("./params").Params} Params */
-	/** @type {Params} */
-	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let params = {
-		type: "clothoid",
-		dpi: 300,
-		unit: "px",
-		width: 200,
-		height: 200,
-		color: "#000000",
-		// クロソイド用
-		radius: 40,
-		borderOffset: 1.5,
-		tension: 0.8,
-		// スーパー楕円用
-		power: 3,
-	};
+/** @typedef {import("./params").Params} Params */
+/** @type {Params} */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let params = {
+	type: "clothoid",
+	dpi: 300,
+	unit: "px",
+	width: 200,
+	height: 200,
+	color: "#000000",
+	// クロソイド用
+	radius: 40,
+	borderOffset: 1.5,
+	tension: 0.8,
+	// スーパー楕円用
+	power: 3,
+};
 </script>
 
 <svelte:head>

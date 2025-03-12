@@ -14,7 +14,7 @@ export default function noRadical(context) {
 		[Syntax.Str](node) {
 			const text = getSource(node);
 
-			[...text.matchAll(radicalSupplementRE)].forEach((match) => {
+			for (const match of [...text.matchAll(radicalSupplementRE)]) {
 				if (match.index == null) return;
 				report(
 					node,
@@ -22,9 +22,9 @@ export default function noRadical(context) {
 						padding: locator.range([match.index, match.index + match[0].length]),
 					})
 				);
-			});
+			}
 
-			[...text.matchAll(kangxiRadicalRE)].forEach((match) => {
+			for (const match of [...text.matchAll(kangxiRadicalRE)]) {
 				if (match.index == null) return;
 				report(
 					node,
@@ -36,7 +36,7 @@ export default function noRadical(context) {
 						),
 					})
 				);
-			});
+			}
 		},
 	};
 }

@@ -1,5 +1,5 @@
 <script>
-	export let params;
+export let params;
 </script>
 
 <div class="controls">
@@ -134,7 +134,7 @@
 	label {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 0.25rem;
 	}
 
 	input[type="color"] {

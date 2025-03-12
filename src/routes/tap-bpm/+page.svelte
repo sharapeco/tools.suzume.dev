@@ -1,69 +1,69 @@
 <script>
-	import { onMount } from "svelte";
-	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import { onMount } from "svelte";
+import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
-	let bpm = "--";
-	let startTime = -1;
-	let prevTime = -1;
-	let count = 0;
-	let active = false;
+let bpm = "--";
+let startTime = -1;
+let prevTime = -1;
+let count = 0;
+let active = false;
 
-	function calculateBpm() {
-		const now = Date.now();
-		if (startTime === -1 || now - prevTime > 5000) {
-			startTime = now;
-			count = 0;
-			active = true;
-			bpm = "--";
-		} else {
-			count++;
-			const elapsed = now - startTime;
-			bpm = ((count / elapsed) * 60000).toFixed(1);
-		}
-		prevTime = now;
+function calculateBpm() {
+	const now = Date.now();
+	if (startTime === -1 || now - prevTime > 5000) {
+		startTime = now;
+		count = 0;
+		active = true;
+		bpm = "--";
+	} else {
+		count++;
+		const elapsed = now - startTime;
+		bpm = ((count / elapsed) * 60000).toFixed(1);
+	}
+	prevTime = now;
+}
+
+// @ts-ignore
+function handleKeydown(event) {
+	const target = event.target;
+	const tag = target?.tagName?.toLowerCase();
+	const isTapButton = target?.classList.contains("js-tap-button");
+	if (
+		!isTapButton &&
+		(tag === "input" ||
+			tag === "textarea" ||
+			tag === "select" ||
+			tag === "button" ||
+			tag === "a")
+	) {
+		return;
 	}
 
-	// @ts-ignore
-	function handleKeydown(event) {
-		const target = event.target;
-		const tag = target?.tagName?.toLowerCase();
-		const isTapButton = target?.classList.contains("js-tap-button");
-		if (
-			!isTapButton &&
-			(tag === "input" ||
-				tag === "textarea" ||
-				tag === "select" ||
-				tag === "button" ||
-				tag === "a")
-		) {
-			return;
-		}
-
-		if (event.key === " " || event.key === "Enter") {
-			event.preventDefault();
-			calculateBpm();
-		}
-	}
-
-	function handleTap() {
+	if (event.key === " " || event.key === "Enter") {
+		event.preventDefault();
 		calculateBpm();
 	}
+}
 
-	function resetBpm() {
-		bpm = "--";
-		startTime = -1;
-		prevTime = -1;
-		count = 0;
-		active = false;
-	}
+function handleTap() {
+	calculateBpm();
+}
 
-	onMount(() => {
-		window.addEventListener("keydown", handleKeydown);
+function resetBpm() {
+	bpm = "--";
+	startTime = -1;
+	prevTime = -1;
+	count = 0;
+	active = false;
+}
 
-		return () => {
-			window.removeEventListener("keydown", handleKeydown);
-		};
-	});
+onMount(() => {
+	window.addEventListener("keydown", handleKeydown);
+
+	return () => {
+		window.removeEventListener("keydown", handleKeydown);
+	};
+});
 </script>
 
 <svelte:head>

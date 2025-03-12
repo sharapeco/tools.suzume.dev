@@ -1,163 +1,164 @@
 <script>
-	import { onMount } from "svelte";
-	import { getKey } from "$lib/eventUtil.js";
-	import { supersub } from "$lib/supersub";
-	import {
-		hiraganaToKatakana,
-		katakanaToHiragana,
-		stripFullwidthForm,
-		stripJISX0201Kana,
-		toFullwidthForm,
-		toJISX0201Kana,
-	} from "$lib/zenkaku";
-	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import { onMount } from "svelte";
+import { getKey } from "$lib/eventUtil.js";
+import { supersub } from "$lib/supersub";
+import {
+	hiraganaToKatakana,
+	katakanaToHiragana,
+	stripFullwidthForm,
+	stripJISX0201Kana,
+	toFullwidthForm,
+	toJISX0201Kana,
+} from "$lib/zenkaku";
+import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
-	/** @type {HTMLTextAreaElement|null} */
-	let inputRef = null;
+/** @type {HTMLTextAreaElement|null} */
+// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+let inputRef = null;
 
-	/** @type {string} 入力文字列 */
-	let input = "";
+/** @type {string} 入力文字列 */
+let input = "";
 
-	let copiedName = "";
+let copiedName = "";
 
-	/**
-	 * @typedef {Object} Encoder
-	 * @property {string} name
-	 * @property {(input: string) => string|null} fn
-	 * @property {string} [description]
-	 */
+/**
+ * @typedef {Object} Encoder
+ * @property {string} name
+ * @property {(input: string) => string|null} fn
+ * @property {string} [description]
+ */
 
-	/**
-	 * @typedef {Object} Result
-	 * @property {string} name
-	 * @property {(input: string) => string|null} fn
-	 * @property {string|null} output
-	 * @property {string|null} error
-	 *  @property {string} [description]
-	 */
+/**
+ * @typedef {Object} Result
+ * @property {string} name
+ * @property {(input: string) => string|null} fn
+ * @property {string|null} output
+ * @property {string|null} error
+ *  @property {string} [description]
+ */
 
-	/** @type {Encoder[]} */
-	const encoders = [
-		{
-			name: "上付き・下付き・ゐ・ゑ・小書きカナ",
-			description:
-				"^2 → ² / H_2O → H₂O​ / ^{235}U → ²³⁵U / ^い → ゐ / ^セ → セ゚ / _リ → ㇼ",
-			fn: supersub,
-		},
-		{
-			name: "カタカナに変換",
-			fn: hiraganaToKatakana,
-		},
-		{
-			name: "ひらがなに変換",
-			fn: katakanaToHiragana,
-		},
-		{
-			name: "JIS X 0201 カタカナの正規化",
-			fn: stripJISX0201Kana,
-		},
-		{
-			name: "JIS X 0201 カタカナ化",
-			fn: toJISX0201Kana,
-		},
-		{
-			name: "全角形を正規化",
-			fn: stripFullwidthForm,
-		},
-		{
-			name: "全角形に変換",
-			fn: toFullwidthForm,
-		},
-		{
-			name: "大文字に変換",
-			fn: (input) => input.toLocaleUpperCase(),
-		},
-		{
-			name: "小文字に変換",
-			fn: (input) => input.toLocaleLowerCase(),
-		},
-	];
+/** @type {Encoder[]} */
+const encoders = [
+	{
+		name: "上付き・下付き・ゐ・ゑ・小書きカナ",
+		description:
+			"^2 → ² / H_2O → H₂O​ / ^{235}U → ²³⁵U / ^い → ゐ / ^セ → セ゚ / _リ → ㇼ",
+		fn: supersub,
+	},
+	{
+		name: "カタカナに変換",
+		fn: hiraganaToKatakana,
+	},
+	{
+		name: "ひらがなに変換",
+		fn: katakanaToHiragana,
+	},
+	{
+		name: "JIS X 0201 カタカナの正規化",
+		fn: stripJISX0201Kana,
+	},
+	{
+		name: "JIS X 0201 カタカナ化",
+		fn: toJISX0201Kana,
+	},
+	{
+		name: "全角形を正規化",
+		fn: stripFullwidthForm,
+	},
+	{
+		name: "全角形に変換",
+		fn: toFullwidthForm,
+	},
+	{
+		name: "大文字に変換",
+		fn: (input) => input.toLocaleUpperCase(),
+	},
+	{
+		name: "小文字に変換",
+		fn: (input) => input.toLocaleLowerCase(),
+	},
+];
 
-	/** @type {Result[]} */
-	$: results = encoders.map((encoder) => {
-		try {
-			return {
-				...encoder,
-				output: encoder.fn(input),
-				error: null,
-			};
-		} catch (error) {
-			return {
-				...encoder,
-				output: null,
-				error: error instanceof Error ? error.message : String(error),
-			};
-		}
-	});
-
-	onMount(() => {
-		if (!inputRef) {
-			return;
-		}
-		inputRef.value = localStorage.getItem("character-form.input") ?? "";
-		update();
-	});
-
-	function update() {
-		if (!inputRef) {
-			return;
-		}
-		input = inputRef.value;
-		localStorage.setItem("character-form.input", input);
+/** @type {Result[]} */
+$: results = encoders.map((encoder) => {
+	try {
+		return {
+			...encoder,
+			output: encoder.fn(input),
+			error: null,
+		};
+	} catch (error) {
+		return {
+			...encoder,
+			output: null,
+			error: error instanceof Error ? error.message : String(error),
+		};
 	}
+});
 
-	/**
-	 * @param {MouseEvent} event
-	 * @param {Result} result
-	 */
-	function clickHandler(event, result) {
-		if (result.output == null) {
-			return;
-		}
-		copyText(result.output);
-		setCopiedName(result.name);
+onMount(() => {
+	if (!inputRef) {
+		return;
 	}
+	inputRef.value = localStorage.getItem("character-form.input") ?? "";
+	update();
+});
 
-	/**
-	 * @param {KeyboardEvent} event
-	 * @param {Result} result
-	 */
-	function keydownHandler(event, result) {
-		const key = getKey(event);
-		switch (key) {
-			case "Enter":
-			case "meta+c":
-			case "ctrl+c":
-				if (result.output == null) {
-					return;
-				}
-				copyText(result.output);
-				setCopiedName(result.name);
-				break;
-		}
+function update() {
+	if (!inputRef) {
+		return;
 	}
+	input = inputRef.value;
+	localStorage.setItem("character-form.input", input);
+}
 
-	/**
-	 * @param {string} str
-	 */
-	function copyText(str) {
-		navigator.clipboard.writeText(str);
+/**
+ * @param {MouseEvent} event
+ * @param {Result} result
+ */
+function clickHandler(event, result) {
+	if (result.output == null) {
+		return;
 	}
+	copyText(result.output);
+	setCopiedName(result.name);
+}
 
-	/**
-	 * @param {string} name
-	 */
-	function setCopiedName(name) {
-		copiedName = name;
-		setTimeout(() => {
-			copiedName = "";
-		}, 1200);
+/**
+ * @param {KeyboardEvent} event
+ * @param {Result} result
+ */
+function keydownHandler(event, result) {
+	const key = getKey(event);
+	switch (key) {
+		case "Enter":
+		case "meta+c":
+		case "ctrl+c":
+			if (result.output == null) {
+				return;
+			}
+			copyText(result.output);
+			setCopiedName(result.name);
+			break;
 	}
+}
+
+/**
+ * @param {string} str
+ */
+function copyText(str) {
+	navigator.clipboard.writeText(str);
+}
+
+/**
+ * @param {string} name
+ */
+function setCopiedName(name) {
+	copiedName = name;
+	setTimeout(() => {
+		copiedName = "";
+	}, 1200);
+}
 </script>
 
 <svelte:head>
