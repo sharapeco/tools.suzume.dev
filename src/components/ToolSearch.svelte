@@ -12,13 +12,16 @@
 	const platform = getPlatform();
 
 	/** @type {HTMLInputElement|null} */
+	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 	let inputRef = null;
 
+	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 	let open = false;
 
 	let selectedIndex = 0;
 
 	/** @type {string} */
+	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 	let q = "";
 	$: results = tools.filter(
 		(tool) => !tool.disabled && (q === "" || tool.route.toLocaleLowerCase().includes(q))
@@ -43,7 +46,7 @@
 			(platform === "apple" && key === "meta+/")
 		) {
 			event.preventDefault();
-			inputRef && inputRef.focus();
+			inputRef?.focus();
 		}
 	}
 
