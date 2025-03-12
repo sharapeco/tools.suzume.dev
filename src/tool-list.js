@@ -62,7 +62,7 @@ export const tools = [
 		disabled: false,
 	},
 	{
-		icon: "🥷",
+		icon: '<svg width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 17"><path d="M2.994 2.995V.964h.508V1.98h.507v2.03h.508v2.031h.508V1.963h.507V.97h.508V-.046h2.538V.97h.508v.993h.508v7.129h-.508v1.015h.508v1.015h1.015v2.031h.507v3.046H6.548v-1.015H6.04v-1.016h-.508v-1.015h-.507v-2.031h-.508v-1.015h.508v-2.03h-.508V7.056h-.508v-2.03h-.507V2.995zm2.031 10.158v2.031l.505-.012.005 1.016-.51.011-.502.011v-.011H3.502v-3.046h.507v-2.031h.508v2.031zm.507-9.16v3.068h3.554V3.993zm3.046.754v1.539h-.507V4.747zm-2.03 0v1.539H6.04V4.747z" style="fill:#fff" transform="matrix(1.96989 0 0 .98494 -5.898 1.045)"/></svg>',
 		title: "画像中画像",
 		route: "/stegano-image",
 		description: "画像に画像を隠します",
