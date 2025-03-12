@@ -7,6 +7,12 @@ import { getSuperEllipse } from "./superellipse";
 /** @type {Params} */
 export let params;
 
+/** @type {boolean} 「コピーしました」と表示する間 true */
+let copied = false;
+
+/** @type {number?} 「コピーしました」タイマー */
+let copiedTimer;
+
 $: svgContent = generate(params);
 
 /**
@@ -117,19 +123,56 @@ function createFileName(params) {
 			return "squircle";
 	}
 }
+
+/**
+ * SVGをクリップボードにコピーする
+ */
+function copySVG() {
+	navigator.clipboard.writeText(svgContent);
+
+	if (copiedTimer) clearTimeout(copiedTimer);
+	copied = true;
+	copiedTimer = setTimeout(() => {
+		copied = false;
+	}, 1200);
+}
 </script>
 
 <div class="panel">
 	<div class="preview">
 		{@html svgContent}
 	</div>
-	<button
-		on:click={downloadSVG}
-		type="button"
-		class="w-full px-4 py-2 text-sm font-medium border rounded-md shadow-sm bg-indigo-500 text-white hover:bg-indigo-600 hover:text-white active:bg-indigo-800 active:text-slate-100"
-	>
-		SVGをダウンロード
-	</button>
+	<div class="mt-3 flex gap-2">
+		<div class="flex-1">
+			<button
+				type="button"
+				class="w-full text-sm py-2 px-1 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
+				on:click={downloadSVG}
+			>
+				保存
+			</button>
+		</div>
+		<div class="flex-1 relative">
+			<button
+				type="button"
+				class="w-full text-sm py-2 px-1 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
+				on:click={copySVG}
+			>
+				コピー
+			</button>
+			{#if copied}
+				<div
+					class="absolute flex justify-center bottom-full mb-2 left-0 right-0"
+				>
+					<span
+						class="copied bg-indigo-500 text-white text-xs leading-5 px-1 rounded"
+					>
+						コピーしました
+					</span>
+				</div>
+			{/if}
+		</div>
+	</div>
 </div>
 
 <style>
