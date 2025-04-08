@@ -3,17 +3,16 @@
 @tailwind utilities;
 
 html {
-	display: flex;
-	flex-direction: column;
-	justify-content: stretch;
 	min-height: 100%;
-	font-family: "Meiryo", sans-serif;
+	font-family: system-ui, "Meiryo", sans-serif;
 	color: theme(colors.gray.800);
 	background-color: theme(colors.white);
 }
 
 body {
-	display: contents;
+	display: flex;
+	flex-direction: column;
+	justify-content: stretch;
 }
 
 h1,
