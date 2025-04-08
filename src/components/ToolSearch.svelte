@@ -4,6 +4,7 @@ import { clickOutside } from "$lib/clickOutside.js";
 import { getKey } from "$lib/eventUtil.js";
 import { getPlatform } from "$lib/platform.js";
 import { browser } from "$app/environment";
+import { katakanaToHiragana } from "$lib/zenkaku.js";
 
 /** @type {import('../$types.d.ts').ToolDef[]} */
 export let tools;
@@ -24,8 +25,7 @@ let selectedIndex = 0;
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let q = "";
 $: results = tools.filter(
-	(tool) =>
-		!tool.disabled && (q === "" || tool.route.toLocaleLowerCase().includes(q)),
+	(tool) => !tool.disabled && (match(tool.route, q) || match(tool.title, q)),
 );
 
 if (browser) {
@@ -83,21 +83,77 @@ function keydownHandler(event) {
 }
 
 /**
+ * テキストがクエリにマッチするかどうかを判定する
+ *
+ * @param {string} aText
+ * @param {string} aQuery
+ * @returns {boolean} マッチするかどうか
+ */
+function match(aText, aQuery) {
+	const text = filterQuery(aText);
+	const query = filterQuery(aQuery);
+	if (query === "") {
+		return true;
+	}
+	let p = 0;
+	for (const c of query) {
+		const mp = text.indexOf(c, p);
+		if (mp === -1) {
+			return false;
+		}
+		p = mp + 1;
+	}
+	return true;
+}
+
+/**
+ * @param {string} query
+ * @returns {string} 無視する文字を除去した文字列
+ */
+function filterQuery(query) {
+	return katakanaToHiragana(query).toLocaleLowerCase();
+}
+
+/**
  * 入力文字列部分をHTMLハイライトする
  *
- * @param {string} text
- * @param {string} q
+ * @param {string} text ハイライトする文字列
+ * @param {string} query 入力文字列
+ * @returns {string} ハイライトしたHTML
  */
-function highlight(text, q) {
-	if (q === "") {
+function highlight(text, query) {
+	if (query === "") {
 		return text;
 	}
-	const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-	const regex = new RegExp(escaped, "gi");
-	return text.replace(
-		regex,
-		(match) => `<span class="font-bold">${match}</span>`,
-	);
+	const fText = filterQuery(text);
+	const fQuery = filterQuery(query);
+	let html = "";
+	let p = 0;
+	for (const char of fQuery) {
+		const mp = fText.indexOf(char, p);
+		if (mp === -1) {
+			html += escapeHtml(text.slice(p));
+			return html;
+		}
+		html += escapeHtml(text.slice(p, mp));
+		html += `<span class="font-bold">${escapeHtml(text.slice(mp, mp + 1))}</span>`;
+		p = mp + 1;
+	}
+	html += escapeHtml(text.slice(p));
+	return html;
+}
+
+/**
+ * HTMLエスケープする
+ *
+ * @param {string} text
+ * @returns {string} エスケープしたHTML
+ */
+function escapeHtml(text) {
+	return text
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;");
 }
 </script>
 
@@ -105,7 +161,7 @@ function highlight(text, q) {
 	<input
 		type="text"
 		class="text-sm rounded border px-3 py-2 bg-slate-50 w-full"
-		placeholder="ツールを検索{platform == null
+		placeholder="ツールを検索{platform === "server"
 			? ''
 			: `（${platform === 'apple' ? '⌘' : 'Ctrl'}+/）`}"
 		bind:value={q}
@@ -126,7 +182,7 @@ function highlight(text, q) {
 					on:mouseenter={() => (selectedIndex = index)}
 					on:click={() => (open = false)}
 				>
-					<div class="">{tool.title}</div>
+					<div class="">{@html highlight(tool.title, q)}</div>
 					<div class="mt-1 font-mono text-xs opacity-70">
 						{@html highlight(tool.route, q)}
 					</div>
