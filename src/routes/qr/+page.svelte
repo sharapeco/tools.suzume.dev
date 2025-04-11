@@ -7,19 +7,19 @@ import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
 /** @type {string} 入力文字列 */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let input = "";
+let input = $state("");
 
 /** @type {{ to: string, subject: string, body: string }} */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let mailto = { to: "", subject: "", body: "" };
+let mailto = $state({ to: "", subject: "", body: "" });
 
 /** @type {{ ssid: string, password: string }} */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let ssid = { ssid: "", password: "" };
+let ssid = $state({ ssid: "", password: "" });
 
 /** @type {"string" | "mailto" | "ssid"} モード */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let mode = "string";
+let mode = $state("string");
 
 const modes = [
 	{ value: "string", label: "文字列" },
@@ -29,7 +29,7 @@ const modes = [
 
 /** @type {"CRLF" | "LF" | "CR"} 改行コード */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let newline = "CRLF";
+let newline = $state("CRLF");
 
 const newlines = [
 	{ value: "CRLF", label: "CRLF" },
@@ -39,7 +39,7 @@ const newlines = [
 
 /** @type {"normal" | "predefined"} predefined: <def> と <use> を使う */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let drawMethod = "normal";
+let drawMethod = $state("normal");
 
 const drawMethods = [
 	{ value: "normal", label: "通常（Illustratorで使用する場合）" },
@@ -51,26 +51,9 @@ const ECLs = ["L", "M", "Q", "H"];
 const svgSize = 256;
 
 /** @type {string} */
-let copiedECL = "";
+let copiedECL = $state("");
 
-$: content = getInput({ mode, input, mailto, ssid });
 
-$: results =
-	content !== ""
-		? ECLs.map((ecl) => {
-				const svg = buildQRCode(content, ecl, drawMethod);
-				return {
-					content,
-					ecl,
-					svg,
-					url: URL.createObjectURL(
-						new Blob([svg], {
-							type: "image/svg+xml",
-						}),
-					),
-				};
-			})
-		: null;
 
 /**
  * @typedef {object} InputProps
@@ -159,6 +142,23 @@ function copy(result) {
 		copiedECL = "";
 	}, 1200);
 }
+let content = $derived(getInput({ mode, input, mailto, ssid }));
+let results =
+	$derived(content !== ""
+		? ECLs.map((ecl) => {
+				const svg = buildQRCode(content, ecl, drawMethod);
+				return {
+					content,
+					ecl,
+					svg,
+					url: URL.createObjectURL(
+						new Blob([svg], {
+							type: "image/svg+xml",
+						}),
+					),
+				};
+			})
+		: null);
 </script>
 
 <svelte:head>
@@ -166,15 +166,17 @@ function copy(result) {
 </svelte:head>
 
 <SimpleToolLayout title="QRコード生成">
-	<svelte:fragment slot="description">
-		<p class="mt-2">
-			4種のエラー訂正レベルのQRコードを生成し、SVG形式でダウンロードできます。
-		</p>
-		<p class="mt-2">
-			SVGコードをコピーし、Adobe
-			Illustratorなどのグラフィックソフトに直接貼り付けることもできます。
-		</p>
-	</svelte:fragment>
+	{#snippet description()}
+	
+			<p class="mt-2">
+				4種のエラー訂正レベルのQRコードを生成し、SVG形式でダウンロードできます。
+			</p>
+			<p class="mt-2">
+				SVGコードをコピーし、Adobe
+				Illustratorなどのグラフィックソフトに直接貼り付けることもできます。
+			</p>
+		
+	{/snippet}
 
 	<div class="mb-3">
 		<NavPills items={modes} value={mode} on:change={(e) => (mode = e.detail)} />
@@ -186,7 +188,7 @@ function copy(result) {
 			placeholder="内容を入力..."
 			autofocus
 			bind:value={input}
-		/>
+		></textarea>
 		<div class="mt-2">
 			<NavPills
 				title="改行コード"
@@ -217,7 +219,7 @@ function copy(result) {
 				placeholder="本文"
 				bind:value={mailto.body}
 				rows="7"
-			/>
+			></textarea>
 		</div>
 	{:else if mode === "ssid"}
 		<div>
@@ -281,7 +283,7 @@ function copy(result) {
 							<button
 								type="button"
 								class="w-full text-sm py-2 px-1 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
-								on:click={() => download(result)}
+								onclick={() => download(result)}
 							>
 								保存
 							</button>
@@ -290,7 +292,7 @@ function copy(result) {
 							<button
 								type="button"
 								class="w-full text-sm py-2 px-1 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
-								on:click={() => copy(result)}
+								onclick={() => copy(result)}
 							>
 								コピー
 							</button>

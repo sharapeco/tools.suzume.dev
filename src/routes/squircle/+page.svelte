@@ -15,7 +15,7 @@ if (!tool) {
 /** @typedef {import("./params").Params} Params */
 /** @type {Params} */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let params = {
+let params = $state({
 	type: "clothoid",
 	dpi: 300,
 	unit: "px",
@@ -28,7 +28,7 @@ let params = {
 	tension: 0.8,
 	// スーパー楕円用
 	power: 3,
-};
+});
 </script>
 
 <svelte:head>
@@ -36,11 +36,13 @@ let params = {
 </svelte:head>
 
 <SimpleToolLayout title={tool.title}>
-	<svelte:fragment slot="description">
-		<p class="mt-2">
-			クロソイド曲線や、スーパー楕円を用いた（3次ベジエ曲線による近似）角丸図形のSVGを生成します。
-		</p>
-	</svelte:fragment>
+	{#snippet description()}
+	
+			<p class="mt-2">
+				クロソイド曲線や、スーパー楕円を用いた（3次ベジエ曲線による近似）角丸図形のSVGを生成します。
+			</p>
+		
+	{/snippet}
 
 	<div class="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
 		<div class="controls">

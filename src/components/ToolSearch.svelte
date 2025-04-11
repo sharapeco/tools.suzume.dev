@@ -6,27 +6,30 @@ import { getPlatform } from "$lib/platform.js";
 import { browser } from "$app/environment";
 import { katakanaToHiragana } from "$lib/zenkaku.js";
 
-/** @type {import('../$types.d.ts').ToolDef[]} */
-export let tools;
+
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('../$types.d.ts').ToolDef[]} tools
+	 */
+
+	/** @type {Props} */
+	let { tools } = $props();
 
 /** @type {string} */
 const platform = getPlatform();
 
 /** @type {HTMLInputElement|null} */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let inputRef = null;
+let inputRef = $state(null);
 
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let open = false;
+let open = $state(false);
 
-let selectedIndex = 0;
+let selectedIndex = $state(0);
 
 /** @type {string} */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let q = "";
-$: results = tools.filter(
-	(tool) => !tool.disabled && (match(tool.route, q) || match(tool.title, q)),
-);
+let q = $state("");
 
 if (browser) {
 	onMount(() => {
@@ -155,9 +158,12 @@ function escapeHtml(text) {
 		.replace(/</g, "&lt;")
 		.replace(/>/g, "&gt;");
 }
+let results = $derived(tools.filter(
+	(tool) => !tool.disabled && (match(tool.route, q) || match(tool.title, q)),
+));
 </script>
 
-<div class="relative" use:clickOutside on:click_outside={() => (open = false)}>
+<div class="relative" use:clickOutside onclick_outside={() => (open = false)}>
 	<input
 		type="text"
 		class="text-sm rounded border px-3 py-2 bg-slate-50 w-full"
@@ -166,8 +172,8 @@ function escapeHtml(text) {
 			: `（${platform === 'apple' ? '⌘' : 'Ctrl'}+/）`}"
 		bind:value={q}
 		bind:this={inputRef}
-		on:focus={() => (open = true)}
-		on:keydown={keydownHandler}
+		onfocus={() => (open = true)}
+		onkeydown={keydownHandler}
 	/>
 	{#if open}
 		<div
@@ -179,8 +185,8 @@ function escapeHtml(text) {
 					class="block px-3 py-2 rounded text-sm leading-4
 						{index === selectedIndex ? 'text-white bg-indigo-500' : 'text-gray-700 hover:bg-gray-100'}
 					"
-					on:mouseenter={() => (selectedIndex = index)}
-					on:click={() => (open = false)}
+					onmouseenter={() => (selectedIndex = index)}
+					onclick={() => (open = false)}
 				>
 					<div class="">{@html highlight(tool.title, q)}</div>
 					<div class="mt-1 font-mono text-xs opacity-70">

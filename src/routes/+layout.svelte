@@ -2,8 +2,15 @@
 	import "../app.css";
 	import ToolSearch from "../components/ToolSearch.svelte";
 
-	/** @type {import('../$types.d.ts').PageData} */
-	export let data;
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('../$types.d.ts').PageData} data
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { data, children } = $props();
 </script>
 
 <svelte:head />
@@ -32,6 +39,6 @@
 			</nav>
 		</header>
 
-		<slot />
+		{@render children?.()}
 	</div>
 </div>

@@ -4,16 +4,21 @@ import { getSuperEllipse } from "./superellipse";
 
 /** @typedef {import("./params").Params} Params */
 
-/** @type {Params} */
-export let params;
+
+	/**
+	 * @typedef {Object} Props
+	 * @property {Params} params
+	 */
+
+	/** @type {Props} */
+	let { params } = $props();
 
 /** @type {boolean} 「コピーしました」と表示する間 true */
-let copied = false;
+let copied = $state(false);
 
 /** @type {number?} 「コピーしました」タイマー */
 let copiedTimer;
 
-$: svgContent = generate(params);
 
 /**
  * @param {Params} params
@@ -136,6 +141,7 @@ function copySVG() {
 		copied = false;
 	}, 1200);
 }
+let svgContent = $derived(generate(params));
 </script>
 
 <div class="panel">
@@ -147,7 +153,7 @@ function copySVG() {
 			<button
 				type="button"
 				class="w-full text-sm py-2 px-1 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
-				on:click={downloadSVG}
+				onclick={downloadSVG}
 			>
 				保存
 			</button>
@@ -156,7 +162,7 @@ function copySVG() {
 			<button
 				type="button"
 				class="w-full text-sm py-2 px-1 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
-				on:click={copySVG}
+				onclick={copySVG}
 			>
 				コピー
 			</button>

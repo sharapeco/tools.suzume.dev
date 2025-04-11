@@ -5,7 +5,7 @@ import DropImage from "../../components/DropImage.svelte";
 
 /** @type {"encode" | "decode"} モード */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let mode = "encode";
+let mode = $state("encode");
 
 const modes = [
 	{ value: "encode", label: "埋め込む" },
@@ -14,21 +14,21 @@ const modes = [
 
 /** @type {string?} 隠れ蓑画像のURL */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let minoImage = null;
+let minoImage = $state(null);
 
 /** @type {string?} 埋め込む画像のURL */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let srcImage = null;
+let srcImage = $state(null);
 
 /** @type {string?} 出力画像のURL */
-let encodedImage = null;
+let encodedImage = $state(null);
 
 /** @type {string?} 復元の入力画像URL */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let restoreInputImage = null;
+let restoreInputImage = $state(null);
 
 /** @type {string?} 復元された画像のURL */
-let restoreOutputImage = null;
+let restoreOutputImage = $state(null);
 
 /**
  * @param {string} url
@@ -174,11 +174,13 @@ async function decode() {
 </svelte:head>
 
 <SimpleToolLayout title="画像中画像">
-	<svelte:fragment slot="description">
-		<p class="mt-2">
-			画像に画像を埋め込むことができます（ステガノグラフィー）。非可逆変換ですが、リサイズや圧縮にも（ある程度）耐えます。
-		</p>
-	</svelte:fragment>
+	{#snippet description()}
+	
+			<p class="mt-2">
+				画像に画像を埋め込むことができます（ステガノグラフィー）。非可逆変換ですが、リサイズや圧縮にも（ある程度）耐えます。
+			</p>
+		
+	{/snippet}
 
 	<div class="mb-3">
 		<NavPills items={modes} value={mode} on:change={(e) => (mode = e.detail)} />

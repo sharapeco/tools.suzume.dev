@@ -16,8 +16,14 @@ import { plainTextKeymap } from "./plainTextKeymap";
 import { textLinter } from "./linter";
 import tabIcon from "$lib/assets/tab.svg";
 
-/** @type {string} */
-export let input;
+
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} input
+	 */
+
+	/** @type {Props} */
+	let { input = $bindable() } = $props();
 
 const dispatch = createEventDispatcher();
 

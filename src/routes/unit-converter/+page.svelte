@@ -3,15 +3,15 @@
 	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
 	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let converter = converters[0];
+	let converter = $state(converters[0]);
 	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let fromUnit = converter?.units[0];
+	let fromUnit = $state(converter?.units[0]);
 	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let toUnit = converter?.units[1] ?? converter?.units[0];
+	let toUnit = $state(converter?.units[1] ?? converter?.units[0]);
 	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let fromValue = "1";
+	let fromValue = $state("1");
 	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let toValue = convert(fromValue, fromUnit, toUnit);
+	let toValue = $state(convert(fromValue, fromUnit, toUnit));
 </script>
 
 <svelte:head>
@@ -19,15 +19,17 @@
 </svelte:head>
 
 <SimpleToolLayout title="単位換算">
-	<svelte:fragment slot="description">
-		<p class="mt-2">木場潟は兼六園何個分？ さまざまな単位を変換します</p>
-	</svelte:fragment>
+	{#snippet description()}
+	
+			<p class="mt-2">木場潟は兼六園何個分？ さまざまな単位を変換します</p>
+		
+	{/snippet}
 
 	<div class="max-w-lg">
 		<select
 			bind:value={converter}
 			class="w-full bg-slate-50 rounded border px-3 py-2"
-			on:change={() => {
+			onchange={() => {
 				fromUnit = converter.units[0];
 				toUnit = converter.units[1] ?? converter.units[0];
 			}}
@@ -49,14 +51,14 @@
 						type="number"
 						class="w-full bg-slate-50 rounded-t border px-3 py-2 text-xl text-center"
 						bind:value={fromValue}
-						on:input={() => {
+						oninput={() => {
 							toValue = convert(fromValue, fromUnit, toUnit);
 						}}
 					/>
 					<select
 						class="w-full bg-slate-50 rounded-b border border-t-0 px-3 py-2 text-center"
 						bind:value={fromUnit}
-						on:change={() => {
+						onchange={() => {
 							toValue = convert(fromValue, fromUnit, toUnit);
 						}}
 					>
@@ -71,14 +73,14 @@
 						type="number"
 						class="w-full bg-slate-50 rounded-t border px-3 py-2 text-xl text-center"
 						bind:value={toValue}
-						on:input={() => {
+						oninput={() => {
 							fromValue = convert(toValue, toUnit, fromUnit);
 						}}
 					/>
 					<select
 						class="w-full bg-slate-50 rounded-b border border-t-0 px-3 py-2 text-center"
 						bind:value={toUnit}
-						on:change={() => {
+						onchange={() => {
 							toValue = convert(fromValue, fromUnit, toUnit);
 						}}
 					>

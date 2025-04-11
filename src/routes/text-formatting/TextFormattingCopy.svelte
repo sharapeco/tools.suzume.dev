@@ -3,10 +3,16 @@ import { browser } from "$app/environment";
 import { getPlatform } from "$lib/platform";
 import { onDestroy, onMount } from "svelte";
 
-/** @type {string} */
-export let input;
 
-$: paragraphs = input.split(/\n{2,}/).map((aText) => {
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} input
+	 */
+
+	/** @type {Props} */
+	let { input } = $props();
+
+let paragraphs = $derived(input.split(/\n{2,}/).map((aText) => {
 	const text = aText.replace(/\n+$/, "");
 	const divisions = [];
 	for (let pos = 0; pos < text.length; ) {
@@ -40,7 +46,7 @@ $: paragraphs = input.split(/\n{2,}/).map((aText) => {
 		divisions,
 		text,
 	};
-});
+}));
 
 const platform = getPlatform();
 const mod = platform === "apple" ? "Meta" : "Ctrl";
@@ -49,13 +55,13 @@ const mod = platform === "apple" ? "Meta" : "Ctrl";
 const handleModifiers = [mod];
 
 /** @type {Set<string>} */
-let modifiers = new Set();
+let modifiers = $state(new Set());
 
 /** @type {boolean} コピー直後に true になる */
-let copied = false;
+let copied = $state(false);
 
 /** @type {"paragraph" | "word"} */
-$: mode = modifiers.has(mod) ? "word" : "paragraph";
+let mode = $derived(modifiers.has(mod) ? "word" : "paragraph");
 
 if (browser) {
 	onMount(() => {
@@ -126,31 +132,31 @@ function copyText(text) {
 
 <div class="p-4 h-full overflow-auto {copied ? 'copied' : ''}">
 	{#each paragraphs as paragraph}
-		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 		<pre
 			class="mb-4 py-1 whitespace-pre-wrap rounded font-sans {mode === 'paragraph'
 				? 'hover:bg-indigo-100 cursor-pointer'
 				: ''}"
 			tabindex={mode === "paragraph" ? 0 : -1}
-			on:click={(event) => {
+			onclick={(event) => {
 				event.preventDefault();
 				copyParagraph(paragraph);
 			}}
-			on:keydown={(event) => {
+			onkeydown={(event) => {
 				if (event.key === "Enter") {
 					copyParagraph(paragraph);
 				}
-			}}><!-- svelte-ignore a11y-no-static-element-interactions -->{#each paragraph.divisions as div}<span
+			}}><!-- svelte-ignore a11y_no_static_element_interactions -->{#each paragraph.divisions as div}<span
 					class="py-1 rounded {mode === 'word'
 						? 'hover:bg-yellow-200 cursor-pointer'
 						: ''}"
 					tabindex={mode === "word" ? 0 : -1}
-					on:click={(event) => {
+					onclick={(event) => {
 						event.preventDefault();
 						copyDivision(div);
 					}}
-					on:keydown={(event) => {
+					onkeydown={(event) => {
 						if (event.key === "Enter") {
 							copyDivision(div);
 						}

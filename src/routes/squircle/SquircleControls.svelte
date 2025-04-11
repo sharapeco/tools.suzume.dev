@@ -1,5 +1,5 @@
 <script>
-export let params;
+	let { params = $bindable() } = $props();
 </script>
 
 <div class="controls">

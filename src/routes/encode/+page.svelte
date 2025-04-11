@@ -14,12 +14,12 @@ import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
 /** @type {HTMLTextAreaElement|null} */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let inputRef = null;
+let inputRef = $state(null);
 
 /** @type {string} 入力文字列 */
-let input = "";
+let input = $state("");
 
-let copiedName = "";
+let copiedName = $state("");
 
 const sjisEncoder = browser && new NaiveTextEncoder("Shift_JIS", 2);
 const sjisDecoder = browser && new TextDecoder("Shift_JIS");
@@ -116,7 +116,7 @@ const encoders = [
 ];
 
 /** @type {Result[]} */
-$: results = encoders.map((encoder) => {
+let results = $derived(encoders.map((encoder) => {
 	if (!browser) {
 		return {
 			...encoder,
@@ -137,7 +137,7 @@ $: results = encoders.map((encoder) => {
 			error: error instanceof Error ? error.message : String(error),
 		};
 	}
-});
+}));
 
 onMount(() => {
 	if (!inputRef) {
@@ -213,9 +213,9 @@ function setCopiedName(name) {
 		class="w-full bg-slate-50 rounded border px-3 py-2"
 		placeholder="エンコード／デコードする文字列を入力..."
 		autofocus
-		on:input={update}
+		oninput={update}
 		bind:this={inputRef}
-	/>
+	></textarea>
 
 	<div class="mt-5 md:columns-2 md:gap-8">
 		{#each results as result, index}
@@ -232,8 +232,8 @@ function setCopiedName(name) {
 					class:cursor-pointer={result.error != null}
 					tabindex={result.error != null ? 0 : -1}
 					role="button"
-					on:click={(event) => clickHandler(event, result)}
-					on:keydown={(event) => keydownHandler(event, result)}
+					onclick={(event) => clickHandler(event, result)}
+					onkeydown={(event) => keydownHandler(event, result)}
 				>
 					{result.output ?? ""}{result.error ?? ""}&#8203;
 					<span aria-hidden="true" class="absolute top-2 right-2 w-4 mt-1 text-indigo-500 transition opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100">

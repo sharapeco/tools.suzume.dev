@@ -1,20 +1,22 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 import TextFormattingCopy from "./TextFormattingCopy.svelte";
 import TextFormattingEditor from "./TextFormattingEditor.svelte";
 import { formatRules } from "./formatRules";
 import { browser } from "$app/environment";
 
-let input = browser
+let input = $state(browser
 	? (localStorage.getItem("text-formatting.input") ?? "")
-	: "";
+	: "");
 
 /** @type {"edit" | "copy"} */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let mode = "edit";
+let mode = $state("edit");
 
 /** @type {{ [key: string]: string }} */
 // biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-let options = restoreOptions();
+let options = $state(restoreOptions());
 
 function restoreOptions() {
 	const savedOptions = browser
@@ -37,11 +39,11 @@ function updateInput(newValue) {
 	}
 }
 
-$: {
+run(() => {
 	if (browser) {
 		localStorage.setItem("text-formatting.options", JSON.stringify(options));
 	}
-}
+});
 
 function format() {
 	let value = input;
@@ -77,7 +79,7 @@ function format() {
 					? 'text-white bg-indigo-500 border-indigo-600 hover:bg-indigo-500 hover:text-white'
 					: 'text-gray-900 bg-white border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:text-blue-700'}
 				"
-				on:click={() => (mode = "edit")}
+				onclick={() => (mode = "edit")}
 			>
 				入力
 			</button>
@@ -90,7 +92,7 @@ function format() {
 					? 'text-white bg-indigo-500 border-indigo-600 hover:bg-indigo-500 hover:text-white'
 					: 'text-gray-900 bg-white border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:text-blue-700'}
 				"
-				on:click={() => {
+				onclick={() => {
 					format();
 					mode = "copy";
 				}}
@@ -138,7 +140,7 @@ function format() {
 				<button
 					type="button"
 					class="w-full px-4 py-2 text-sm font-medium border rounded-md shadow-sm bg-indigo-500 text-white hover:bg-indigo-600 hover:text-white active:bg-indigo-800 active:text-slate-100"
-					on:click={format}
+					onclick={format}
 				>
 					整形
 				</button>

@@ -3,15 +3,21 @@ import { createEventDispatcher } from "svelte";
 
 /** @typedef {{ value: string, label: string }} Item */
 
-/** @type {string} */
-export let value;
 
-/** @type {Item[]} */
-export let items;
+
+
 
 /** @type {string | null}*/
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-export let title = null;
+
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} value
+	 * @property {Item[]} items
+	 * @property {any} [title] - biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+	 */
+
+	/** @type {Props} */
+	let { value, items, title = null } = $props();
 
 const dispatch = createEventDispatcher();
 
@@ -40,7 +46,7 @@ function onChange(newValue) {
 				"
 				role="tab"
 				aria-selected={item.value === value}
-				on:click={() => onChange(item.value)}
+				onclick={() => onChange(item.value)}
 			>
 				{item.label}
 			</button>

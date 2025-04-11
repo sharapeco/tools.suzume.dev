@@ -12,14 +12,14 @@
 
 	/** @type {HTMLInputElement|null} */
 	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let inputRef = null;
+	let inputRef = $state(null);
 
 	/** @type {Array<Result>} */
-	let results = [];
+	let results = $state([]);
 
 	/** @type {number} */
 	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let hoveredIndex = -1;
+	let hoveredIndex = $state(-1);
 
 	/**
 	 * @param {string} input
@@ -105,25 +105,27 @@
 </svelte:head>
 
 <SimpleToolLayout title="Unicode文字情報">
-	<svelte:fragment slot="description">
-		<p class="mt-2">
-			入力した文字のUnicodeコードポイントや、その文字の情報へのリンクを提供します。
-		</p>
-		<p class="mt-2">
-			文字のかわりに <code class="bg-slate-50 border border-slate-300 rounded p-1"
-				>U+XXXX</code
-			> <code class="bg-slate-50 border border-slate-300 rounded p-1">&#92;uXXXX</code>
-			<code class="bg-slate-50 border border-slate-300 rounded p-1"
-				>&#92;u&#123;XXXXX&#125;</code
-			>
-			の形式でコードポイントを入力することもできます。
-		</p>
-		<p class="mt-2">
-			結果の文字にマウスポインタを合わせた状態で
-			{platform === "apple" ? "⌘" : "Ctrl"}+C
-			を押すと、その文字をクリップボードにコピーできます。
-		</p>
-	</svelte:fragment>
+	{#snippet description()}
+	
+			<p class="mt-2">
+				入力した文字のUnicodeコードポイントや、その文字の情報へのリンクを提供します。
+			</p>
+			<p class="mt-2">
+				文字のかわりに <code class="bg-slate-50 border border-slate-300 rounded p-1"
+					>U+XXXX</code
+				> <code class="bg-slate-50 border border-slate-300 rounded p-1">&#92;uXXXX</code>
+				<code class="bg-slate-50 border border-slate-300 rounded p-1"
+					>&#92;u&#123;XXXXX&#125;</code
+				>
+				の形式でコードポイントを入力することもできます。
+			</p>
+			<p class="mt-2">
+				結果の文字にマウスポインタを合わせた状態で
+				{platform === "apple" ? "⌘" : "Ctrl"}+C
+				を押すと、その文字をクリップボードにコピーできます。
+			</p>
+		
+	{/snippet}
 
 	<input
 		name="input"
@@ -131,7 +133,7 @@
 		class="w-full bg-slate-50 rounded border px-3 py-2"
 		placeholder="調べたい文字またはコードを入力..."
 		autofocus
-		on:input={() => inputRef && update(inputRef.value)}
+		oninput={() => inputRef && update(inputRef.value)}
 		bind:this={inputRef}
 	/>
 
@@ -140,8 +142,8 @@
 			<a
 				href={result.link}
 				class="flex flex-col p-2 rounded hover:bg-blue-50 relative"
-				on:mouseenter={() => (hoveredIndex = index)}
-				on:mouseleave={() => (hoveredIndex = -1)}
+				onmouseenter={() => (hoveredIndex = index)}
+				onmouseleave={() => (hoveredIndex = -1)}
 			>
 				<div class="font-hiragino letter text-4xl text-center">
 					{#if result.sp != null}
