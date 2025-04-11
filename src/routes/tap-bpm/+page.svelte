@@ -8,7 +8,7 @@ let prevTime = -1;
 let count = 0;
 let active = $state(false);
 
-function calculateBpm() {
+function beat() {
 	const now = Date.now();
 	if (startTime === -1 || now - prevTime > 5000) {
 		startTime = now;
@@ -21,6 +21,8 @@ function calculateBpm() {
 		bpm = ((count / elapsed) * 60000).toFixed(1);
 	}
 	prevTime = now;
+
+	beatEffect();
 }
 
 // @ts-ignore
@@ -41,12 +43,8 @@ function handleKeydown(event) {
 
 	if (event.key === " " || event.key === "Enter") {
 		event.preventDefault();
-		calculateBpm();
+		beat();
 	}
-}
-
-function handleTap() {
-	calculateBpm();
 }
 
 function resetBpm() {
@@ -64,6 +62,22 @@ onMount(() => {
 		window.removeEventListener("keydown", handleKeydown);
 	};
 });
+
+/**
+ * タップしたときにボタンに ripple effect を追加
+ */
+function beatEffect() {
+	const button = document.querySelector(".js-tap-button");
+	if (!button) return;
+
+	const ripple = document.createElement("div");
+	ripple.classList.add("ripple");
+	button.appendChild(ripple);
+
+	setTimeout(() => {
+		ripple.remove();
+	}, 1000);
+}
 </script>
 
 <svelte:head>
@@ -89,7 +103,7 @@ onMount(() => {
 
 		<button
 			type="button"
-			onclick={handleTap}
+			onclick={beat}
 			class="js-tap-button bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-8 px-12 rounded-lg text-2xl shadow-lg w-full max-w-md h-48 transition duration-100 active:bg-indigo-700"
 		>
 			Tap!
@@ -122,5 +136,34 @@ onMount(() => {
 		border: 1px solid #e2e8f0;
 		border-bottom-width: 3px;
 		border-radius: 0.375rem;
+	}
+
+	.js-tap-button {
+		position: relative;
+	}
+
+	:global(.ripple) {
+		--ripple-size: 600px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: var(--ripple-size);
+		height: var(--ripple-size);
+		margin: calc(var(--ripple-size) / -2);
+		background-color: rgba(255, 255, 255, 0.15);
+		border-radius: 50%;
+		transform: scale(0);
+		animation: ripple-animation 1s ease-out 1;
+		pointer-events: none;
+	}
+
+	@keyframes ripple-animation {
+		0% {
+			transform: scale(0);
+		}
+		100% {
+			transform: scale(1);
+			opacity: 0;
+		}
 	}
 </style>
