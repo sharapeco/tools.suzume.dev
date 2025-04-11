@@ -14,7 +14,7 @@ let { data, children } = $props();
 
 <svelte:head />
 
-<div class="bg-white lg:pb-4 min-h-full flex-1 grid">
+<div class="bg-white min-h-full flex-1 grid">
 	<div class="mx-auto w-full max-w-screen-2xl px-4 md:px-8 flex flex-col">
 		<header class="md:flex items-center justify-between py-4 md:py-8">
 			<a href="/" class="group inline-flex items-center gap-1 text-base md:text-lg font-bold text-black palt" aria-label="logo">

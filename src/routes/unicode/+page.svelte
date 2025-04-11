@@ -104,25 +104,23 @@ onDestroy(() => {
 
 <SimpleToolLayout title="Unicode文字情報">
 	{#snippet description()}
-
-			<p class="mt-2">
-				入力した文字のUnicodeコードポイントや、その文字の情報へのリンクを提供します。
-			</p>
-			<p class="mt-2">
-				文字のかわりに <code class="bg-slate-50 border border-slate-300 rounded p-1"
-					>U+XXXX</code
-				> <code class="bg-slate-50 border border-slate-300 rounded p-1">&#92;uXXXX</code>
-				<code class="bg-slate-50 border border-slate-300 rounded p-1"
-					>&#92;u&#123;XXXXX&#125;</code
-				>
-				の形式でコードポイントを入力することもできます。
-			</p>
-			<p class="mt-2">
-				結果の文字にマウスポインタを合わせた状態で
-				{platform === "apple" ? "⌘" : "Ctrl"}+C
-				を押すと、その文字をクリップボードにコピーできます。
-			</p>
-
+		<p class="mt-2">
+			入力した文字のUnicodeコードポイントや、その文字の情報へのリンクを提供します。
+		</p>
+		<p class="mt-2">
+			文字のかわりに <code class="bg-slate-50 border border-slate-300 rounded p-1"
+				>U+XXXX</code
+			> <code class="bg-slate-50 border border-slate-300 rounded p-1">&#92;uXXXX</code>
+			<code class="bg-slate-50 border border-slate-300 rounded p-1"
+				>&#92;u&#123;XXXXX&#125;</code
+			>
+			の形式でコードポイントを入力することもできます。
+		</p>
+		<p class="mt-2">
+			結果の文字にマウスポインタを合わせた状態で
+			{platform === "apple" ? "⌘" : "Ctrl"}+C
+			を押すと、その文字をクリップボードにコピーできます。
+		</p>
 	{/snippet}
 
 	<input

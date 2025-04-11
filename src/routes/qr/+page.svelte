@@ -160,15 +160,13 @@ let results = $derived(
 
 <SimpleToolLayout title="QRコード生成">
 	{#snippet description()}
-
-			<p class="mt-2">
-				4種のエラー訂正レベルのQRコードを生成し、SVG形式でダウンロードできます。
-			</p>
-			<p class="mt-2">
-				SVGコードをコピーし、Adobe
-				Illustratorなどのグラフィックソフトに直接貼り付けることもできます。
-			</p>
-
+		<p class="mt-2">
+			4種のエラー訂正レベルのQRコードを生成し、SVG形式でダウンロードできます。
+		</p>
+		<p class="mt-2">
+			SVGコードをコピーし、Adobe
+			Illustratorなどのグラフィックソフトに直接貼り付けることもできます。
+		</p>
 	{/snippet}
 
 	<div class="mb-3">

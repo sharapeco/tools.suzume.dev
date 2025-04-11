@@ -34,21 +34,19 @@ let params = $state({
 	<title>{tool.title}</title>
 </svelte:head>
 
-<SimpleToolLayout title={tool.title}>
+<SimpleToolLayout title={tool.title} minHeight100percent>
 	{#snippet description()}
-
-			<p class="mt-2">
-				クロソイド曲線や、スーパー楕円を用いた（3次ベジエ曲線による近似）角丸図形のSVGを生成します。
-			</p>
-
+		<p class="mt-2">
+			クロソイド曲線や、スーパー楕円を用いた（3次ベジエ曲線による近似）角丸図形のSVGを生成します。
+		</p>
 	{/snippet}
 
-	<div class="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
+	<div class="flex-1 grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
 		<div class="controls">
 			<SquircleControls bind:params />
 		</div>
 		<div
-			class="preview bg-slate-50 rounded-lg p-4 sticky top-8 h-[calc(100vh-232px)] overflow-hidden"
+			class="preview bg-slate-50 rounded-lg p-4 sticky top-8 overflow-hidden"
 		>
 			<SquirclePreview {params} />
 		</div>

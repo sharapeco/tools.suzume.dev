@@ -8,8 +8,8 @@ let converter = $state(defaultConverter);
 
 // 初期単位を安全に設定
 const initialUnits = {
-    from: defaultConverter.units[0],
-    to: defaultConverter.units[1] ?? defaultConverter.units[0]
+	from: defaultConverter.units[0],
+	to: defaultConverter.units[1] ?? defaultConverter.units[0],
 };
 
 let fromUnit = $state(initialUnits.from);
@@ -18,7 +18,7 @@ let fromValue = $state("1");
 let toValue = $state();
 
 $effect(() => {
-    toValue = convert(fromValue, fromUnit, toUnit);
+	toValue = convert(fromValue, fromUnit, toUnit);
 });
 </script>
 
@@ -28,9 +28,7 @@ $effect(() => {
 
 <SimpleToolLayout title="単位換算">
 	{#snippet description()}
-
-			<p class="mt-2">木場潟は兼六園何個分？ さまざまな単位を変換します</p>
-
+		<p class="mt-2">木場潟は兼六園何個分？ さまざまな単位を変換します</p>
 	{/snippet}
 
 	<div class="max-w-lg">

@@ -58,7 +58,7 @@ function format() {
 	<meta name="description" content="DTPやWebページ向けのテキスト整形を行います" />
 </svelte:head>
 
-<main class="pt-2 pb-4 flex-1 flex flex-col">
+<main class="h-[calc(100vh - 200px)] pt-2 pb-4 flex-1 flex flex-col">
 	<header class="mb-4 sm:flex sm:items-baseline">
 		<h1 class="text-gray-800 text-3xl leading-7 font-bold">テキスト整形</h1>
 		<p class="mt-4 sm:my-0 sm:ml-4 text-gray-500">
@@ -100,7 +100,7 @@ function format() {
 		</div>
 	</div>
 
-	<div class="content border border-slate-200 rounded-lg flex">
+	<div class="border border-slate-200 rounded-lg flex">
 		<div class="flex-1 flex flex-col">
 			{#if mode === "edit"}
 				<TextFormattingEditor
@@ -146,10 +146,3 @@ function format() {
 		</div>
 	</div>
 </main>
-
-<style lang="postcss">
-	.content {
-		height: calc(100vh - 200px);
-		overflow: auto;
-	}
-</style>

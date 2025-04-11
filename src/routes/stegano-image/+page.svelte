@@ -169,69 +169,63 @@ async function decode() {
 	<title>画像中画像</title>
 </svelte:head>
 
-<SimpleToolLayout title="画像中画像">
+<SimpleToolLayout title="画像中画像" height100percent>
 	{#snippet description()}
-
-			<p class="mt-2">
-				画像に画像を埋め込むことができます（ステガノグラフィー）。非可逆変換ですが、リサイズや圧縮にも（ある程度）耐えます。
-			</p>
-
+		<p class="mt-2">
+			画像に画像を埋め込むことができます（ステガノグラフィー）。非可逆変換ですが、リサイズや圧縮にも（ある程度）耐えます。
+		</p>
 	{/snippet}
 
-	<div class="mb-3">
-		<NavPills items={modes} value={mode} on:change={(e) => (mode = e.detail)} />
+	<div class="flex-1 flex flex-col">
+		<div class="mb-3">
+			<NavPills items={modes} value={mode} on:change={(e) => (mode = e.detail)} />
+		</div>
+
+		{#if mode === "encode"}
+			<div class="flex-1 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+				<div class="group border p-2 md:p-6">
+					隠れ蓑画像
+					<DropImage
+						onDrop={({ blobURL }) => {
+							minoImage = blobURL;
+							encode();
+						}}
+					/>
+				</div>
+				<div class="group border p-2 md:p-6">
+					隠す画像
+					<DropImage
+						onDrop={({ blobURL }) => {
+							srcImage = blobURL;
+							encode();
+						}}
+					/>
+				</div>
+				<div class="group border p-2 md:p-6">
+					埋め込まれた画像
+					{#if encodedImage != null}
+						<img src={encodedImage} alt="出力" class="max-w-full">
+					{/if}
+				</div>
+			</div>
+		{:else if mode === "decode"}
+			<div class="flex-1 grid gap-4 sm:grid-cols-2">
+				<div class="group border p-2 md:p-6">
+					埋め込まれた画像
+					<DropImage
+						onDrop={({ blobURL }) => {
+							restoreInputImage = blobURL;
+							decode();
+						}}
+					/>
+				</div>
+				<div class="group border p-2 md:p-6">
+					復元された画像
+					{#if restoreOutputImage != null}
+						<img src={restoreOutputImage} alt="出力" class="max-w-full">
+					{/if}
+					</div>
+				</div>
+			{/if}
 	</div>
-
-	{#if mode === "encode"}
-		<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 app-body">
-			<div class="group border p-2 md:p-6">
-				隠れ蓑画像
-				<DropImage
-					onDrop={({ blobURL }) => {
-						minoImage = blobURL;
-						encode();
-					}}
-				/>
-			</div>
-			<div class="group border p-2 md:p-6">
-				隠す画像
-				<DropImage
-					onDrop={({ blobURL }) => {
-						srcImage = blobURL;
-						encode();
-					}}
-				/>
-			</div>
-			<div class="group border p-2 md:p-6">
-				埋め込まれた画像
-				{#if encodedImage != null}
-					<img src={encodedImage} alt="出力" class="max-w-full">
-				{/if}
-			</div>
-		</div>
-	{:else if mode === "decode"}
-		<div class="grid gap-4 sm:grid-cols-2 app-body">
-			<div class="group border p-2 md:p-6">
-				埋め込まれた画像
-				<DropImage
-					onDrop={({ blobURL }) => {
-						restoreInputImage = blobURL;
-						decode();
-					}}
-				/>
-			</div>
-			<div class="group border p-2 md:p-6">
-				復元された画像
-				{#if restoreOutputImage != null}
-					<img src={restoreOutputImage} alt="出力" class="max-w-full">
-				{/if}
-			</div>
-		</div>
-	{/if}
 </SimpleToolLayout>
-
-<style lang="postcss">
-	.app-body {
-		min-height: calc(100vh - 288px);
-	}
-</style>

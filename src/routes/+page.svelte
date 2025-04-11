@@ -22,7 +22,7 @@ let { data } = $props();
 	</div>
 </div>
 
-<div class="grid gap-4 pb-4 sm:grid-cols-2 md:gap-6 xl:grid-cols-3">
+<div class="grid gap-4 pb-4 lg:pb-7 sm:grid-cols-2 md:gap-6 xl:grid-cols-3">
 	{#each data.tools as tool}
 		{#if !tool.disabled}
 			<a
