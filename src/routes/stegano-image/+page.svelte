@@ -183,35 +183,39 @@ async function decode() {
 
 		{#if mode === "encode"}
 			<div class="flex-1 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-				<div class="group border p-2 md:p-6">
-					隠れ蓑画像
+				<div class="group flex flex-col gap-3 border p-2 md:p-6">
+					<label class="text-sm text-neutral-600" for="mino-image">隠れ蓑画像</label>
 					<DropImage
+						id="mino-image"
 						onDrop={({ blobURL }) => {
 							minoImage = blobURL;
 							encode();
 						}}
 					/>
 				</div>
-				<div class="group border p-2 md:p-6">
-					隠す画像
+				<div class="group flex flex-col gap-3 border p-2 md:p-6">
+					<label class="text-sm text-neutral-600" for="src-image">隠す画像</label>
 					<DropImage
+						id="src-image"
 						onDrop={({ blobURL }) => {
 							srcImage = blobURL;
 							encode();
 						}}
 					/>
 				</div>
-				<div class="group border p-2 md:p-6">
-					埋め込まれた画像
+				<div class="group flex flex-col gap-3 border p-2 md:p-6">
+					<label class="text-sm text-neutral-600" for="output-encoded-image">埋め込まれた画像</label>
 					{#if encodedImage != null}
-						<img src={encodedImage} alt="出力" class="max-w-full">
+						<div class="output-image">
+							<img src={encodedImage} alt="出力" class="max-w-full">
+						</div>
 					{/if}
 				</div>
 			</div>
 		{:else if mode === "decode"}
 			<div class="flex-1 grid gap-4 sm:grid-cols-2">
-				<div class="group border p-2 md:p-6">
-					埋め込まれた画像
+				<div class="group flex flex-col gap-3 border p-2 md:p-6">
+					<label class="text-sm text-neutral-600" for="encoded-image">埋め込まれた画像</label>
 					<DropImage
 						onDrop={({ blobURL }) => {
 							restoreInputImage = blobURL;
@@ -219,13 +223,26 @@ async function decode() {
 						}}
 					/>
 				</div>
-				<div class="group border p-2 md:p-6">
-					復元された画像
+				<div class="group flex flex-col gap-3 border p-2 md:p-6">
+					<label class="text-sm text-neutral-600" for="output-decoded-image">復元された画像</label>
 					{#if restoreOutputImage != null}
-						<img src={restoreOutputImage} alt="出力" class="max-w-full">
+						<div class="output-image">
+							<img src={restoreOutputImage} alt="出力" class="max-w-full">
+						</div>
 					{/if}
 					</div>
 				</div>
 			{/if}
 	</div>
 </SimpleToolLayout>
+
+<style lang="postcss">
+	.output-image {
+		flex: 1;
+	}
+	.output-image img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+</style>

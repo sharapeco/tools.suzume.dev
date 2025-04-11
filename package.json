@@ -13,9 +13,9 @@
 	"dependencies": {
 		"@textlint/kernel": "^13.3.3",
 		"@textlint/textlint-plugin-text": "^13.3.3",
+		"file-selector": "^2.1.2",
 		"js-base64": "^3.7.5",
-		"svelte-codemirror-editor": "^1.4.1",
-		"svelte-file-dropzone": "^2.0.9"
+		"svelte-codemirror-editor": "^1.4.1"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",

@@ -37,7 +37,6 @@ let {
 		display: flex;
 		flex-direction: column;
 		height: calc(100vh - 6.375rem);
-		overflow: auto;
 	}
 
 	.minHeight100percent {
