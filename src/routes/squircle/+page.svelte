@@ -14,7 +14,6 @@ if (!tool) {
 
 /** @typedef {import("./params").Params} Params */
 /** @type {Params} */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let params = $state({
 	type: "clothoid",
 	dpi: 300,
@@ -37,11 +36,11 @@ let params = $state({
 
 <SimpleToolLayout title={tool.title}>
 	{#snippet description()}
-	
+
 			<p class="mt-2">
 				クロソイド曲線や、スーパー楕円を用いた（3次ベジエ曲線による近似）角丸図形のSVGを生成します。
 			</p>
-		
+
 	{/snippet}
 
 	<div class="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">

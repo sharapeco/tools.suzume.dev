@@ -6,29 +6,25 @@ import { getPlatform } from "$lib/platform.js";
 import { browser } from "$app/environment";
 import { katakanaToHiragana } from "$lib/zenkaku.js";
 
+/**
+ * @typedef {Object} Props
+ * @property {import('../$types.d.ts').ToolDef[]} tools
+ */
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {import('../$types.d.ts').ToolDef[]} tools
-	 */
-
-	/** @type {Props} */
-	let { tools } = $props();
+/** @type {Props} */
+let { tools } = $props();
 
 /** @type {string} */
 const platform = getPlatform();
 
 /** @type {HTMLInputElement|null} */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let inputRef = $state(null);
 
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let open = $state(false);
 
 let selectedIndex = $state(0);
 
 /** @type {string} */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let q = $state("");
 
 if (browser) {
@@ -158,9 +154,11 @@ function escapeHtml(text) {
 		.replace(/</g, "&lt;")
 		.replace(/>/g, "&gt;");
 }
-let results = $derived(tools.filter(
-	(tool) => !tool.disabled && (match(tool.route, q) || match(tool.title, q)),
-));
+let results = $derived(
+	tools.filter(
+		(tool) => !tool.disabled && (match(tool.route, q) || match(tool.title, q)),
+	),
+);
 </script>
 
 <div class="relative" use:clickOutside onclick_outside={() => (open = false)}>

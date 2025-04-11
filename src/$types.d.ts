@@ -1,6 +1,6 @@
 export type PageData = {
 	tools: ToolDef[];
-}
+};
 
 export type ToolDef = {
 	icon: string;

@@ -1,5 +1,5 @@
 <script>
-	let { params = $bindable() } = $props();
+let { params = $bindable() } = $props();
 </script>
 
 <div class="controls">

@@ -1,17 +1,25 @@
 <script>
-	import { converters, convert } from "./unitConverter";
-	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import { converters, convert } from "./unitConverter";
+import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
-	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let converter = $state(converters[0]);
-	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let fromUnit = $state(converter?.units[0]);
-	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let toUnit = $state(converter?.units[1] ?? converter?.units[0]);
-	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let fromValue = $state("1");
-	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let toValue = $state(convert(fromValue, fromUnit, toUnit));
+/** @type {import("./unitConverter").ConverterDef} */
+const defaultConverter = converters[0];
+let converter = $state(defaultConverter);
+
+// 初期単位を安全に設定
+const initialUnits = {
+    from: defaultConverter.units[0],
+    to: defaultConverter.units[1] ?? defaultConverter.units[0]
+};
+
+let fromUnit = $state(initialUnits.from);
+let toUnit = $state(initialUnits.to);
+let fromValue = $state("1");
+let toValue = $state();
+
+$effect(() => {
+    toValue = convert(fromValue, fromUnit, toUnit);
+});
 </script>
 
 <svelte:head>
@@ -20,9 +28,9 @@
 
 <SimpleToolLayout title="単位換算">
 	{#snippet description()}
-	
+
 			<p class="mt-2">木場潟は兼六園何個分？ さまざまな単位を変換します</p>
-		
+
 	{/snippet}
 
 	<div class="max-w-lg">

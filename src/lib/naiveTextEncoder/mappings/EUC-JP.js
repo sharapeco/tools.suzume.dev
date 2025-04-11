@@ -13304,4 +13304,6 @@ const entries = [
 	["黵", [143, 236, 254]],
 ];
 
-export default new Map(entries.map(([ch, bytes]) => [ch, new Uint8Array(bytes)]));
+export default new Map(
+	entries.map(([ch, bytes]) => [ch, new Uint8Array(bytes)]),
+);

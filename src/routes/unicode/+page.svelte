@@ -1,103 +1,101 @@
 <script>
-	import { browser } from "$app/environment";
-	import { getKey } from "$lib/eventUtil";
-	import { getPlatform } from "$lib/platform";
-	import { onMount, onDestroy } from "svelte";
-	import { specialChars } from "../text-formatting/specialChars";
-	import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import { browser } from "$app/environment";
+import { getKey } from "$lib/eventUtil";
+import { getPlatform } from "$lib/platform";
+import { onMount, onDestroy } from "svelte";
+import { specialChars } from "../text-formatting/specialChars";
+import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
-	/** @typedef {{letter: string, sp?: [string, string], code: string, link: string, copied: boolean}} Result */
+/** @typedef {{letter: string, sp?: [string, string], code: string, link: string, copied: boolean}} Result */
 
-	const platform = getPlatform();
+const platform = getPlatform();
 
-	/** @type {HTMLInputElement|null} */
-	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let inputRef = $state(null);
+/** @type {HTMLInputElement|null} */
+let inputRef = $state(null);
 
-	/** @type {Array<Result>} */
-	let results = $state([]);
+/** @type {Array<Result>} */
+let results = $state([]);
 
-	/** @type {number} */
-	// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	let hoveredIndex = $state(-1);
+/** @type {number} */
+let hoveredIndex = $state(-1);
 
-	/**
-	 * @param {string} input
-	 */
-	function update(input) {
-		const newResults = [];
+/**
+ * @param {string} input
+ */
+function update(input) {
+	const newResults = [];
 
-		const pInput = input.replaceAll(
-			/ *(?:\bU\+([0-9A-Fa-f]{4,6})\b|\\u([0-9A-Fa-f]{4})|\\u\{([0-9A-Fa-f]{1,6})\})/g,
-			(_, c1, c2, c3) => {
-				const hex = c1 ?? c2 ?? c3;
-				const codePoint = Number.parseInt(hex, 16);
-				try {
-					return String.fromCodePoint(codePoint);
-				} catch {
-					return "?";
-				}
+	const pInput = input.replaceAll(
+		/ *(?:\bU\+([0-9A-Fa-f]{4,6})\b|\\u([0-9A-Fa-f]{4})|\\u\{([0-9A-Fa-f]{1,6})\})/g,
+		(_, c1, c2, c3) => {
+			const hex = c1 ?? c2 ?? c3;
+			const codePoint = Number.parseInt(hex, 16);
+			try {
+				return String.fromCodePoint(codePoint);
+			} catch {
+				return "?";
 			}
-		);
-		for (const letter of pInput) {
-			const codePoint = letter.codePointAt(0);
-			if (codePoint === undefined) {
-				continue;
-			}
-			const hex = codePoint.toString(16).padStart(4, "0").toUpperCase();
-			newResults.push({
-				letter,
-				sp: specialChars[codePoint],
-				code: `U+${hex}`,
-				link: `https://www.compart.com/en/unicode/U+${hex}`,
-				copied: false,
-			});
+		},
+	);
+	for (const letter of pInput) {
+		const codePoint = letter.codePointAt(0);
+		if (codePoint === undefined) {
+			continue;
 		}
-
-		results = newResults;
+		const hex = codePoint.toString(16).padStart(4, "0").toUpperCase();
+		newResults.push({
+			letter,
+			sp: specialChars[codePoint],
+			code: `U+${hex}`,
+			link: `https://www.compart.com/en/unicode/U+${hex}`,
+			copied: false,
+		});
 	}
 
-	/**
-	 * @param {KeyboardEvent} event
-	 */
-	function keydownHandler(event) {
-		const key = getKey(event);
-		if (
-			(platform !== "apple" && key === "ctrl+c") ||
-			(platform === "apple" && key === "meta+c")
-		) {
-			const hovered = results[hoveredIndex];
-			if (hovered) {
-				event.preventDefault();
-				navigator.clipboard.writeText(hovered.letter);
+	results = newResults;
+}
 
+/**
+ * @param {KeyboardEvent} event
+ */
+function keydownHandler(event) {
+	const key = getKey(event);
+	if (
+		(platform !== "apple" && key === "ctrl+c") ||
+		(platform === "apple" && key === "meta+c")
+	) {
+		const hovered = results[hoveredIndex];
+		if (hovered) {
+			event.preventDefault();
+			navigator.clipboard.writeText(hovered.letter);
+
+			results = results.map((result, index) => ({
+				...result,
+				copied: index === hoveredIndex,
+			}));
+
+			setTimeout(() => {
 				results = results.map((result, index) => ({
 					...result,
-					copied: index === hoveredIndex,
+					copied: false,
 				}));
-
-				setTimeout(() => {
-					results = results.map((result, index) => ({
-						...result,
-						copied: false,
-					}));
-				}, 1200);
-			}
+			}, 1200);
 		}
 	}
+}
 
-	onMount(() => {
-		if (browser) {
-			inputRef && update(inputRef.value);
-			document.addEventListener("keydown", keydownHandler);
-		}
-	});
+onMount(() => {
+	if (browser) {
+		inputRef && update(inputRef.value);
+		document.addEventListener("keydown", keydownHandler);
+	}
+});
 
-	onDestroy(() => {
-		if (browser) {
-			document.removeEventListener("keydown", keydownHandler);
-		}
-	});
+onDestroy(() => {
+	if (browser) {
+		document.removeEventListener("keydown", keydownHandler);
+	}
+});
 </script>
 
 <svelte:head>
@@ -106,7 +104,7 @@
 
 <SimpleToolLayout title="Unicode文字情報">
 	{#snippet description()}
-	
+
 			<p class="mt-2">
 				入力した文字のUnicodeコードポイントや、その文字の情報へのリンクを提供します。
 			</p>
@@ -124,7 +122,7 @@
 				{platform === "apple" ? "⌘" : "Ctrl"}+C
 				を押すと、その文字をクリップボードにコピーできます。
 			</p>
-		
+
 	{/snippet}
 
 	<input

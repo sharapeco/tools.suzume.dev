@@ -4,21 +4,19 @@ import { getSuperEllipse } from "./superellipse";
 
 /** @typedef {import("./params").Params} Params */
 
+/**
+ * @typedef {Object} Props
+ * @property {Params} params
+ */
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {Params} params
-	 */
-
-	/** @type {Props} */
-	let { params } = $props();
+/** @type {Props} */
+let { params } = $props();
 
 /** @type {boolean} 「コピーしました」と表示する間 true */
 let copied = $state(false);
 
 /** @type {number?} 「コピーしました」タイマー */
 let copiedTimer;
-
 
 /**
  * @param {Params} params

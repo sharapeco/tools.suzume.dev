@@ -3,50 +3,51 @@ import { browser } from "$app/environment";
 import { getPlatform } from "$lib/platform";
 import { onDestroy, onMount } from "svelte";
 
+/**
+ * @typedef {Object} Props
+ * @property {string} input
+ */
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {string} input
-	 */
+/** @type {Props} */
+let { input } = $props();
 
-	/** @type {Props} */
-	let { input } = $props();
-
-let paragraphs = $derived(input.split(/\n{2,}/).map((aText) => {
-	const text = aText.replace(/\n+$/, "");
-	const divisions = [];
-	for (let pos = 0; pos < text.length; ) {
-		const substr = text.substring(pos);
-		let match;
-		// biome-ignore lint/suspicious/noAssignInExpressions: match() の見やすさのため
-		// biome-ignore lint/suspicious/noControlCharactersInRegex: 制御文字を扱うため
-		if ((match = substr.match(/^[\u{0}-\u{08}\u{0B}-ɏ‐-›]+/u))) {
-			divisions.push({
-				type: "latin",
-				text: match[0],
-			});
-			pos += match[0].length;
+let paragraphs = $derived(
+	input.split(/\n{2,}/).map((aText) => {
+		const text = aText.replace(/\n+$/, "");
+		const divisions = [];
+		for (let pos = 0; pos < text.length; ) {
+			const substr = text.substring(pos);
+			let match;
 			// biome-ignore lint/suspicious/noAssignInExpressions: match() の見やすさのため
 			// biome-ignore lint/suspicious/noControlCharactersInRegex: 制御文字を扱うため
-		} else if ((match = substr.match(/^[^\u{0}-ɏ‐-›]+/u))) {
-			divisions.push({
-				type: "cjk",
-				text: match[0],
-			});
-			pos += match[0].length;
-		} else {
-			divisions.push({
-				type: "control",
-				text: text.substring(pos, pos + 1),
-			});
-			pos++;
+			if ((match = substr.match(/^[\u{0}-\u{08}\u{0B}-ɏ‐-›]+/u))) {
+				divisions.push({
+					type: "latin",
+					text: match[0],
+				});
+				pos += match[0].length;
+				// biome-ignore lint/suspicious/noAssignInExpressions: match() の見やすさのため
+				// biome-ignore lint/suspicious/noControlCharactersInRegex: 制御文字を扱うため
+			} else if ((match = substr.match(/^[^\u{0}-ɏ‐-›]+/u))) {
+				divisions.push({
+					type: "cjk",
+					text: match[0],
+				});
+				pos += match[0].length;
+			} else {
+				divisions.push({
+					type: "control",
+					text: text.substring(pos, pos + 1),
+				});
+				pos++;
+			}
 		}
-	}
-	return {
-		divisions,
-		text,
-	};
-}));
+		return {
+			divisions,
+			text,
+		};
+	}),
+);
 
 const platform = getPlatform();
 const mod = platform === "apple" ? "Meta" : "Ctrl";
@@ -61,7 +62,7 @@ let modifiers = $state(new Set());
 let copied = $state(false);
 
 /** @type {"paragraph" | "word"} */
-let mode = $derived(modifiers.has(mod) ? "word" : "paragraph");
+let mode = $state("paragraph");
 
 if (browser) {
 	onMount(() => {
@@ -75,14 +76,17 @@ if (browser) {
 	});
 }
 
+function updateMode() {
+	mode = modifiers.has(mod) ? "word" : "paragraph";
+}
+
 /**
  * @param {KeyboardEvent} event
  */
 function keydownHandler(event) {
 	if (handleModifiers.includes(event.key)) {
 		modifiers.add(event.key);
-		// biome-ignore lint/correctness/noSelfAssign: Svelte でデータを更新するため
-		modifiers = modifiers;
+		updateMode();
 	}
 }
 
@@ -92,8 +96,7 @@ function keydownHandler(event) {
 function keyupHandler(event) {
 	if (handleModifiers.includes(event.key)) {
 		modifiers.delete(event.key);
-		// biome-ignore lint/correctness/noSelfAssign: Svelte でデータを更新するため
-		modifiers = modifiers;
+		updateMode();
 	}
 }
 

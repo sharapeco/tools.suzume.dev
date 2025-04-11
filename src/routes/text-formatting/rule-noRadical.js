@@ -19,8 +19,11 @@ export default function noRadical(context) {
 				report(
 					node,
 					new RuleError("Found CJK radical supplement", {
-						padding: locator.range([match.index, match.index + match[0].length]),
-					})
+						padding: locator.range([
+							match.index,
+							match.index + match[0].length,
+						]),
+					}),
 				);
 			}
 
@@ -29,12 +32,15 @@ export default function noRadical(context) {
 				report(
 					node,
 					new RuleError("Found Kangxi radical", {
-						padding: locator.range([match.index, match.index + match[0].length]),
+						padding: locator.range([
+							match.index,
+							match.index + match[0].length,
+						]),
 						fix: fixer.replaceTextRange(
 							[match.index, match.index + match[0].length],
-							match[0].normalize("NFKC")
+							match[0].normalize("NFKC"),
 						),
-					})
+					}),
 				);
 			}
 		},

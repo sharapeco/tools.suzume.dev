@@ -1,14 +1,13 @@
 <script>
 import Dropzone from "svelte-file-dropzone";
 
+/**
+ * @typedef {Object} Props
+ * @property {({ file, blobURL }: { file: File, blobURL: string }) => any} onDrop
+ */
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {({ file, blobURL }: { file: File, blobURL: string }) => any} onDrop
-	 */
-
-	/** @type {Props} */
-	let { onDrop } = $props();
+/** @type {Props} */
+let { onDrop } = $props();
 
 let fileOver = $state(false);
 

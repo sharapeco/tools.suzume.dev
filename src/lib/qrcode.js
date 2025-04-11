@@ -63,7 +63,12 @@ QRCodeModel.prototype = {
 		this.dataCache = null;
 	},
 	isDark: function (row, col) {
-		if (row < 0 || this.moduleCount <= row || col < 0 || this.moduleCount <= col) {
+		if (
+			row < 0 ||
+			this.moduleCount <= row ||
+			col < 0 ||
+			this.moduleCount <= col
+		) {
 			throw new Error(row + "," + col);
 		}
 		return this.modules[row][col];
@@ -96,7 +101,7 @@ QRCodeModel.prototype = {
 			this.dataCache = QRCodeModel.createData(
 				this.typeNumber,
 				this.errorCorrectLevel,
-				this.dataList
+				this.dataList,
 			);
 		}
 		this.mapData(this.dataCache, maskPattern);
@@ -177,13 +182,7 @@ QRCodeModel.prototype = {
 				}
 				for (var r = -2; r <= 2; r++) {
 					for (var c = -2; c <= 2; c++) {
-						if (
-							r == -2 ||
-							r == 2 ||
-							c == -2 ||
-							c == 2 ||
-							(r == 0 && c == 0)
-						) {
+						if (r == -2 || r == 2 || c == -2 || c == 2 || (r == 0 && c == 0)) {
 							this.modules[row + r][col + c] = true;
 						} else {
 							this.modules[row + r][col + c] = false;
@@ -286,7 +285,7 @@ QRCodeModel.createData = function (typeNumber, errorCorrectLevel, dataList) {
 				buffer.getLengthInBits() +
 				">" +
 				totalDataCount * 8 +
-				")"
+				")",
 		);
 	}
 	if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
@@ -414,20 +413,31 @@ var QRUtil = {
 		[6, 26, 54, 82, 110, 138, 166],
 		[6, 30, 58, 86, 114, 142, 170],
 	],
-	G15: (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0),
-	G18: (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0),
+	G15:
+		(1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0),
+	G18:
+		(1 << 12) |
+		(1 << 11) |
+		(1 << 10) |
+		(1 << 9) |
+		(1 << 8) |
+		(1 << 5) |
+		(1 << 2) |
+		(1 << 0),
 	G15_MASK: (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1),
 	getBCHTypeInfo: function (data) {
 		var d = data << 10;
 		while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) >= 0) {
-			d ^= QRUtil.G15 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15));
+			d ^=
+				QRUtil.G15 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15));
 		}
 		return ((data << 10) | d) ^ QRUtil.G15_MASK;
 	},
 	getBCHTypeNumber: function (data) {
 		var d = data << 12;
 		while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) >= 0) {
-			d ^= QRUtil.G18 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18));
+			d ^=
+				QRUtil.G18 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18));
 		}
 		return (data << 12) | d;
 	},
@@ -593,7 +603,8 @@ var QRUtil = {
 				}
 			}
 		}
-		var ratio = Math.abs((100 * darkCount) / moduleCount / moduleCount - 50) / 5;
+		var ratio =
+			Math.abs((100 * darkCount) / moduleCount / moduleCount - 50) / 5;
 		lostPoint += ratio * 10;
 		return lostPoint;
 	},
@@ -654,7 +665,9 @@ QRPolynomial.prototype = {
 		var num = new Array(this.getLength() + e.getLength() - 1);
 		for (var i = 0; i < this.getLength(); i++) {
 			for (var j = 0; j < e.getLength(); j++) {
-				num[i + j] ^= QRMath.gexp(QRMath.glog(this.get(i)) + QRMath.glog(e.get(j)));
+				num[i + j] ^= QRMath.gexp(
+					QRMath.glog(this.get(i)) + QRMath.glog(e.get(j)),
+				);
 			}
 		}
 		return new QRPolynomial(num, 0);
@@ -847,7 +860,7 @@ QRRSBlock.getRSBlocks = function (typeNumber, errorCorrectLevel) {
 			"bad rs block @ typeNumber:" +
 				typeNumber +
 				"/errorCorrectLevel:" +
-				errorCorrectLevel
+				errorCorrectLevel,
 		);
 	}
 	var length = rsBlock.length / 3;
@@ -899,7 +912,7 @@ QRBitBuffer.prototype = {
 			this.buffer.push(0);
 		}
 		if (bit) {
-			this.buffer[bufIndex] |= 0x80 >>> this.length % 8;
+			this.buffer[bufIndex] |= 0x80 >>> (this.length % 8);
 		}
 		this.length++;
 	},
@@ -981,7 +994,10 @@ export function QRCode(options) {
 		throw new Error("Expected 'content' as string!");
 	}
 
-	if (this.options.content.length === 0 /* || this.options.content.length > 7089 */) {
+	if (
+		this.options.content.length ===
+		0 /* || this.options.content.length > 7089 */
+	) {
 		throw new Error("Expected 'content' to be non-empty!");
 	}
 
@@ -990,7 +1006,9 @@ export function QRCode(options) {
 	}
 
 	if (!(this.options.width > 0) || !(this.options.height > 0)) {
-		throw new Error("Expected 'width' or 'height' value to be higher than zero!");
+		throw new Error(
+			"Expected 'width' or 'height' value to be higher than zero!",
+		);
 	}
 
 	//Gets the error correction level
@@ -1023,7 +1041,7 @@ export function QRCode(options) {
 			var table = QRCodeLimitLength[i];
 			if (!table) {
 				throw new Error(
-					"Content too long: expected " + limit + " but got " + length
+					"Content too long: expected " + limit + " but got " + length,
 				);
 			}
 
@@ -1107,20 +1125,23 @@ QRCode.prototype.svg = function (opt) {
 
 	//Apply <?xml...?> declaration in SVG?
 	var xmlDeclaration =
-		typeof options.xmlDeclaration != "undefined" ? !!options.xmlDeclaration : true;
+		typeof options.xmlDeclaration != "undefined"
+			? !!options.xmlDeclaration
+			: true;
 
 	//Populate with predefined shape instead of "rect" elements, thanks to @kkocdko
-	var predefined = typeof options.predefined != "undefined" ? !!options.predefined : false;
+	var predefined =
+		typeof options.predefined != "undefined" ? !!options.predefined : false;
 	var defs = predefined
 		? indent +
-		  '<defs><path id="qrmodule" d="M0 0 h' +
-		  ysize +
-		  " v" +
-		  xsize +
-		  ' H0 z" style="fill:' +
-		  options.color +
-		  ';shape-rendering:crispEdges;" /></defs>' +
-		  EOL
+			'<defs><path id="qrmodule" d="M0 0 h' +
+			ysize +
+			" v" +
+			xsize +
+			' H0 z" style="fill:' +
+			options.color +
+			';shape-rendering:crispEdges;" /></defs>' +
+			EOL
 		: "";
 
 	//Background rectangle

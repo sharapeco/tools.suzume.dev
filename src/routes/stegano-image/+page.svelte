@@ -4,7 +4,6 @@ import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 import DropImage from "../../components/DropImage.svelte";
 
 /** @type {"encode" | "decode"} モード */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let mode = $state("encode");
 
 const modes = [
@@ -13,18 +12,15 @@ const modes = [
 ];
 
 /** @type {string?} 隠れ蓑画像のURL */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let minoImage = $state(null);
 
 /** @type {string?} 埋め込む画像のURL */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let srcImage = $state(null);
 
 /** @type {string?} 出力画像のURL */
 let encodedImage = $state(null);
 
 /** @type {string?} 復元の入力画像URL */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let restoreInputImage = $state(null);
 
 /** @type {string?} 復元された画像のURL */
@@ -175,11 +171,11 @@ async function decode() {
 
 <SimpleToolLayout title="画像中画像">
 	{#snippet description()}
-	
+
 			<p class="mt-2">
 				画像に画像を埋め込むことができます（ステガノグラフィー）。非可逆変換ですが、リサイズや圧縮にも（ある程度）耐えます。
 			</p>
-		
+
 	{/snippet}
 
 	<div class="mb-3">

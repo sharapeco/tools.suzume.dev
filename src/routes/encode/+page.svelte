@@ -13,7 +13,6 @@ import { normalize } from "$lib/zenkaku";
 import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
 /** @type {HTMLTextAreaElement|null} */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let inputRef = $state(null);
 
 /** @type {string} 入力文字列 */
@@ -116,28 +115,30 @@ const encoders = [
 ];
 
 /** @type {Result[]} */
-let results = $derived(encoders.map((encoder) => {
-	if (!browser) {
-		return {
-			...encoder,
-			output: "",
-			error: null,
-		};
-	}
-	try {
-		return {
-			...encoder,
-			output: encoder.fn(input),
-			error: null,
-		};
-	} catch (error) {
-		return {
-			...encoder,
-			output: null,
-			error: error instanceof Error ? error.message : String(error),
-		};
-	}
-}));
+let results = $derived(
+	encoders.map((encoder) => {
+		if (!browser) {
+			return {
+				...encoder,
+				output: "",
+				error: null,
+			};
+		}
+		try {
+			return {
+				...encoder,
+				output: encoder.fn(input),
+				error: null,
+			};
+		} catch (error) {
+			return {
+				...encoder,
+				output: null,
+				error: error instanceof Error ? error.message : String(error),
+			};
+		}
+	}),
+);
 
 onMount(() => {
 	if (!inputRef) {

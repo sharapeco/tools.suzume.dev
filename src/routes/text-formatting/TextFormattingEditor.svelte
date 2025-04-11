@@ -16,14 +16,13 @@ import { plainTextKeymap } from "./plainTextKeymap";
 import { textLinter } from "./linter";
 import tabIcon from "$lib/assets/tab.svg";
 
+/**
+ * @typedef {Object} Props
+ * @property {string} input
+ */
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {string} input
-	 */
-
-	/** @type {Props} */
-	let { input = $bindable() } = $props();
+/** @type {Props} */
+let { input = $bindable() } = $props();
 
 const dispatch = createEventDispatcher();
 

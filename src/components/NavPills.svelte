@@ -3,21 +3,17 @@ import { createEventDispatcher } from "svelte";
 
 /** @typedef {{ value: string, label: string }} Item */
 
-
-
-
-
 /** @type {string | null}*/
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {string} value
-	 * @property {Item[]} items
-	 * @property {any} [title] - biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
-	 */
+/**
+ * @typedef {Object} Props
+ * @property {string} value
+ * @property {Item[]} items
+ * @property {any} [title] - biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
+ */
 
-	/** @type {Props} */
-	let { value, items, title = null } = $props();
+/** @type {Props} */
+let { value, items, title = null } = $props();
 
 const dispatch = createEventDispatcher();
 

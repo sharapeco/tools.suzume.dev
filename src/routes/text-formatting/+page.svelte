@@ -1,21 +1,19 @@
 <script>
-	import { run } from 'svelte/legacy';
+import { run } from "svelte/legacy";
 
 import TextFormattingCopy from "./TextFormattingCopy.svelte";
 import TextFormattingEditor from "./TextFormattingEditor.svelte";
 import { formatRules } from "./formatRules";
 import { browser } from "$app/environment";
 
-let input = $state(browser
-	? (localStorage.getItem("text-formatting.input") ?? "")
-	: "");
+let input = $state(
+	browser ? (localStorage.getItem("text-formatting.input") ?? "") : "",
+);
 
 /** @type {"edit" | "copy"} */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let mode = $state("edit");
 
 /** @type {{ [key: string]: string }} */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let options = $state(restoreOptions());
 
 function restoreOptions() {

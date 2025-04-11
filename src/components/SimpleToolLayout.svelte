@@ -1,14 +1,13 @@
 <script>
+/**
+ * @typedef {Object} Props
+ * @property {any} title
+ * @property {import('svelte').Snippet} [description]
+ * @property {import('svelte').Snippet} [children]
+ */
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {any} title
-	 * @property {import('svelte').Snippet} [description]
-	 * @property {import('svelte').Snippet} [children]
-	 */
-
-	/** @type {Props} */
-	let { title, description, children } = $props();
+/** @type {Props} */
+let { title, description, children } = $props();
 </script>
 
 <main class="pt-2 pb-4">

@@ -21,7 +21,7 @@ export default function noDumbQuotes(context) {
 					node,
 					new RuleError("Found dumb quote", {
 						index: match.index,
-					})
+					}),
 				);
 			}
 		},

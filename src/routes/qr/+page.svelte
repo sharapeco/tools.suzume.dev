@@ -6,19 +6,15 @@ import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 /** @typedef {{ content: string, ecl: string, svg: string, url: string }} Result */
 
 /** @type {string} 入力文字列 */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let input = $state("");
 
 /** @type {{ to: string, subject: string, body: string }} */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let mailto = $state({ to: "", subject: "", body: "" });
 
 /** @type {{ ssid: string, password: string }} */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let ssid = $state({ ssid: "", password: "" });
 
 /** @type {"string" | "mailto" | "ssid"} モード */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let mode = $state("string");
 
 const modes = [
@@ -28,7 +24,6 @@ const modes = [
 ];
 
 /** @type {"CRLF" | "LF" | "CR"} 改行コード */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let newline = $state("CRLF");
 
 const newlines = [
@@ -38,7 +33,6 @@ const newlines = [
 ];
 
 /** @type {"normal" | "predefined"} predefined: <def> と <use> を使う */
-// biome-ignore lint/style/useConst: Svelte で書き込みに用いるため
 let drawMethod = $state("normal");
 
 const drawMethods = [
@@ -52,8 +46,6 @@ const svgSize = 256;
 
 /** @type {string} */
 let copiedECL = $state("");
-
-
 
 /**
  * @typedef {object} InputProps
@@ -143,8 +135,8 @@ function copy(result) {
 	}, 1200);
 }
 let content = $derived(getInput({ mode, input, mailto, ssid }));
-let results =
-	$derived(content !== ""
+let results = $derived(
+	content !== ""
 		? ECLs.map((ecl) => {
 				const svg = buildQRCode(content, ecl, drawMethod);
 				return {
@@ -158,7 +150,8 @@ let results =
 					),
 				};
 			})
-		: null);
+		: null,
+);
 </script>
 
 <svelte:head>
@@ -167,7 +160,7 @@ let results =
 
 <SimpleToolLayout title="QRコード生成">
 	{#snippet description()}
-	
+
 			<p class="mt-2">
 				4種のエラー訂正レベルのQRコードを生成し、SVG形式でダウンロードできます。
 			</p>
@@ -175,7 +168,7 @@ let results =
 				SVGコードをコピーし、Adobe
 				Illustratorなどのグラフィックソフトに直接貼り付けることもできます。
 			</p>
-		
+
 	{/snippet}
 
 	<div class="mb-3">

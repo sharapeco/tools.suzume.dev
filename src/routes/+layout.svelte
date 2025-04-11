@@ -1,16 +1,15 @@
 <script>
-	import "../app.css";
-	import ToolSearch from "../components/ToolSearch.svelte";
+import "../app.css";
+import ToolSearch from "../components/ToolSearch.svelte";
 
-	
-	/**
-	 * @typedef {Object} Props
-	 * @property {import('../$types.d.ts').PageData} data
-	 * @property {import('svelte').Snippet} [children]
-	 */
+/**
+ * @typedef {Object} Props
+ * @property {import('../$types.d.ts').PageData} data
+ * @property {import('svelte').Snippet} [children]
+ */
 
-	/** @type {Props} */
-	let { data, children } = $props();
+/** @type {Props} */
+let { data, children } = $props();
 </script>
 
 <svelte:head />
