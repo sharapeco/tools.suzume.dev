@@ -3,26 +3,41 @@ import { onMount } from "svelte";
 import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
 
 let bpm = $state("--");
+let bps = $state("--");
+let msec = $state("--");
 let startTime = -1;
-let prevTime = -1;
 let count = 0;
 let active = $state(false);
+let inactivateTid = 0;
 
 function beat() {
 	const now = Date.now();
-	if (startTime === -1 || now - prevTime > 5000) {
+	if (startTime === -1) {
 		startTime = now;
 		count = 0;
 		active = true;
 		bpm = "--";
+		bps = "--";
 	} else {
 		count++;
 		const elapsed = now - startTime;
-		bpm = ((count / elapsed) * 60000).toFixed(1);
+		const bpmValue = (count / elapsed) * 60000;
+		bpm = bpmValue.toFixed(1);
+		bps = (bpmValue / 60).toFixed(2);
+		msec = (60000 / bpmValue).toFixed(1);
 	}
-	prevTime = now;
 
 	beatEffect();
+
+	if (inactivateTid) {
+		clearTimeout(inactivateTid);
+	}
+	inactivateTid = setTimeout(() => inactivate(), 5000);
+}
+
+function inactivate() {
+	startTime = -1;
+	active = false;
 }
 
 // @ts-ignore
@@ -45,14 +60,22 @@ function handleKeydown(event) {
 		event.preventDefault();
 		beat();
 	}
+	if (event.key === "R" || event.key === "r") {
+		resetBpm();
+	}
 }
 
 function resetBpm() {
 	bpm = "--";
 	startTime = -1;
-	prevTime = -1;
 	count = 0;
 	active = false;
+
+	/** @type {HTMLButtonElement?} */
+	const button = document.querySelector(".js-tap-button");
+	if (button) {
+		button.focus();
+	}
 }
 
 onMount(() => {
@@ -89,16 +112,17 @@ function beatEffect() {
 		<p class="mt-2">
 			ボタンのタップまたはキーボードの <kbd>Space</kbd> <kbd>Enter</kbd> を押すことで、BPMを計測します。
 		</p>
-		<p class="mt-2">5秒以上間隔が空くとBPMがリセットされます</p>
+		<p class="mt-2"><kbd>R</kbd> キーを押すか、5秒以上間隔が空くとBPMがリセットされます</p>
 	{/snippet}
 
 	<div class="flex flex-col items-center justify-center gap-6 py-8">
-		<div
-			class="text-2xl md:text-4xl font-bold mb-8 min-h-16 {active
-				? 'text-indigo-600'
-				: ''}"
-		>
-			<span class="text-4xl md:text-6xl">{bpm}</span> BPM
+		<div class="mb-8 min-h-16 text-center {active ? 'text-indigo-600' : 'text-neutral-600'}">
+			<div class="text-2xl md:text-4xl font-bold">
+				<span class="text-4xl md:text-6xl">{bpm}</span> BPM
+			</div>
+			<div class="mt-2">
+				<span>{bps}</span> Hz ({msec} ms)
+			</div>
 		</div>
 
 		<button
