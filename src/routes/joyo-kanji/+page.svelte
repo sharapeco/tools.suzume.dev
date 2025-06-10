@@ -118,7 +118,7 @@ function update(input) {
 	.letter {
 		font-size: 180%;
 		line-height: 1;
-		padding-bottom: 0.75em;
+		margin-bottom: 0.75em;
 	}
 
 	.kanji {
