@@ -58,7 +58,7 @@ export const tools = [
 		icon: "漢",
 		title: "常用漢字チェッカー",
 		route: "/joyo-kanji",
-		description: "テキストに常用漢字表にない漢字・人名用漢字が含まれているか調べます。教育漢字の配当学年も分かります",
+		description: "常用漢字でない漢字、人名用漢字、教育漢字の配当学年を調べます",
 		disabled: false,
 	},
 	{

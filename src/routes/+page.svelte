@@ -27,7 +27,7 @@ let { data } = $props();
 		{#if !tool.disabled}
 			<a
 				href={tool.route}
-				class="group flex gap-4 md:gap-6 rounded-lg border p-4 md:p-6"
+				class="group flex gap-4 lg:gap-6 rounded-lg border p-4 lg:p-5"
 			>
 				<div
 					class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg md:h-14 md:w-14 md:rounded-xl
