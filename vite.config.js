@@ -7,6 +7,6 @@ export default defineConfig({
 		exclude: ["codemirror", "@codemirror/basic-setup"]
 	},
 	define: {
-		'process.env': {}
+		'process.env.TIMING': false,
 	}
 });
