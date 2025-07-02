@@ -8,13 +8,15 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch"
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+		"postinstall": "patch-package"
 	},
 	"dependencies": {
 		"@textlint/kernel": "^13.3.3",
 		"@textlint/textlint-plugin-text": "^13.3.3",
 		"file-selector": "^2.1.2",
 		"js-base64": "^3.7.5",
+		"patch-package": "^8.0.0",
 		"svelte-codemirror-editor": "^1.4.1"
 	},
 	"devDependencies": {

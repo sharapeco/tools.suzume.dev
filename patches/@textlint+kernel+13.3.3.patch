@@ -1,0 +1,13 @@
+diff --git a/node_modules/@textlint/kernel/lib/src/util/timing.js b/node_modules/@textlint/kernel/lib/src/util/timing.js
+index f023c0f..15d6596 100644
+--- a/node_modules/@textlint/kernel/lib/src/util/timing.js
++++ b/node_modules/@textlint/kernel/lib/src/util/timing.js
+@@ -33,7 +33,7 @@ function alignLeft(str, len, ch) {
+ function alignRight(str, len, ch) {
+     return new Array(len - str.length + 1).join(ch || " ") + str;
+ }
+-const enabled = Boolean(process.env.TIMING);
++const enabled = Boolean(process?.env?.TIMING);
+ const HEADERS = ["Rule", "Time (ms)", "Relative"];
+ const ALIGN = [alignLeft, alignRight, alignRight];
+ /* istanbul ignore next */
