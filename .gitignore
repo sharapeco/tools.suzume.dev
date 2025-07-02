@@ -1,7 +1,11 @@
 .DS_Store
+Thumbs.db
+Desktop.ini
+
 node_modules
 /build
 /.svelte-kit
+/.wrangler
 /package
 /work
 .env
