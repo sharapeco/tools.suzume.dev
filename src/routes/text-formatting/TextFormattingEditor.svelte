@@ -1,6 +1,8 @@
 <script>
 import { createEventDispatcher } from "svelte";
+console.log("TextFormattingEditor.svelte:3");
 import CodeMirror from "svelte-codemirror-editor";
+console.log("TextFormattingEditor.svelte:5");
 import {
 	lineNumbers,
 	highlightActiveLine,
@@ -8,9 +10,13 @@ import {
 	drawSelection,
 	dropCursor,
 } from "@codemirror/view";
+console.log("TextFormattingEditor.svelte:13");
 import { history } from "@codemirror/commands";
+console.log("TextFormattingEditor.svelte:15");
 import { EditorState } from "@codemirror/state";
+console.log("TextFormattingEditor.svelte:17");
 import { highlightSelectionMatches } from "@codemirror/search";
+console.log("TextFormattingEditor.svelte:19");
 import { specialCharsHighlighter } from "./specialCharsHighlighter";
 import { plainTextKeymap } from "./plainTextKeymap";
 import { textLinter } from "./linter";
