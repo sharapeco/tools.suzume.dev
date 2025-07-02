@@ -24,7 +24,7 @@ function restoreOptions() {
 	} catch (e) {
 		console.error("Failed to restore options:", e);
 	}
-	return formatRules.reduce((options, rule) => {
+	return (formatRules ?? []).reduce((options, rule) => {
 		// @ts-ignore
 		options[rule.id] = savedOptions[rule.id] ?? rule.default;
 		return options;
