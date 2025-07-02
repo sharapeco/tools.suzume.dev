@@ -6,6 +6,9 @@ import TextFormattingEditor from "./TextFormattingEditor.svelte";
 import { formatRules } from "./formatRules";
 import { browser } from "$app/environment";
 
+// プリレンダリングを無効にすることで500エラー回避
+export const prerender = false;
+
 let input = $state(
 	browser ? (localStorage.getItem("text-formatting.input") ?? "") : "",
 );
