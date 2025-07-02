@@ -1,6 +1,10 @@
+console.log("linter.js:1");
 import { linter } from "@codemirror/lint";
+console.log("linter.js:3");
 import { TextlintKernel } from "@textlint/kernel";
+console.log("linter.js:5");
 import textlintText from "@textlint/textlint-plugin-text";
+console.log("linter.js:7");
 import noControlCharacter from "./rule-noControlCharacter";
 import noDumbQuotes from "./rule-noDumpQuotes";
 import noRadical from "./rule-noRadical";
