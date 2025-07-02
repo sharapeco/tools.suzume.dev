@@ -1,17 +1,13 @@
 <script>
-import { run } from "svelte/legacy";
-
+import { restoreFromStorage, saveToStorage } from "$lib/storage";
 import TextFormattingCopy from "./TextFormattingCopy.svelte";
 import TextFormattingEditor from "./TextFormattingEditor.svelte";
 import { formatRules } from "./formatRules";
-import { browser } from "$app/environment";
 
 // プリレンダリングを無効にすることで500エラー回避
 export const prerender = false;
 
-let input = $state(
-	browser ? (localStorage.getItem("text-formatting.input") ?? "") : "",
-);
+let input = $state(restoreFromStorage("text-formatting.input", ""));
 
 /** @type {"edit" | "copy"} */
 let mode = $state("edit");
@@ -20,9 +16,14 @@ let mode = $state("edit");
 let options = $state(restoreOptions());
 
 function restoreOptions() {
-	const savedOptions = browser
-		? JSON.parse(localStorage.getItem("text-formatting.options") ?? "{}")
-		: {};
+	let savedOptions = {};
+	try {
+		savedOptions = JSON.parse(
+			restoreFromStorage("text-formatting.options", "{}"),
+		);
+	} catch (e) {
+		console.error("Failed to restore options:", e);
+	}
 	return formatRules.reduce((options, rule) => {
 		// @ts-ignore
 		options[rule.id] = savedOptions[rule.id] ?? rule.default;
@@ -35,15 +36,11 @@ function restoreOptions() {
  */
 function updateInput(newValue) {
 	input = newValue;
-	if (browser) {
-		localStorage.setItem("text-formatting.input", input);
-	}
+	saveToStorage("text-formatting.input", input);
 }
 
-run(() => {
-	if (browser) {
-		localStorage.setItem("text-formatting.options", JSON.stringify(options));
-	}
+$effect(() => {
+	saveToStorage("text-formatting.options", JSON.stringify(options));
 });
 
 function format() {
