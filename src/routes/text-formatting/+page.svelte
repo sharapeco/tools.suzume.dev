@@ -1,11 +1,7 @@
 <script>
-console.log("text-formatting/+page.svelte:2");
 import { restoreFromStorage, saveToStorage } from "$lib/storage";
-console.log("text-formatting/+page.svelte:4");
 import TextFormattingCopy from "./TextFormattingCopy.svelte";
-console.log("text-formatting/+page.svelte:6");
 import TextFormattingEditor from "./TextFormattingEditor.svelte";
-console.log("text-formatting/+page.svelte:8");
 import { formatRules } from "./formatRules";
 
 // プリレンダリングを無効にすることで500エラー回避
