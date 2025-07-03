@@ -177,7 +177,6 @@ let results = $derived(
 		<textarea
 			class="w-full bg-slate-50 rounded border px-3 py-2"
 			placeholder="内容を入力..."
-			autofocus
 			bind:value={input}
 		></textarea>
 		<div class="mt-2">
@@ -193,7 +192,6 @@ let results = $derived(
 			<input
 				class="w-full bg-slate-50 rounded border px-3 py-2"
 				placeholder="宛先"
-				autofocus
 				bind:value={mailto.to}
 			/>
 		</div>
@@ -217,7 +215,6 @@ let results = $derived(
 			<input
 				class="w-full bg-slate-50 rounded border px-3 py-2"
 				placeholder="SSID"
-				autofocus
 				bind:value={ssid.ssid}
 			/>
 		</div>

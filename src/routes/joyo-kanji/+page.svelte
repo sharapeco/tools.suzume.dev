@@ -78,7 +78,6 @@ function update(input) {
 		name="input"
 		class="w-full bg-slate-50 rounded border px-3 py-2"
 		placeholder="ここに文章を入力..."
-		autofocus
 		oninput={() => inputRef && update(inputRef.value)}
 		bind:this={inputRef}
 	></textarea>

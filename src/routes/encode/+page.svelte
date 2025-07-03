@@ -213,7 +213,6 @@ function setCopiedName(name) {
 	<textarea
 		class="w-full bg-slate-50 rounded border px-3 py-2"
 		placeholder="エンコード／デコードする文字列を入力..."
-		autofocus
 		oninput={update}
 		bind:this={inputRef}
 	></textarea>
