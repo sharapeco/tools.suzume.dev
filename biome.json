@@ -10,14 +10,19 @@
 	},
 	"formatter": {
 		"enabled": true,
-		"includes": ["src/**/*"]
+		"includes": ["src/**/*", "!src/app.css"]
 	},
 	"linter": {
 		"enabled": true,
 		"rules": {
 			"recommended": true
 		},
-		"includes": ["src/**/*", "!src/lib/qrcode.js", "!src/app.css", "!src/components/dropzone/Dropzone.svelte"]
+		"includes": [
+			"src/**/*",
+			"!src/lib/qrcode.js",
+			"!src/app.css",
+			"!src/components/dropzone/Dropzone.svelte"
+		]
 	},
 	"javascript": {
 		"formatter": {

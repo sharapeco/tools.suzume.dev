@@ -1,6 +1,12 @@
 <script>
 import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
-import { isJoyoKanji, isJinmeiKanji, isAddedJoyoKanji2010, isRemovedJoyoKanji2010, getYearOfKyoikuKanji } from "../../lib/kanji";
+import {
+	isJoyoKanji,
+	isJinmeiKanji,
+	isAddedJoyoKanji2010,
+	isRemovedJoyoKanji2010,
+	getYearOfKyoikuKanji,
+} from "../../lib/kanji";
 
 /**
  * @typedef {Object} Result
@@ -23,7 +29,7 @@ let results = $state([]);
  * @param {string} input
  */
 function update(input) {
-	results = Array.from(input).map(char => {
+	results = Array.from(input).map((char) => {
 		const isKanji = /^[一-龥朗-鶴]+$/.test(char);
 		if (!isKanji) {
 			return {
@@ -33,7 +39,7 @@ function update(input) {
 				isJinmei: false,
 				kyoikuYear: 0,
 				isAdded2010: false,
-				isRemoved2010: false
+				isRemoved2010: false,
 			};
 		}
 
@@ -50,11 +56,10 @@ function update(input) {
 			isJinmei,
 			kyoikuYear,
 			isAdded2010,
-			isRemoved2010
+			isRemoved2010,
 		};
 	});
 }
-
 </script>
 
 <svelte:head>

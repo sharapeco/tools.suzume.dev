@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 :root {
-	--cap-brown: #9E6866;
-	--tie-black: #363A40;
-	--feather-cream: #F5F3EF;
-	--sky-gray: #ACB3BF;
-	--border-gray: #CDD2D8;
-	--separator-gray: #E5E7EB;
-	--accent-red: #C8514F;
+	--cap-brown: #9e6866;
+	--tie-black: #363a40;
+	--feather-cream: #f5f3ef;
+	--sky-gray: #acb3bf;
+	--border-gray: #cdd2d8;
+	--separator-gray: #e5e7eb;
+	--accent-red: #c8514f;
 }
 
 html {
