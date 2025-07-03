@@ -1,5 +1,4 @@
 <script>
-import { onDestroy, onMount } from "svelte";
 import { clickOutside } from "$lib/clickOutside.js";
 import { getKey } from "$lib/eventUtil.js";
 import { getPlatform } from "$lib/platform.js";
@@ -20,7 +19,7 @@ const platform = getPlatform();
 /** @type {HTMLInputElement|null} */
 let inputRef = $state(null);
 
-let open = $state(false);
+let open = $state(true);
 
 let selectedIndex = $state(0);
 
@@ -28,11 +27,12 @@ let selectedIndex = $state(0);
 let q = $state("");
 
 if (browser) {
-	onMount(() => {
+	$effect(() => {
 		document.addEventListener("keydown", globalKeydownHandler);
-	});
-	onDestroy(() => {
-		document.removeEventListener("keydown", globalKeydownHandler);
+
+		return () => {
+			document.removeEventListener("keydown", globalKeydownHandler);
+		};
 	});
 }
 
@@ -58,26 +58,47 @@ function keydownHandler(event) {
 	switch (key) {
 		case "ArrowDown":
 			event.preventDefault();
-			if (selectedIndex >= results.length - 1) {
+			if (!open) {
+				open = true;
 				selectedIndex = 0;
 			} else {
-				selectedIndex = selectedIndex + 1;
+				if (selectedIndex >= results.length - 1) {
+					selectedIndex = 0;
+				} else {
+					selectedIndex = selectedIndex + 1;
+				}
 			}
 			break;
 		case "ArrowUp":
 			event.preventDefault();
-			if (selectedIndex <= 0) {
+			if (!open) {
+				open = true;
 				selectedIndex = results.length - 1;
 			} else {
-				selectedIndex = selectedIndex - 1;
+				if (selectedIndex <= 0) {
+					selectedIndex = results.length - 1;
+				} else {
+					selectedIndex = selectedIndex - 1;
+				}
 			}
 			break;
 		case "Enter":
 			event.preventDefault();
-			if (results[selectedIndex]) {
+			if (open && results[selectedIndex]) {
 				location.href = results[selectedIndex].route;
 			}
 			break;
+		case "Escape":
+			event.preventDefault();
+			open = false;
+			break;
+	}
+}
+
+function inputHandler() {
+	// Esc キーでプルダウンを閉じたあと、入力があればプルダウンを開く
+	if (!open) {
+		open = true;
 	}
 }
 
@@ -171,11 +192,13 @@ let results = $derived(
 		bind:value={q}
 		bind:this={inputRef}
 		onfocus={() => (open = true)}
+		onblur={() => (open = false)}
 		onkeydown={keydownHandler}
+		oninput={inputHandler}
 	/>
 	{#if open}
 		<div
-			class="absolute z-40 top-full left-0 right-0 mt-1 p-1 bg-white rounded border shadow-md"
+			class="dropdown absolute z-40 top-full left-0 right-0 mt-1 p-1 bg-white rounded border shadow-md"
 		>
 			{#each results as tool, index}
 				<a
@@ -185,6 +208,7 @@ let results = $derived(
 					"
 					onmouseenter={() => (selectedIndex = index)}
 					onclick={() => (open = false)}
+					tabindex="-1"
 				>
 					<div class="">{@html highlight(tool.title, q)}</div>
 					<div class="mt-1 font-mono text-xs opacity-70">
@@ -198,3 +222,10 @@ let results = $derived(
 		</div>
 	{/if}
 </div>
+
+<style>
+.dropdown {
+	overflow-y: auto;
+	max-height: calc(100vh - 7rem);
+}
+</style>
