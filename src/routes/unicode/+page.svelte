@@ -75,7 +75,7 @@ function keydownHandler(event) {
 			}));
 
 			setTimeout(() => {
-				results = results.map((result, index) => ({
+				results = results.map((result, _index) => ({
 					...result,
 					copied: false,
 				}));

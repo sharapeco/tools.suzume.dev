@@ -176,38 +176,38 @@ export const formatRules = [
 			switch (option) {
 				case "fullwidth":
 					return text
-						.replace(/[^\S\n\t]*[\(（][^\S\n\t]*/gu, "（")
-						.replace(/[^\S\n\t]*[\)）][^\S\n\t]*/gu, "）")
-						.replace(/[^\S\n\t]*[\[［][^\S\n\t]*/gu, "［")
+						.replace(/[^\S\n\t]*[(（][^\S\n\t]*/gu, "（")
+						.replace(/[^\S\n\t]*[)）][^\S\n\t]*/gu, "）")
+						.replace(/[^\S\n\t]*[[［][^\S\n\t]*/gu, "［")
 						.replace(/[^\S\n\t]*[\]］][^\S\n\t]*/gu, "］")
-						.replace(/[^\S\n\t]*[\{｛][^\S\n\t]*/gu, "｛")
-						.replace(/[^\S\n\t]*[\}｝][^\S\n\t]*/gu, "｝");
+						.replace(/[^\S\n\t]*[{｛][^\S\n\t]*/gu, "｛")
+						.replace(/[^\S\n\t]*[}｝][^\S\n\t]*/gu, "｝");
 				case "halfwidth":
 					return text
-						.replace(/[^\S\n\t]*[\(（][^\S\n\t]*/gu, "(")
-						.replace(/[^\S\n\t]*[\)）][^\S\n\t]*/gu, ")")
-						.replace(/[^\S\n\t]*[\[［][^\S\n\t]*/gu, "[")
+						.replace(/[^\S\n\t]*[(（][^\S\n\t]*/gu, "(")
+						.replace(/[^\S\n\t]*[)）][^\S\n\t]*/gu, ")")
+						.replace(/[^\S\n\t]*[[［][^\S\n\t]*/gu, "[")
 						.replace(/[^\S\n\t]*[\]］][^\S\n\t]*/gu, "]")
-						.replace(/[^\S\n\t]*[\{｛][^\S\n\t]*/gu, "{")
-						.replace(/[^\S\n\t]*[\}｝][^\S\n\t]*/gu, "}");
+						.replace(/[^\S\n\t]*[{｛][^\S\n\t]*/gu, "{")
+						.replace(/[^\S\n\t]*[}｝][^\S\n\t]*/gu, "}");
 				case "halfwidthSpace":
 					return text
-						.replace(/([\S]?)[^\S\n\t]*[\(（][^\S\n\t]*/gu, (_, p1) =>
+						.replace(/([\S]?)[^\S\n\t]*[(（][^\S\n\t]*/gu, (_, p1) =>
 							p1 !== "" ? `${p1} (` : "(",
 						)
-						.replace(/[^\S\n\t]*[\)）][^\S\n\t]*([\S]?)/gu, (_, p1) =>
+						.replace(/[^\S\n\t]*[)）][^\S\n\t]*([\S]?)/gu, (_, p1) =>
 							p1 !== "" ? `) ${p1}` : ")",
 						)
-						.replace(/([\S]?)[^\S\n\t]*[\[［][^\S\n\t]*/gu, (_, p1) =>
+						.replace(/([\S]?)[^\S\n\t]*[[［][^\S\n\t]*/gu, (_, p1) =>
 							p1 !== "" ? `${p1} [` : "[",
 						)
 						.replace(/[^\S\n\t]*[\]］][^\S\n\t]*([\S]?)/gu, (_, p1) =>
 							p1 !== "" ? `] ${p1}` : "]",
 						)
-						.replace(/([\S]?)[^\S\n\t]*[\{｛][^\S\n\t]*/gu, (_, p1) =>
+						.replace(/([\S]?)[^\S\n\t]*[{｛][^\S\n\t]*/gu, (_, p1) =>
 							p1 !== "" ? `${p1} {` : "{",
 						)
-						.replace(/[^\S\n\t]*[\}｝][^\S\n\t]*([\S]?)/gu, (_, p1) =>
+						.replace(/[^\S\n\t]*[}｝][^\S\n\t]*([\S]?)/gu, (_, p1) =>
 							p1 !== "" ? `} ${p1}` : "}",
 						);
 			}

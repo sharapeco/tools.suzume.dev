@@ -154,7 +154,7 @@ function onDragLeaveCb(event) {
 
 	// Only deactivate once the dropzone and all children have been left
 	const targets = dragTargetsRef.filter(
-		(target) => rootRef && rootRef.contains(target),
+		(target) => rootRef?.contains(target),
 	);
 	// Make sure to remove a target present multiple times only once
 	// (Firefox may fire dragenter/dragleave multiple times on the same element)
@@ -277,7 +277,7 @@ function onDocumentDrop(event) {
 	if (!preventDropOnDocument) {
 		return;
 	}
-	if (rootRef && rootRef.contains(event.target)) {
+	if (rootRef?.contains(event.target)) {
 		// If we intercepted an event for our instance, let it propagate down to the instance's onDrop handler
 		return;
 	}

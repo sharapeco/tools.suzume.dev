@@ -157,10 +157,10 @@ function update() {
 }
 
 /**
- * @param {MouseEvent} event
+ * @param {MouseEvent} _event
  * @param {Result} result
  */
-function clickHandler(event, result) {
+function clickHandler(_event, result) {
 	if (result.output == null) {
 		return;
 	}
