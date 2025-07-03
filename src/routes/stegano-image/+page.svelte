@@ -1,7 +1,7 @@
 <script>
+import DropImage from "../../components/DropImage.svelte";
 import NavPills from "../../components/NavPills.svelte";
 import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
-import DropImage from "../../components/DropImage.svelte";
 
 /** @type {"encode" | "decode"} モード */
 let mode = $state("encode");
@@ -207,7 +207,7 @@ async function decode() {
 					<label class="text-sm text-neutral-600" for="output-encoded-image">埋め込まれた画像</label>
 					{#if encodedImage != null}
 						<div class="output-image">
-							<img src={encodedImage} alt="出力" class="max-w-full">
+							<img src={encodedImage} alt="出力" class="max-w-full" />
 						</div>
 					{/if}
 				</div>
@@ -227,22 +227,22 @@ async function decode() {
 					<label class="text-sm text-neutral-600" for="output-decoded-image">復元された画像</label>
 					{#if restoreOutputImage != null}
 						<div class="output-image">
-							<img src={restoreOutputImage} alt="出力" class="max-w-full">
+							<img src={restoreOutputImage} alt="出力" class="max-w-full" />
 						</div>
 					{/if}
-					</div>
 				</div>
-			{/if}
+			</div>
+		{/if}
 	</div>
 </SimpleToolLayout>
 
 <style lang="postcss">
-	.output-image {
-		flex: 1;
-	}
-	.output-image img {
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
-	}
+.output-image {
+	flex: 1;
+}
+.output-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
 </style>
