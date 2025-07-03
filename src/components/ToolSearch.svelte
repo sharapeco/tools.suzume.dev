@@ -19,7 +19,7 @@ const platform = getPlatform();
 /** @type {HTMLInputElement|null} */
 let inputRef = $state(null);
 
-let open = $state(true);
+let open = $state(false);
 
 let selectedIndex = $state(0);
 
