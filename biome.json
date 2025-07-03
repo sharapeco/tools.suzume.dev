@@ -1,26 +1,23 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
 	"vcs": {
 		"enabled": false,
 		"clientKind": "git",
 		"useIgnoreFile": false
 	},
 	"files": {
-		"ignoreUnknown": false,
-		"ignore": []
+		"ignoreUnknown": false
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "tab"
-	},
-	"organizeImports": {
-		"enabled": true
+		"includes": ["src/**/*"]
 	},
 	"linter": {
 		"enabled": true,
 		"rules": {
 			"recommended": true
-		}
+		},
+		"includes": ["src/**/*", "!src/lib/qrcode.js", "!src/app.css", "!src/components/dropzone/Dropzone.svelte"]
 	},
 	"javascript": {
 		"formatter": {
@@ -29,13 +26,27 @@
 	},
 	"overrides": [
 		{
-			"include": ["src/**/*.svelte"],
+			"includes": ["**/*.svelte"],
 			"linter": {
 				"rules": {
 					"style": {
 						"useConst": "off",
 						"useImportType": "off",
 						"useTemplate": "off"
+					},
+					"correctness": {
+						"noUnusedVariables": "off",
+						"noUnusedImports": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["src/routes/text-formatting/specialChars.js"],
+			"linter": {
+				"rules": {
+					"complexity": {
+						"useSimpleNumberKeys": "off"
 					}
 				}
 			}
