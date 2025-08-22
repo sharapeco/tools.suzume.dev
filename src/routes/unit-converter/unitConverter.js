@@ -24,7 +24,7 @@ export const converters = [
 			{ name: "金沢市", value: 468000000 },
 			{ name: "石川県", value: 4185000000 },
 			{ name: "m²", value: 1 },
-			{ name: "ha", value: 1000 },
+			{ name: "ha", value: 10000 },
 			{ name: "km²", value: 1000000 },
 			{ name: "坪", value: 400 / 121 },
 			{ name: "畝", value: (30 * 400) / 121 },
