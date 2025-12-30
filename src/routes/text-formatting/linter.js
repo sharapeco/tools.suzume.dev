@@ -9,6 +9,7 @@ import noRadical from "./rule-noRadical";
 import noRegionalIndicatorSymbol from "./rule-noRegionalIndicatorSymbol";
 import noSpaceBetweenJapaneseChars from "./rule-noSpaceBetweenJapaneseChars";
 import noVerticalForms from "./rule-noVerticalForms";
+import noWrongBrackets from "./rule-noWrongBrackets";
 
 /** @typedef {import('@codemirror/lint').Diagnostic} Diagnostic */
 /** @typedef {import('@textlint/kernel').TextlintMessage} TextlintMessage */
@@ -53,6 +54,10 @@ export const textLinter = linter(async (view) => {
 			{
 				ruleId: "no-vertical-forms",
 				rule: noVerticalForms,
+			},
+			{
+				ruleId: "no-wrong-brackets",
+				rule: noWrongBrackets,
 			},
 			{
 				ruleId: "no-regional-indicator-symbol",
