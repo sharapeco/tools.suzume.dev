@@ -17,7 +17,7 @@ export default function noRegionalIndicatorSymbol(context) {
 				if (match.index == null) return;
 				report(
 					node,
-					new RuleError("Found regional indicator symbol", {
+					new RuleError("地域指示子記号が含まれています", {
 						padding: locator.range([
 							match.index,
 							match.index + match[0].length,

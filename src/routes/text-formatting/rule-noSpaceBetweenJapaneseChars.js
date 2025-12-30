@@ -25,12 +25,9 @@ export default function noSpaceBetweenJapaneseChars(context) {
 				const index = match.index + match[1].length; // スペースの位置
 				report(
 					node,
-					new RuleError(
-						`和文文字の間にスペース（U+0020, U+2000〜U+200A）が入っています。`,
-						{
-							padding: locator.range([index - 1, index + 2]),
-						},
-					),
+					new RuleError("このスペースは意図的？", {
+						padding: locator.range([index - 1, index + 2]),
+					}),
 				);
 			}
 		},

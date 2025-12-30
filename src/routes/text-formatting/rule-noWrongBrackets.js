@@ -22,22 +22,22 @@ export default function noWrongBrackets(context) {
 				{
 					regex: /≪(.{1,30}?)≫/g,
 					replace: "《$1》",
-					message: "≪...≫ は 《...》 に直してください。",
+					message: "≪...≫ のかわりに《...》を使いましょう",
 				},
 				{
 					regex: /<<(.{1,30}?)>>/g,
 					replace: "《$1》",
-					message: "<<...>> は 《...》 に直してください。",
+					message: "<<...>> のかわりに《...》を使いましょう",
 				},
 				{
 					regex: /＜(.{1,30}?)＞/g,
 					replace: "〈$1〉",
-					message: "＜...＞ は 〈...〉 に直してください。",
+					message: "＜...＞ のかわりに〈...〉を使いましょう",
 				},
 				{
 					regex: /<(.{1,30}?)>/g,
 					replace: "〈$1〉",
-					message: "<...> は 〈...〉 に直してください。",
+					message: "<...> のかわりに〈...〉を使いましょう",
 				},
 			];
 			for (const { regex, replace, message } of patterns) {

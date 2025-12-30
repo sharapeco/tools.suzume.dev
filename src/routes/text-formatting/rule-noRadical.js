@@ -18,7 +18,7 @@ export default function noRadical(context) {
 				if (match.index == null) return;
 				report(
 					node,
-					new RuleError("Found CJK radical supplement", {
+					new RuleError("CJK部首補助が含まれています", {
 						padding: locator.range([
 							match.index,
 							match.index + match[0].length,
@@ -31,7 +31,7 @@ export default function noRadical(context) {
 				if (match.index == null) return;
 				report(
 					node,
-					new RuleError("Found Kangxi radical", {
+					new RuleError("康熙部首が含まれています", {
 						padding: locator.range([
 							match.index,
 							match.index + match[0].length,

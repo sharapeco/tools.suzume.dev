@@ -18,7 +18,7 @@ export default function noPrivateUseArea(context) {
 				if (match.index == null) return;
 				report(
 					node,
-					new RuleError("Found PUA", {
+					new RuleError("私用領域の文字が含まれています", {
 						padding: locator.range([
 							match.index,
 							match.index + match[0].length,

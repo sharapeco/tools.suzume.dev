@@ -17,7 +17,7 @@ export default function noDumbQuotes(context) {
 				if (match.index == null) return;
 				report(
 					node,
-					new RuleError("Found dumb quote", {
+					new RuleError("マヌケ引用符のかわりに “...” ‘…’ を使いましょう", {
 						index: match.index,
 					}),
 				);

@@ -25,7 +25,7 @@ export default function noControlCharacter(context) {
 
 				report(
 					node,
-					new RuleError(`Found control character ${name ?? ""}`, {
+					new RuleError(`制御文字が含まれます ${name ?? ""}`, {
 						index: match.index,
 						fix: fixer.replaceTextRange(
 							[match.index, match.index + match[0].length],

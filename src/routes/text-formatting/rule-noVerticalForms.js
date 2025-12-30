@@ -20,7 +20,7 @@ export default function noVerticalForms(context) {
 				if (match.index == null) return;
 				report(
 					node,
-					new RuleError("Found vertical forms", {
+					new RuleError("縦組用字形が含まれています", {
 						padding: locator.range([
 							match.index,
 							match.index + match[0].length,
