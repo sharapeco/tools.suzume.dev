@@ -3,10 +3,11 @@ import { TextlintKernel } from "@textlint/kernel";
 import textlintText from "@textlint/textlint-plugin-text";
 import noControlCharacter from "./rule-noControlCharacter";
 import noDumbQuotes from "./rule-noDumpQuotes";
-import noRadical from "./rule-noRadical";
+import noHyphenBetweenYears from "./rule-noHyphenBetweenYears";
 import noPrivateUseArea from "./rule-noPrivateUseArea";
-import noVerticalForms from "./rule-noVerticalForms";
+import noRadical from "./rule-noRadical";
 import noRegionalIndicatorSymbol from "./rule-noRegionalIndicatorSymbol";
+import noVerticalForms from "./rule-noVerticalForms";
 
 /** @typedef {import('@codemirror/lint').Diagnostic} Diagnostic */
 /** @typedef {import('@textlint/kernel').TextlintMessage} TextlintMessage */
@@ -33,6 +34,10 @@ export const textLinter = linter(async (view) => {
 				rule: noDumbQuotes,
 			},
 			{
+				ruleId: "no-hyphen-between-years",
+				rule: noHyphenBetweenYears,
+			},
+			{
 				ruleId: "no-radical",
 				rule: noRadical,
 			},
@@ -45,7 +50,7 @@ export const textLinter = linter(async (view) => {
 				rule: noVerticalForms,
 			},
 			{
-				ruleId: "no-regioanl-indicator-symbol",
+				ruleId: "no-regional-indicator-symbol",
 				rule: noRegionalIndicatorSymbol,
 			},
 		],
