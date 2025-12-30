@@ -112,5 +112,8 @@ const extensions = [
 			lineHeight: "1",
 			border: "1px dotted",
 		},
+		".cm-activeLine": {
+			backgroundColor: "#50bcff14",
+		},
 	}}
 />

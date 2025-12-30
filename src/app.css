@@ -1,3 +1,17 @@
+/* CodeMirror editor 選択テキストの色: ライト・ダーク両対応 */
+.cm-content::selection,
+.cm-content *::selection {
+	color: theme(colors.white);
+	background: theme(colors.blue.600);
+}
+
+@media (prefers-color-scheme: dark) {
+	.cm-content::selection,
+	.cm-content *::selection {
+		color: theme(colors.black);
+		background: theme(colors.blue.400);
+	}
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -37,7 +51,7 @@ h1,
 h2,
 h3,
 .palt {
-	font-feature-settings: "palt" 1;
+	font-feature-settings: "palt" 1, "kern" 1;
 	letter-spacing: calc(1px - 0.025em);
 }
 
@@ -50,6 +64,14 @@ h3,
 	flex-grow: 1;
 	display: block flex;
 	flex-direction: column;
+}
+
+/* CodeMirror selection color */
+.cm-content::selection {
+	color: theme(colors.white) !important;
+}
+.cm-selectionBackground {
+	background: theme(colors.blue.600) !important;
 }
 
 @keyframes copy-animation {
