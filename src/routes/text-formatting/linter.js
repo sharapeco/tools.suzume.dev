@@ -7,6 +7,7 @@ import noHyphenBetweenYears from "./rule-noHyphenBetweenYears";
 import noPrivateUseArea from "./rule-noPrivateUseArea";
 import noRadical from "./rule-noRadical";
 import noRegionalIndicatorSymbol from "./rule-noRegionalIndicatorSymbol";
+import noSpaceBetweenJapaneseChars from "./rule-noSpaceBetweenJapaneseChars";
 import noVerticalForms from "./rule-noVerticalForms";
 
 /** @typedef {import('@codemirror/lint').Diagnostic} Diagnostic */
@@ -44,6 +45,10 @@ export const textLinter = linter(async (view) => {
 			{
 				ruleId: "no-private-use-area",
 				rule: noPrivateUseArea,
+			},
+			{
+				ruleId: "no-space-between-japanese-chars",
+				rule: noSpaceBetweenJapaneseChars,
 			},
 			{
 				ruleId: "no-vertical-forms",
