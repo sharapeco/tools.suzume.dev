@@ -1,5 +1,5 @@
+import { specialChars } from "$lib/text-formatting/specialChars";
 import { highlightSpecialChars } from "@codemirror/view";
-import { specialChars } from "./specialChars";
 
 const re = new RegExp(
 	`[${[

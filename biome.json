@@ -47,7 +47,7 @@
 			}
 		},
 		{
-			"includes": ["src/routes/text-formatting/specialChars.js"],
+			"includes": ["src/lib/text-formatting/specialChars.js"],
 			"linter": {
 				"rules": {
 					"complexity": {

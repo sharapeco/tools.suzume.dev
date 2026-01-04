@@ -1,8 +1,8 @@
 <script>
 import SquircleControls from "./SquircleControls.svelte";
 import SquirclePreview from "./SquirclePreview.svelte";
-import { tools } from "../../tool-list";
-import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import { tools } from "$lib/tool-list";
+import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 
 /** @typedef {import("../../tool-list").Tool} Tool */
 

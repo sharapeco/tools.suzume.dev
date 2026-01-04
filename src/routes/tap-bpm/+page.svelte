@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 
 let bpm = $state("--");
 let bps = $state("--");

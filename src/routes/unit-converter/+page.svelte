@@ -1,6 +1,6 @@
 <script>
 import { converters, convert } from "./unitConverter";
-import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 
 /** @type {import("./unitConverter").ConverterDef} */
 const defaultConverter = converters[0];

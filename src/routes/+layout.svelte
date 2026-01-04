@@ -1,6 +1,6 @@
 <script>
 import "../app.css";
-import ToolSearch from "../components/ToolSearch.svelte";
+import ToolSearch from "$components/ToolSearch.svelte";
 
 /**
  * @typedef {Object} Props

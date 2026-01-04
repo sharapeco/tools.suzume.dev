@@ -1,7 +1,7 @@
 <script>
-import DropImage from "../../components/DropImage.svelte";
-import NavPills from "../../components/NavPills.svelte";
-import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import DropImage from "$components/DropImage.svelte";
+import NavPills from "$components/NavPills.svelte";
+import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 
 /** @type {"encode" | "decode"} モード */
 let mode = $state("encode");

@@ -10,7 +10,7 @@ import {
 	toFullwidthForm,
 	toJISX0201Kana,
 } from "$lib/zenkaku";
-import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 
 /** @type {HTMLTextAreaElement|null} */
 let inputRef = $state(null);

@@ -1,4 +1,4 @@
-import { specialChars } from "./specialChars";
+import { specialChars } from "$lib/text-formatting/specialChars";
 
 /** @typedef {import('@textlint/types').TextlintRuleContext} RuleContext */
 /** @typedef {import('@textlint/ast-node-types').TxtNode} TxtNode */

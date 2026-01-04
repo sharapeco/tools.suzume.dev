@@ -10,7 +10,7 @@ import {
 } from "$lib/htmlEntity";
 import { NaiveTextEncoder } from "$lib/naiveTextEncoder/NaiveTextEncoder";
 import { normalize } from "$lib/zenkaku";
-import SimpleToolLayout from "../../components/SimpleToolLayout.svelte";
+import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 
 /** @type {HTMLTextAreaElement|null} */
 let inputRef = $state(null);
