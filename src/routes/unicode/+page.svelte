@@ -1,10 +1,10 @@
 <script>
+import { onDestroy, onMount } from "svelte";
 import { browser } from "$app/environment";
+import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { getKey } from "$lib/eventUtil";
 import { getPlatform } from "$lib/platform";
-import { onMount, onDestroy } from "svelte";
 import { specialChars } from "$lib/text-formatting/specialChars";
-import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 
 /** @typedef {{letter: string, sp?: [string, string], code: string, link: string, copied: boolean}} Result */
 

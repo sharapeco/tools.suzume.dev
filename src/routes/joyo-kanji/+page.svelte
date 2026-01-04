@@ -1,11 +1,11 @@
 <script>
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import {
-	isJoyoKanji,
-	isJinmeiKanji,
-	isAddedJoyoKanji2010,
-	isRemovedJoyoKanji2010,
 	getYearOfKyoikuKanji,
+	isAddedJoyoKanji2010,
+	isJinmeiKanji,
+	isJoyoKanji,
+	isRemovedJoyoKanji2010,
 } from "$lib/kanji";
 
 /**

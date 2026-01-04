@@ -1,8 +1,8 @@
 <script>
+import { browser } from "$app/environment";
 import { clickOutside } from "$lib/clickOutside.js";
 import { getKey } from "$lib/eventUtil.js";
 import { getPlatform } from "$lib/platform.js";
-import { browser } from "$app/environment";
 import { katakanaToHiragana } from "$lib/zenkaku.js";
 
 /**

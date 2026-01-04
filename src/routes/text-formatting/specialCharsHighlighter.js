@@ -1,5 +1,5 @@
-import { specialChars } from "$lib/text-formatting/specialChars";
 import { highlightSpecialChars } from "@codemirror/view";
+import { specialChars } from "$lib/text-formatting/specialChars";
 
 const re = new RegExp(
 	`[${[
@@ -24,7 +24,7 @@ const re = new RegExp(
 export const specialCharsHighlighter = highlightSpecialChars({
 	specialChars: re,
 	render(code, description, placeholder) {
-		// @ts-ignore
+		// @ts-expect-error
 		const [type, replacer] = specialChars[code] ?? ["unknown", null];
 		const span = document.createElement("span");
 		span.setAttribute("aria-label", description ?? "");

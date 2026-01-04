@@ -1,5 +1,6 @@
 <script>
 import { fromEvent } from "file-selector";
+import { createEventDispatcher, onDestroy, onMount } from "svelte";
 import {
 	fileAccepted,
 	fileMatchSize,
@@ -8,7 +9,6 @@ import {
 	isPropagationStopped,
 	TOO_MANY_FILES_REJECTION,
 } from "./utils/index";
-import { onMount, onDestroy, createEventDispatcher } from "svelte";
 
 //props
 /**

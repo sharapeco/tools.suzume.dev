@@ -1,7 +1,7 @@
 <script>
+import { onDestroy, onMount } from "svelte";
 import { browser } from "$app/environment";
 import { getPlatform } from "$lib/platform";
-import { onDestroy, onMount } from "svelte";
 
 /**
  * @typedef {Object} Props

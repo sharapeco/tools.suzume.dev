@@ -1,7 +1,8 @@
 <script>
+import { Base64 } from "js-base64";
 import { onMount } from "svelte";
 import { browser } from "$app/environment";
-import { Base64 } from "js-base64";
+import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { getKey } from "$lib/eventUtil.js";
 import {
 	convertToNumericCharacterReference,
@@ -10,7 +11,6 @@ import {
 } from "$lib/htmlEntity";
 import { NaiveTextEncoder } from "$lib/naiveTextEncoder/NaiveTextEncoder";
 import { normalize } from "$lib/zenkaku";
-import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 
 /** @type {HTMLTextAreaElement|null} */
 let inputRef = $state(null);
@@ -55,7 +55,7 @@ const encoders = [
 	{
 		name: "URL encode (Shift_JIS)",
 		fn: (input) =>
-			// @ts-ignore ブラウザ前提のコード
+			// @ts-expect-error ブラウザ前提のコード
 			Array.from(sjisEncoder.encode(normalize(input)))
 				.map((c) => `%${c.toString(16).toUpperCase()}`)
 				.join(""),
@@ -63,7 +63,7 @@ const encoders = [
 	{
 		name: "URL encode (EUC-JP)",
 		fn: (input) =>
-			// @ts-ignore ブラウザ前提のコード
+			// @ts-expect-error ブラウザ前提のコード
 			Array.from(eucjpEncoder.encode(normalize(input)))
 				.map((c) => `%${c.toString(16).toUpperCase()}`)
 				.join(""),
@@ -87,7 +87,7 @@ const encoders = [
 	{
 		name: "URL decode (Shift_JIS)",
 		fn: (input) =>
-			// @ts-ignore ブラウザ前提のコード
+			// @ts-expect-error ブラウザ前提のコード
 			sjisDecoder.decode(
 				new Uint8Array(
 					Array.from(input.matchAll(/%([0-9a-f]{2})/gi))
@@ -99,7 +99,7 @@ const encoders = [
 	{
 		name: "URL decode (EUC-JP)",
 		fn: (input) =>
-			// @ts-ignore ブラウザ前提のコード
+			// @ts-expect-error ブラウザ前提のコード
 			eucjpDecoder.decode(
 				new Uint8Array(
 					Array.from(input.matchAll(/%([0-9a-f]{2})/gi))

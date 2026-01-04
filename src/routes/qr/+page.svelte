@@ -1,7 +1,7 @@
 <script>
-import { QRCode } from "$lib/qrcode.js";
 import NavPills from "$components/NavPills.svelte";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
+import { QRCode } from "$lib/qrcode.js";
 
 /** @typedef {{ content: string, ecl: string, svg: string, url: string }} Result */
 

@@ -40,7 +40,7 @@ function inactivate() {
 	active = false;
 }
 
-// @ts-ignore
+// @ts-expect-error
 function handleKeydown(event) {
 	const target = event.target;
 	const tag = target?.tagName?.toLowerCase();

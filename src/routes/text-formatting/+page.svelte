@@ -1,8 +1,8 @@
 <script>
+import { restoreFromStorage, saveToStorage } from "$lib/storage";
 import { formatRules } from "./formatRules";
 import TextFormattingCopy from "./TextFormattingCopy.svelte";
 import TextFormattingEditor from "./TextFormattingEditor.svelte";
-import { saveToStorage, restoreFromStorage } from "$lib/storage";
 
 // プリレンダリングを無効にすることで500エラー回避
 export const prerender = false;
@@ -25,7 +25,7 @@ function restoreOptions() {
 		console.error("Failed to restore options:", e);
 	}
 	return (formatRules ?? []).reduce((options, rule) => {
-		// @ts-ignore
+		// @ts-expect-error
 		options[rule.id] = savedOptions[rule.id] ?? rule.default;
 		return options;
 	}, {});

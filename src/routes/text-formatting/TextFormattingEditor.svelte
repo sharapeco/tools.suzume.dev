@@ -1,19 +1,19 @@
 <script>
-import CodeMirror from "svelte-codemirror-editor";
+import { history } from "@codemirror/commands";
+import { highlightSelectionMatches } from "@codemirror/search";
+import { EditorState } from "@codemirror/state";
 import {
-	lineNumbers,
-	highlightActiveLine,
-	highlightActiveLineGutter,
 	drawSelection,
 	dropCursor,
+	highlightActiveLine,
+	highlightActiveLineGutter,
+	lineNumbers,
 } from "@codemirror/view";
-import { history } from "@codemirror/commands";
-import { EditorState } from "@codemirror/state";
-import { highlightSelectionMatches } from "@codemirror/search";
-import { specialCharsHighlighter } from "./specialCharsHighlighter";
-import { plainTextKeymap } from "./plainTextKeymap";
-import { textLinter } from "./linter";
+import CodeMirror from "svelte-codemirror-editor";
 import tabIcon from "$lib/assets/tab.svg";
+import { textLinter } from "./linter";
+import { plainTextKeymap } from "./plainTextKeymap";
+import { specialCharsHighlighter } from "./specialCharsHighlighter";
 
 /**
  * @typedef {Object} Props
