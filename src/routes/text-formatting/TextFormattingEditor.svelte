@@ -1,5 +1,4 @@
 <script>
-import { createEventDispatcher } from "svelte";
 import CodeMirror from "svelte-codemirror-editor";
 import {
 	lineNumbers,
@@ -24,8 +23,6 @@ import tabIcon from "$lib/assets/tab.svg";
 /** @type {Props} */
 let { input = $bindable() } = $props();
 
-const dispatch = createEventDispatcher();
-
 const extensions = [
 	lineNumbers(),
 	highlightActiveLine(),
@@ -43,14 +40,10 @@ const extensions = [
 
 <CodeMirror
 	bind:value={input}
-	on:change={(event) => {
-		dispatch("change", event.detail);
-	}}
-	basic={false}
+	extensions={extensions}
 	useTab={false}
 	tabSize={4}
 	lineWrapping={true}
-	{extensions}
 	styles={{
 		"&": {
 			height: "100%",

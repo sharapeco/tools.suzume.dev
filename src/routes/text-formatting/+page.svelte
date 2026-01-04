@@ -1,8 +1,8 @@
 <script>
-import { restoreFromStorage, saveToStorage } from "$lib/storage";
+import { formatRules } from "./formatRules";
 import TextFormattingCopy from "./TextFormattingCopy.svelte";
 import TextFormattingEditor from "./TextFormattingEditor.svelte";
-import { formatRules } from "./formatRules";
+import { saveToStorage, restoreFromStorage } from "$lib/storage";
 
 // プリレンダリングを無効にすることで500エラー回避
 export const prerender = false;
@@ -31,13 +31,9 @@ function restoreOptions() {
 	}, {});
 }
 
-/**
- * @param {string} newValue
- */
-function updateInput(newValue) {
-	input = newValue;
+$effect(() => {
 	saveToStorage("text-formatting.input", input);
-}
+});
 
 $effect(() => {
 	saveToStorage("text-formatting.options", JSON.stringify(options));
@@ -104,10 +100,7 @@ function format() {
 		<div class="flex-1 flex flex-col">
 			{#if mode === "edit"}
 				<TextFormattingEditor
-					{input}
-					on:change={(event) => {
-						updateInput(event.detail);
-					}}
+					bind:input={input}
 				/>
 			{:else}
 				<TextFormattingCopy {input} />
