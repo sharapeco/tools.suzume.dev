@@ -1,12 +1,13 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
 	"vcs": {
-		"enabled": false,
+		"enabled": true,
 		"clientKind": "git",
-		"useIgnoreFile": false
+		"useIgnoreFile": true
 	},
 	"files": {
-		"ignoreUnknown": false
+		"ignoreUnknown": false,
+		"includes": ["src/**/*", "!src/app.css"]
 	},
 	"formatter": {
 		"enabled": true,
@@ -20,8 +21,8 @@
 		"includes": [
 			"src/**/*",
 			"!src/lib/qrcode.js",
-			"!src/app.css",
-			"!src/components/dropzone/Dropzone.svelte"
+			"!src/components/dropzone/Dropzone.svelte",
+			"!node_modules/**"
 		]
 	},
 	"javascript": {
