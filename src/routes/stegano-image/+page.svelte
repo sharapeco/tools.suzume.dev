@@ -171,7 +171,7 @@ async function decode() {
 
 <SimpleToolLayout title="画像中画像" height100percent>
 	{#snippet description()}
-		<p class="mt-2">
+		<p>
 			画像に画像を埋め込むことができます（ステガノグラフィー）。非可逆変換ですが、リサイズや圧縮にも（ある程度）耐えます。
 		</p>
 	{/snippet}

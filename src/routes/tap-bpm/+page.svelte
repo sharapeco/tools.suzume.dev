@@ -113,10 +113,12 @@ function beatEffect() {
 
 <SimpleToolLayout title="BPM計測">
 	{#snippet description()}
-		<p class="mt-2">
-			ボタンのタップまたはキーボードの <kbd>Space</kbd> <kbd>Enter</kbd> を押すことで、BPMを計測します。
-		</p>
-		<p class="mt-2"><kbd>R</kbd> キーを押すか、5秒以上間隔が空くとBPMがリセットされます</p>
+		<div class="flex flex-col gap-2">
+			<p>
+				ボタンのタップまたはキーボードの <kbd>Space</kbd> <kbd>Enter</kbd> を押すことで、BPMを計測します。
+			</p>
+			<p><kbd>R</kbd> キーを押すか、5秒以上間隔が空くとBPMがリセットされます</p>
+		</div>
 	{/snippet}
 
 	<div class="flex flex-col items-center justify-center gap-6 py-8">

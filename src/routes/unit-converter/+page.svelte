@@ -29,7 +29,7 @@ $effect(() => {
 
 <SimpleToolLayout title="単位換算">
 	{#snippet description()}
-		<p class="mt-2">木場潟は兼六園何個分？ さまざまな単位を変換します</p>
+		<p>木場潟は兼六園何個分？ さまざまな単位を変換します</p>
 	{/snippet}
 
 	<div class="max-w-lg">

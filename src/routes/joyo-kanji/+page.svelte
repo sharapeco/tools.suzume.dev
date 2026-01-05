@@ -69,15 +69,17 @@ function update(input) {
 
 <SimpleToolLayout title="常用漢字チェッカー">
 	{#snippet description()}
-		<p class="mt-2">
-			テキストに常用漢字表にない漢字・人名用漢字が含まれているか調べます。教育漢字の配当学年も分かります。
-		</p>
-		<p class="mt-2">
-			凡例：<span class="kanji">常用外漢字</span>　<span class="kanji jinmei">人名用漢字</span>　<span class="kanji joyo kyoiku y2">教</span><span class="kanji joyo kyoiku y3">育</span><span class="kanji joyo kyoiku y3">漢</span><span class="kanji joyo kyoiku y1">字</span><small>（数字は配当学年）</small>
-		</p>
-		<p class="mt-2">
-			2010年（平成22年）11月30日付の内閣告示による変更：<span class="kanji joyo added">常用漢字に追加</span>　<span class="kanji added joyo jinmei">人名用漢字から常用漢字へ</span>　<span class="kanji removed">常用漢字から削除</span>
-		</p>
+		<div class="flex flex-col gap-2">
+			<p>
+				テキストに常用漢字表にない漢字・人名用漢字が含まれているか調べます。教育漢字の配当学年も分かります。
+			</p>
+			<p>
+				凡例：<span class="kanji">常用外漢字</span>　<span class="kanji jinmei">人名用漢字</span>　<span class="kanji joyo kyoiku y2">教</span><span class="kanji joyo kyoiku y3">育</span><span class="kanji joyo kyoiku y3">漢</span><span class="kanji joyo kyoiku y1">字</span><small>（数字は配当学年）</small>
+			</p>
+			<p>
+				2010年（平成22年）11月30日付の内閣告示による変更：<span class="kanji joyo added">常用漢字に追加</span>　<span class="kanji added joyo jinmei">人名用漢字から常用漢字へ</span>　<span class="kanji removed">常用漢字から削除</span>
+			</p>
+		</div>
 	{/snippet}
 
 	<textarea
