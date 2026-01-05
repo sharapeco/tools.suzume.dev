@@ -1,7 +1,7 @@
 <script>
 import { onDestroy, onMount } from "svelte";
 import { browser } from "$app/environment";
-import { inputBaseClass } from "$components/inputClasses.js";
+import { codeInlineClass, inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { getKey } from "$lib/eventUtil";
 import { getPlatform } from "$lib/platform";
@@ -122,12 +122,9 @@ onDestroy(() => {
 				入力した文字のUnicodeコードポイントや、その文字の情報へのリンクを提供します。
 			</p>
 			<p>
-				文字のかわりに <code class="bg-slate-50 border border-slate-300 rounded p-1"
-					>U+XXXX</code
-				> <code class="bg-slate-50 border border-slate-300 rounded p-1">&#92;uXXXX</code>
-				<code class="bg-slate-50 border border-slate-300 rounded p-1"
-					>&#92;u&#123;XXXXX&#125;</code
-				>
+					文字のかわりに <code class={codeInlineClass}>U+XXXX</code>
+					<code class={codeInlineClass}>\uXXXX</code>
+					<code class={codeInlineClass}>\u&#123;XXXXX&#125;</code>
 				の形式でコードポイントを入力することもできます。
 			</p>
 			<p>

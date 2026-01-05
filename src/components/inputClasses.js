@@ -1,9 +1,16 @@
+// テキストフィールド
 export const inputBaseClass = "w-full bg-slate-50 rounded border px-3 py-2";
+
 // ラベル系
 export const labelClass = "text-gray-700 text-sm mb-1";
 
+// インラインコード
+export const codeInlineClass =
+	"bg-slate-50 border border-slate-300 rounded p-1";
+
 // 出力結果表示パネル
-export const outputDisplayClass = "group relative text-sm bg-slate-50 rounded border px-3 py-2 whitespace-pre-line";
+export const outputDisplayClass =
+	"group relative text-sm bg-slate-50 rounded border px-3 py-2 whitespace-pre-line";
 
 // ボタンスタイル
 export const buttonPrimaryClass =
