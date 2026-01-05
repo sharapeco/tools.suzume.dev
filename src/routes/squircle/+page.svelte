@@ -4,7 +4,7 @@ import { tools } from "$lib/tool-list";
 import SquircleControls from "./SquircleControls.svelte";
 import SquirclePreview from "./SquirclePreview.svelte";
 
-/** @typedef {import("../../tool-list").Tool} Tool */
+/** @typedef {import("$lib/tool-list").Tool} Tool */
 
 /** @type {Tool|undefined} */
 const tool = tools.find((t) => t.route === "/squircle");
