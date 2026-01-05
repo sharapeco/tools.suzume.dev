@@ -18,7 +18,7 @@ export default function noSpaceBetweenJapaneseChars(context) {
 			// 和文文字 + スペース + 和文文字
 			const regex = new RegExp(
 				`(${JAPANESE_CHAR_REGEX.source})(${SPACE_REGEX.source})(${JAPANESE_CHAR_REGEX.source})`,
-				"g",
+				"g"
 			);
 			const matches = Array.from(text.matchAll(regex));
 			for (const match of matches) {
@@ -26,10 +26,10 @@ export default function noSpaceBetweenJapaneseChars(context) {
 				report(
 					node,
 					new RuleError("このスペースは意図的？", {
-						padding: locator.range([index - 1, index + 2]),
-					}),
+						padding: locator.range([index - 1, index + 2])
+					})
 				);
 			}
-		},
+		}
 	};
 }

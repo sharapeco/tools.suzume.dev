@@ -1,4 +1,5 @@
 <script>
+import { resultBackgroundClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { tools } from "$lib/tool-list";
 import SquircleControls from "./SquircleControls.svelte";
@@ -46,7 +47,7 @@ let params = $state({
 			<SquircleControls bind:params />
 		</div>
 		<div
-			class="preview bg-slate-50 rounded-lg p-4 sticky top-8 overflow-hidden"
+			class={`preview ${resultBackgroundClass} sticky top-8 overflow-hidden`}
 		>
 			<SquirclePreview {params} />
 		</div>

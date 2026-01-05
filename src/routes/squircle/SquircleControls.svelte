@@ -1,11 +1,11 @@
 <script>
-import { inputBaseClass } from "$components/inputClasses.js";
+import { inputBaseClass, labelClass } from "$components/inputClasses.js";
 
 let { params = $bindable() } = $props();
 </script>
 
 <div class="controls">
-	<label class="text-gray-700 text-sm mb-1">
+	<label class={labelClass}>
 		種類
 		<select class={inputBaseClass} bind:value={params.type}>
 			<option value="clothoid">クロソイド</option>
@@ -14,7 +14,7 @@ let { params = $bindable() } = $props();
 	</label>
 
 	<div class="flex gap-2">
-		<label class="text-gray-700 text-sm mb-1 flex-1">
+		<label class={`${labelClass} flex-1`}>
 			単位
 			<select
 				class={inputBaseClass}
@@ -27,7 +27,7 @@ let { params = $bindable() } = $props();
 			</select>
 		</label>
 
-		<label class="text-gray-700 text-sm mb-1 flex-1">
+		<label class={`${labelClass} flex-1`}>
 			解像度 (dpi)
 			<input
 				type="number"
@@ -41,7 +41,7 @@ let { params = $bindable() } = $props();
 	</div>
 
 	<div class="flex gap-2">
-		<label class="text-gray-700 text-sm mb-1 flex-1">
+		<label class={`${labelClass} flex-1`}>
 			幅
 			<input
 				type="number"
@@ -53,7 +53,7 @@ let { params = $bindable() } = $props();
 			/>
 		</label>
 
-		<label class="text-gray-700 text-sm mb-1 flex-1">
+		<label class={`${labelClass} flex-1`}>
 			高さ
 			<input
 				type="number"
@@ -67,7 +67,7 @@ let { params = $bindable() } = $props();
 	</div>
 
 	{#if params.type === "clothoid"}
-		<label class="text-gray-700 text-sm mb-1">
+		<label class={labelClass}>
 			角の半径
 			<input
 				type="number"
@@ -78,7 +78,7 @@ let { params = $bindable() } = $props();
 				step="0.01"
 			/>
 		</label>
-		<label class="text-gray-700 text-sm mb-1">
+		<label class={labelClass}>
 			角のオフセット比率
 			<input
 				type="number"
@@ -89,7 +89,7 @@ let { params = $bindable() } = $props();
 				step="0.01"
 			/>
 		</label>
-		<label class="text-gray-700 text-sm mb-1">
+		<label class={labelClass}>
 			クロソイドの緩和係数
 			<input
 				type="number"
@@ -103,7 +103,7 @@ let { params = $bindable() } = $props();
 	{/if}
 
 	{#if params.type === "super-ellipse"}
-		<label class="text-gray-700 text-sm mb-1">
+		<label class={labelClass}>
 			指数
 			<input
 				type="number"
@@ -116,8 +116,7 @@ let { params = $bindable() } = $props();
 		</label>
 	{/if}
 
-	<label class="text-gray-700 text-sm mb-1">
-		色
+	<label class={labelClass}>
 		<input
 			type="color"
 			class={inputBaseClass}

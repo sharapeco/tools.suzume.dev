@@ -7,9 +7,7 @@
 export function normalize(value) {
 	// U+212B: Å
 	// U+F900–U+FAD9: CJK Compatibility Ideographs
-	return value.replaceAll(/[^\u{212B}\u{F900}-\u{FAD9}]+/gu, (match) =>
-		match.normalize("NFC"),
-	);
+	return value.replaceAll(/[^\u{212B}\u{F900}-\u{FAD9}]+/gu, (match) => match.normalize("NFC"));
 }
 
 /**
@@ -18,7 +16,7 @@ export function normalize(value) {
  */
 export function hiraganaToKatakana(value) {
 	return normalize(value).replace(/[\u3041-\u3096\u309D\u309E]/g, (match) =>
-		String.fromCharCode(match.charCodeAt(0) + 0x60),
+		String.fromCharCode(match.charCodeAt(0) + 0x60)
 	);
 }
 
@@ -28,7 +26,7 @@ export function hiraganaToKatakana(value) {
  */
 export function katakanaToHiragana(value) {
 	return normalize(value).replace(/[\u30A1-\u30F6\u30FD\u30FE]/g, (match) =>
-		String.fromCharCode(match.charCodeAt(0) - 0x60),
+		String.fromCharCode(match.charCodeAt(0) - 0x60)
 	);
 }
 
@@ -37,9 +35,7 @@ export function katakanaToHiragana(value) {
  * @returns {string}
  */
 export function stripFullwidthForm(value) {
-	return normalize(value).replace(/[！-｝]/gu, (match) =>
-		String.fromCharCode(match.charCodeAt(0) - 0xfee0),
-	);
+	return normalize(value).replace(/[！-｝]/gu, (match) => String.fromCharCode(match.charCodeAt(0) - 0xfee0));
 }
 
 /**
@@ -47,9 +43,7 @@ export function stripFullwidthForm(value) {
  * @returns {string}
  */
 export function toFullwidthForm(value) {
-	return normalize(value).replace(/[!-}]/gu, (match) =>
-		String.fromCharCode(match.charCodeAt(0) + 0xfee0),
-	);
+	return normalize(value).replace(/[!-}]/gu, (match) => String.fromCharCode(match.charCodeAt(0) + 0xfee0));
 }
 
 /**
@@ -59,9 +53,8 @@ export function toFullwidthForm(value) {
  * @returns {string}
  */
 export function stripFullwidthFormJP(value) {
-	return normalize(value).replace(
-		/[＂-＇＊-／０-９＠Ａ-Ｚ＾-｀ａ-ｚ]/gu,
-		(match) => String.fromCharCode(match.charCodeAt(0) - 0xfee0),
+	return normalize(value).replace(/[＂-＇＊-／０-９＠Ａ-Ｚ＾-｀ａ-ｚ]/gu, (match) =>
+		String.fromCharCode(match.charCodeAt(0) - 0xfee0)
 	);
 }
 
@@ -158,8 +151,8 @@ const jisx0201Kana = {
 		"ﾍﾟ",
 		"ﾎﾞ",
 		"ﾎﾟ",
-		"ﾜﾞ",
-	],
+		"ﾜﾞ"
+	]
 };
 
 const regularKana = {
@@ -255,8 +248,8 @@ const regularKana = {
 		"ペ",
 		"ボ",
 		"ポ",
-		"ヷ",
-	],
+		"ヷ"
+	]
 };
 
 /**
@@ -283,18 +276,13 @@ export function toJISX0201Kana(value) {
 	});
 }
 
-const verticalForms =
-	"︐︑︒︓︔︕︖︗︘︙︰︱︲︳︴︵︶︷︸︹︺︻︼︽︾︿﹀﹁﹂﹃﹄﹇﹈";
-const regularForms =
-	"，、。：；！？〖〗…‥―‐＿﹏（）｛｝〔〕【】《》〈〉「」『』［］";
+const verticalForms = "︐︑︒︓︔︕︖︗︘︙︰︱︲︳︴︵︶︷︸︹︺︻︼︽︾︿﹀﹁﹂﹃﹄﹇﹈";
+const regularForms = "，、。：；！？〖〗…‥―‐＿﹏（）｛｝〔〕【】《》〈〉「」『』［］";
 
 /**
  * @param {string} value
  * @returns {string}
  */
 export function stripVerticalForms(value) {
-	return value.replace(
-		new RegExp(`[${verticalForms}]`, "g"),
-		(match) => regularForms[verticalForms.indexOf(match)],
-	);
+	return value.replace(new RegExp(`[${verticalForms}]`, "g"), (match) => regularForms[verticalForms.indexOf(match)]);
 }

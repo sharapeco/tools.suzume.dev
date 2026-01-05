@@ -1,7 +1,11 @@
 <script>
-import { inputBaseClass } from "$components/inputClasses.js";
-import NavPills from "$components/NavPills.svelte";
+import {
+	buttonResultClass,
+	inputBaseClass,
+	resultBackgroundClass,
+} from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
+import ToggleSegment from "$components/ToggleSegment.svelte";
 import { QRCode } from "$lib/qrcode.js";
 
 /** @typedef {{ content: string, ecl: string, svg: string, url: string }} Result */
@@ -171,7 +175,12 @@ let results = $derived(
 	{/snippet}
 
 	<div class="mb-3">
-		<NavPills items={modes} value={mode} on:change={(e) => (mode = e.detail)} />
+		<ToggleSegment
+			title={null}
+			items={modes}
+			value={mode}
+			on:change={(event) => (mode = event.detail)}
+		/>
 	</div>
 
 	{#if mode === "string"}
@@ -181,11 +190,11 @@ let results = $derived(
 			bind:value={input}
 		></textarea>
 		<div class="mt-2">
-			<NavPills
+			<ToggleSegment
 				title="改行コード"
 				items={newlines}
 				value={newline}
-				on:change={(e) => (newline = e.detail)}
+				on:change={(event) => (newline = event.detail)}
 			/>
 		</div>
 	{:else if mode === "mailto"}
@@ -232,11 +241,11 @@ let results = $derived(
 		</p>
 	{/if}
 	<div class="mt-2">
-		<NavPills
+		<ToggleSegment
 			title="出力方法"
 			items={drawMethods}
 			value={drawMethod}
-			on:change={(e) => (drawMethod = e.detail)}
+			on:change={(event) => (drawMethod = event.detail)}
 		/>
 	</div>
 
@@ -244,7 +253,7 @@ let results = $derived(
 		<div class="mt-5 grid gap-4 grid-cols-2 md:grid-cols-4 md:gap-6">
 			{#each results as result}
 				<div
-					class="relative flex flex-col items-stretch overflow-hidden rounded-lg bg-slate-100 p-4 shadow-lg"
+					class={`relative flex flex-col items-stretch overflow-hidden ${resultBackgroundClass} shadow-none`}
 				>
 					<div class="mb-2 -mt-1 text-sm text-gray-500 font-bold text-center">
 						{result.ecl}
@@ -271,7 +280,7 @@ let results = $derived(
 						<div class="flex-1">
 							<button
 								type="button"
-								class="w-full text-sm py-2 px-1 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
+								class={`w-full ${buttonResultClass}`}
 								onclick={() => download(result)}
 							>
 								保存
@@ -280,7 +289,7 @@ let results = $derived(
 						<div class="flex-1">
 							<button
 								type="button"
-								class="w-full text-sm py-2 px-1 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
+								class={`w-full ${buttonResultClass}`}
 								onclick={() => copy(result)}
 							>
 								コピー

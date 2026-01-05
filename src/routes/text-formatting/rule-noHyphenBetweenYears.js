@@ -21,10 +21,10 @@ export default function noHyphenBetweenYears(context) {
 				report(
 					node,
 					new RuleError("年号の範囲を示す場合はenダッシュ (–) を使いましょう", {
-						padding: locator.range([index, index + length]),
-					}),
+						padding: locator.range([index, index + length])
+					})
 				);
 			}
-		},
+		}
 	};
 }

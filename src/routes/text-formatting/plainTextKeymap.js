@@ -20,14 +20,14 @@ function insertText(text) {
 				changes: {
 					from: state.selection.ranges[0].from,
 					to: state.selection.ranges[0].to,
-					insert: text,
+					insert: text
 				},
 				selection: {
-					anchor: state.selection.ranges[0].from + text.length,
+					anchor: state.selection.ranges[0].from + text.length
 				},
 				scrollIntoView: true,
-				userEvent: "input",
-			}),
+				userEvent: "input"
+			})
 		);
 		return true;
 	};
@@ -38,15 +38,15 @@ export const plainTextKeymap = keymap.of([
 	{
 		key: "Tab",
 		preventDefault: true,
-		run: insertText("\t"),
+		run: insertText("\t")
 	},
 	{
 		key: "Enter",
 		preventDefault: true,
-		run: insertText("\n"),
+		run: insertText("\n")
 	},
 	...defaultKeymap.filter((keymap) => !removeKeys.includes(keymap.key ?? "")),
 	...searchKeymap,
 	...historyKeymap,
-	...lintKeymap,
+	...lintKeymap
 ]);

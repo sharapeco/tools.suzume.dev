@@ -18,10 +18,10 @@ export default function noDumbQuotes(context) {
 				report(
 					node,
 					new RuleError("マヌケ引用符のかわりに “...” ‘…’ を使いましょう", {
-						index: match.index,
-					}),
+						index: match.index
+					})
 				);
 			}
-		},
+		}
 	};
 }

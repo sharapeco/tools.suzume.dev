@@ -1,8 +1,7 @@
 /** @typedef {import('@textlint/types').TextlintRuleContext} RuleContext */
 /** @typedef {import('@textlint/ast-node-types').TxtNode} TxtNode */
 
-const privateUseAreaRE =
-	/[\u{E000}-\u{F8FF}\u{FFF80}-\u{FFFFF}\u{10FF80}-\u{10FFFF}]/gu;
+const privateUseAreaRE = /[\u{E000}-\u{F8FF}\u{FFF80}-\u{FFFFF}\u{10FF80}-\u{10FFFF}]/gu;
 
 /**
  * @param {RuleContext} context
@@ -19,17 +18,11 @@ export default function noPrivateUseArea(context) {
 				report(
 					node,
 					new RuleError("私用領域の文字が含まれています", {
-						padding: locator.range([
-							match.index,
-							match.index + match[0].length,
-						]),
-						fix: fixer.replaceTextRange(
-							[match.index, match.index + match[0].length],
-							"",
-						),
-					}),
+						padding: locator.range([match.index, match.index + match[0].length]),
+						fix: fixer.replaceTextRange([match.index, match.index + match[0].length], "")
+					})
 				);
 			}
-		},
+		}
 	};
 }

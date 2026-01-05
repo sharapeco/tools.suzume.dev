@@ -1,7 +1,7 @@
 <script>
 import DropImage from "$components/DropImage.svelte";
-import NavPills from "$components/NavPills.svelte";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
+import ToggleSegment from "$components/ToggleSegment.svelte";
 
 /** @type {"encode" | "decode"} モード */
 let mode = $state("encode");
@@ -178,7 +178,12 @@ async function decode() {
 
 	<div class="flex-1 flex flex-col">
 		<div class="mb-3">
-			<NavPills items={modes} value={mode} on:change={(e) => (mode = e.detail)} />
+			<ToggleSegment
+				title={null}
+				items={modes}
+				value={mode}
+				on:change={(event) => (mode = event.detail)}
+			/>
 		</div>
 
 		{#if mode === "encode"}

@@ -1,4 +1,5 @@
 <script>
+import { buttonResultClass } from "$components/inputClasses";
 import { getClothoidSquircle } from "./clothoid";
 import { getSuperEllipse } from "./superellipse";
 
@@ -150,7 +151,7 @@ let svgContent = $derived(generate(params));
 		<div class="flex-1">
 			<button
 				type="button"
-				class="w-full text-sm py-2 px-1 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
+				class={`w-full ${buttonResultClass}`}
 				onclick={downloadSVG}
 			>
 				保存
@@ -159,7 +160,7 @@ let svgContent = $derived(generate(params));
 		<div class="flex-1 relative">
 			<button
 				type="button"
-				class="w-full text-sm py-2 px-1 text-center rounded-lg bg-white transition duration-100 hover:text-white hover:bg-indigo-600 active:text-white active:bg-indigo-700"
+				class={`w-full ${buttonResultClass}`}
 				onclick={copySVG}
 			>
 				コピー

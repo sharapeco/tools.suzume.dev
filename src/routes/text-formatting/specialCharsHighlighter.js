@@ -16,9 +16,9 @@ const re = new RegExp(
 		// 私用領域
 		"\u{E000}-\u{F8FF}\u{FFF80}-\u{FFFFF}\u{10FF80}-\u{10FFFF}",
 		// Vertical Forms, CJK Compatibility Forms
-		"\u{FE10}-\u{FE19}\u{FE30}-\u{FE44}\u{FE47}-\u{FE48}",
+		"\u{FE10}-\u{FE19}\u{FE30}-\u{FE44}\u{FE47}-\u{FE48}"
 	].join("")}]`,
-	"gu",
+	"gu"
 );
 
 export const specialCharsHighlighter = highlightSpecialChars({
@@ -36,16 +36,9 @@ export const specialCharsHighlighter = highlightSpecialChars({
 		} else if (type === "control") {
 			span.classList.add("cm-lintRange", "cm-lintRange-error");
 			span.appendChild(createControlCharacter(replacer ?? placeholder));
-		} else if (
-			(code >= 0x2e80 && code <= 0x2ef3) ||
-			(code >= 0x2f00 && code <= 0x2fdf)
-		) {
+		} else if ((code >= 0x2e80 && code <= 0x2ef3) || (code >= 0x2f00 && code <= 0x2fdf)) {
 			// CJK部首補助, 康煕部首
-			span.classList.add(
-				"cm-charType-radical",
-				"cm-lintRange",
-				"cm-lintRange-warning",
-			);
+			span.classList.add("cm-charType-radical", "cm-lintRange", "cm-lintRange-warning");
 			span.textContent = String.fromCodePoint(code);
 		} else if (
 			(code >= 0xe000 && code <= 0xf8ff) ||
@@ -53,11 +46,7 @@ export const specialCharsHighlighter = highlightSpecialChars({
 			(code >= 0x10ff80 && code <= 0x10ffff)
 		) {
 			// 私用領域
-			span.classList.add(
-				"cm-charType-private",
-				"cm-lintRange",
-				"cm-lintRange-warning",
-			);
+			span.classList.add("cm-charType-private", "cm-lintRange", "cm-lintRange-warning");
 			span.textContent = String.fromCodePoint(code);
 		} else if (
 			(code >= 0xfe10 && code <= 0xfe19) ||
@@ -65,18 +54,14 @@ export const specialCharsHighlighter = highlightSpecialChars({
 			(code >= 0xfe47 && code <= 0xfe48)
 		) {
 			// Vertical Forms, CJK Compatibility Forms
-			span.classList.add(
-				"cm-charType-vertical",
-				"cm-lintRange",
-				"cm-lintRange-warning",
-			);
+			span.classList.add("cm-charType-vertical", "cm-lintRange", "cm-lintRange-warning");
 			span.textContent = String.fromCodePoint(code);
 		} else {
 			span.classList.add(`cm-charType-${type}`);
 			span.textContent = replacer ?? placeholder;
 		}
 		return span;
-	},
+	}
 });
 
 /**

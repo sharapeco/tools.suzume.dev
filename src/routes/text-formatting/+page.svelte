@@ -1,4 +1,5 @@
 <script>
+import ToggleSegment from "$components/ToggleSegment.svelte";
 import { restoreFromStorage, saveToStorage } from "$lib/storage";
 import { formatRules } from "./formatRules";
 import TextFormattingCopy from "./TextFormattingCopy.svelte";
@@ -11,6 +12,11 @@ let input = $state(restoreFromStorage("text-formatting.input", ""));
 
 /** @type {"edit" | "copy"} */
 let mode = $state("edit");
+
+const modeItems = [
+	{ value: "edit", label: "入力" },
+	{ value: "copy", label: "結果をコピー" },
+];
 
 /** @type {{ [key: string]: string }} */
 let options = $state(restoreOptions());
@@ -63,37 +69,18 @@ function format() {
 	</header>
 
 	<div class="flex justify-end -mt-12 mb-4">
-		<div class="inline-flex rounded-md shadow-sm" role="group">
-			<button
-				type="button"
-				class="
-					px-4 py-2 text-sm font-medium border rounded-l-lg
-					focus:z-10 focus:ring-2 focus:ring-blue-700
-					{mode === 'edit'
-					? 'text-white bg-indigo-500 border-indigo-600 hover:bg-indigo-500 hover:text-white'
-					: 'text-gray-900 bg-white border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:text-blue-700'}
-				"
-				onclick={() => (mode = "edit")}
-			>
-				入力
-			</button>
-			<button
-				type="button"
-				class="
-					px-4 py-2 text-sm font-medium border rounded-r-lg
-					focus:z-10 focus:ring-2 focus:ring-blue-700
-					{mode === 'copy'
-					? 'text-white bg-indigo-500 border-indigo-600 hover:bg-indigo-500 hover:text-white'
-					: 'text-gray-900 bg-white border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:text-blue-700'}
-				"
-				onclick={() => {
+		<ToggleSegment
+			title={null}
+			items={modeItems}
+			value={mode}
+			on:change={(event) => {
+				const next = event.detail;
+				if (next === "copy") {
 					format();
-					mode = "copy";
-				}}
-			>
-				結果をコピー
-			</button>
-		</div>
+				}
+				mode = next;
+			}}
+		/>
 	</div>
 
 	<div class="border border-slate-200 rounded-lg flex h-[calc(100vh-200px)]">

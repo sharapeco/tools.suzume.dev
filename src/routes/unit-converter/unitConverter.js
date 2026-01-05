@@ -31,9 +31,9 @@ export const converters = [
 			{ name: "反", value: (10 * 30 * 400) / 121 },
 			{ name: "町", value: (100 * 30 * 400) / 121 },
 			{ name: "東京ドーム", value: 46755 },
-			{ name: "甲子園球場", value: 38500 },
-		],
-	},
+			{ name: "甲子園球場", value: 38500 }
+		]
+	}
 ];
 
 /**
