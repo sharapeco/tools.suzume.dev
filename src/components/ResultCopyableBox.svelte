@@ -19,6 +19,9 @@ function copy() {
 	}, 1200);
 }
 
+/**
+ * @param {KeyboardEvent} event
+ */
 function onKeydown(event) {
 	const key = event.key?.toLowerCase();
 	if (key === "enter" || ((event.metaKey || event.ctrlKey) && key === "c")) {
