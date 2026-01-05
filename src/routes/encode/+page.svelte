@@ -2,6 +2,7 @@
 import { Base64 } from "js-base64";
 import { onMount } from "svelte";
 import { browser } from "$app/environment";
+import { inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { getKey } from "$lib/eventUtil.js";
 import {
@@ -211,7 +212,7 @@ function setCopiedName(name) {
 
 <SimpleToolLayout title="エンコード・デコード">
 	<textarea
-		class="w-full bg-slate-50 rounded border px-3 py-2"
+		class={inputBaseClass}
 		placeholder="エンコード／デコードする文字列を入力..."
 		oninput={update}
 		bind:this={inputRef}

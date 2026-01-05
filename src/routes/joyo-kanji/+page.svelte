@@ -1,4 +1,5 @@
 <script>
+import { inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import {
 	getYearOfKyoikuKanji,
@@ -81,7 +82,7 @@ function update(input) {
 
 	<textarea
 		name="input"
-		class="w-full bg-slate-50 rounded border px-3 py-2"
+		class={inputBaseClass}
 		placeholder="ここに文章を入力..."
 		oninput={() => inputRef && update(inputRef.value)}
 		bind:this={inputRef}

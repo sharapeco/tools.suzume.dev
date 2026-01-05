@@ -1,5 +1,6 @@
 <script>
 import { onMount } from "svelte";
+import { inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { getKey } from "$lib/eventUtil.js";
 import { supersub } from "$lib/supersub";
@@ -168,7 +169,7 @@ function setCopiedName(name) {
 
 <SimpleToolLayout title="文字種変換">
 	<textarea
-		class="w-full bg-slate-50 rounded border px-3 py-2"
+		class={inputBaseClass}
 		placeholder="文字列を入力..."
 		oninput={update}
 		bind:this={inputRef}

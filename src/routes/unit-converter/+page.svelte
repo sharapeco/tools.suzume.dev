@@ -1,4 +1,5 @@
 <script>
+import { inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { convert, converters } from "./unitConverter";
 
@@ -34,7 +35,7 @@ $effect(() => {
 	<div class="max-w-lg">
 		<select
 			bind:value={converter}
-			class="w-full bg-slate-50 rounded border px-3 py-2"
+			class={inputBaseClass}
 			onchange={() => {
 				fromUnit = converter.units[0];
 				toUnit = converter.units[1] ?? converter.units[0];

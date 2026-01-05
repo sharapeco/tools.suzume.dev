@@ -21,21 +21,22 @@
 
 ## 3. 実施計画
 
-### Phase 1: SvelteKitアーキテクチャ最適化
-まずはコードの構造を整理し、可読性とメンテナンス性を向上させる。
+### ✅ Phase 1: SvelteKitアーキテクチャ最適化
+まずはコードの構造を整理し、可読性とメンテナンス性を向上させる。（完了）
 
-1.  **$lib エイリアスの適用**:
+1.  ✅ **$lib エイリアスの適用**:
     - `src/routes` 配下のファイルにある `../` や `../../` で始まる import を `$lib` や `$components` (必要ならエイリアス追加) に置き換える。
-2.  **Slot から Snippet への移行**:
+2. ✅ **Slot から Snippet への移行**:
     - `src/components/dropzone/Dropzone.svelte` の `<slot>` を Svelte 5 の Snippet に書き換える（もしSvelte 5を使用している場合。package.json確認要）。
     - ※ Svelte 4の場合はSlotのままでも良いが、Snippetが使えるなら移行する。
 
 ### Phase 2: Tailwind重複排除（コンポーネント化）
 重複しているスタイルをコンポーネントとして切り出す。`@apply` は使用せず、Svelteコンポーネントとして再利用する。
 
-1.  **共通コンテナコンポーネントの作成**:
-    - `w-full bg-slate-50 rounded border px-3 py-2` を持つ `Card` または `InputWrapper` コンポーネントを作成する。
-    - 各ページでの使用箇所を新コンポーネントに置き換える。
+1. ✅ **共通入力スタイルの定数化**:
+    - `src/components/inputClasses.js` の `inputBaseClass` を作成し、既存の `w-full bg-slate-50 rounded border px-3 py-2` を各ページで置き換え済み。
+2.  **ボタンやその他の重複スタイル**:
+    - `bg-indigo-600` 系ボタンなど、残存重複があればコンポーネント化または定数化する。
 
 ### Phase 3: デザインシステム適用
 ハードコードされた色を Tailwind のクラスまたは設定ファイルに移動する。

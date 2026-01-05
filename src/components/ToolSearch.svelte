@@ -26,7 +26,11 @@ let selectedIndex = $state(0);
 /** @type {string} */
 let q = $state("");
 
-let results = $state(tools);
+let results = $derived(
+	tools.filter(
+		(tool) => !tool.disabled && (match(tool.route, q) || match(tool.title, q)),
+	),
+);
 
 if (browser) {
 	$effect(() => {
@@ -36,15 +40,6 @@ if (browser) {
 			document.removeEventListener("keydown", globalKeydownHandler);
 		};
 	});
-}
-
-function updateResults() {
-	results = tools.filter(
-		(tool) => !tool.disabled && (match(tool.route, q) || match(tool.title, q)),
-	);
-	if (selectedIndex >= results.length) {
-		selectedIndex = 0;
-	}
 }
 
 /**
@@ -111,7 +106,9 @@ function inputHandler() {
 	if (!open) {
 		open = true;
 	}
-	updateResults();
+	if (selectedIndex >= results.length) {
+		selectedIndex = 0;
+	}
 }
 
 /**

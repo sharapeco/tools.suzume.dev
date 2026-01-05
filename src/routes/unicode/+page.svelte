@@ -1,6 +1,7 @@
 <script>
 import { onDestroy, onMount } from "svelte";
 import { browser } from "$app/environment";
+import { inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { getKey } from "$lib/eventUtil";
 import { getPlatform } from "$lib/platform";
@@ -60,33 +61,45 @@ function update(input) {
  */
 function keydownHandler(event) {
 	const key = getKey(event);
-	if (
+	const isCopy =
 		(platform !== "apple" && key === "ctrl+c") ||
-		(platform === "apple" && key === "meta+c")
-	) {
-		const hovered = results[hoveredIndex];
-		if (hovered) {
-			event.preventDefault();
-			navigator.clipboard.writeText(hovered.letter);
+		(platform === "apple" && key === "meta+c");
 
-			results = results.map((result, index) => ({
-				...result,
-				copied: index === hoveredIndex,
-			}));
-
-			setTimeout(() => {
-				results = results.map((result, _index) => ({
-					...result,
-					copied: false,
-				}));
-			}, 1200);
-		}
+	if (isCopy) {
+		handleKeyboardCopy(event);
 	}
+}
+
+/**
+ * @param {KeyboardEvent} event
+ */
+function handleKeyboardCopy(event) {
+	const hovered = results[hoveredIndex];
+	if (!hovered) {
+		return;
+	}
+
+	event.preventDefault();
+	navigator.clipboard.writeText(hovered.letter);
+
+	results = results.map((result, index) => ({
+		...result,
+		copied: index === hoveredIndex,
+	}));
+
+	setTimeout(() => {
+		results = results.map((result) => ({
+			...result,
+			copied: false,
+		}));
+	}, 1200);
 }
 
 onMount(() => {
 	if (browser) {
-		inputRef && update(inputRef.value);
+		if (inputRef) {
+			update(inputRef.value);
+		}
 		document.addEventListener("keydown", keydownHandler);
 	}
 });
@@ -126,7 +139,7 @@ onDestroy(() => {
 	<input
 		name="input"
 		type="text"
-		class="w-full bg-slate-50 rounded border px-3 py-2"
+		class={inputBaseClass}
 		placeholder="調べたい文字またはコードを入力..."
 		oninput={() => inputRef && update(inputRef.value)}
 		bind:this={inputRef}

@@ -1,11 +1,13 @@
 <script>
+import { inputBaseClass } from "$components/inputClasses.js";
+
 let { params = $bindable() } = $props();
 </script>
 
 <div class="controls">
 	<label class="text-gray-700 text-sm mb-1">
 		種類
-		<select class="w-full bg-slate-50 rounded border px-3 py-2" bind:value={params.type}>
+		<select class={inputBaseClass} bind:value={params.type}>
 			<option value="clothoid">クロソイド</option>
 			<option value="super-ellipse">スーパー楕円</option>
 		</select>
@@ -15,7 +17,7 @@ let { params = $bindable() } = $props();
 		<label class="text-gray-700 text-sm mb-1 flex-1">
 			単位
 			<select
-				class="w-full bg-slate-50 rounded border px-3 py-2"
+				class={inputBaseClass}
 				bind:value={params.unit}
 			>
 				<option value="px">px</option>
@@ -29,7 +31,7 @@ let { params = $bindable() } = $props();
 			解像度 (dpi)
 			<input
 				type="number"
-				class="w-full bg-slate-50 rounded border px-3 py-2 disabled:text-gray-400 disabled:bg-slate-100 dpi-input"
+				class={`${inputBaseClass} disabled:text-gray-400 disabled:bg-slate-100 dpi-input`}
 				bind:value={params.dpi}
 				min="1"
 				max="1000"
@@ -43,7 +45,7 @@ let { params = $bindable() } = $props();
 			幅
 			<input
 				type="number"
-				class="w-full bg-slate-50 rounded border px-3 py-2"
+				class={inputBaseClass}
 				bind:value={params.width}
 				min="1"
 				max="1000"
@@ -55,7 +57,7 @@ let { params = $bindable() } = $props();
 			高さ
 			<input
 				type="number"
-				class="w-full bg-slate-50 rounded border px-3 py-2"
+				class={inputBaseClass}
 				bind:value={params.height}
 				min="1"
 				max="1000"
@@ -69,7 +71,7 @@ let { params = $bindable() } = $props();
 			角の半径
 			<input
 				type="number"
-				class="w-full bg-slate-50 rounded border px-3 py-2"
+				class={inputBaseClass}
 				bind:value={params.radius}
 				min="0"
 				max="500"
@@ -80,7 +82,7 @@ let { params = $bindable() } = $props();
 			角のオフセット比率
 			<input
 				type="number"
-				class="w-full bg-slate-50 rounded border px-3 py-2"
+				class={inputBaseClass}
 				bind:value={params.borderOffset}
 				min="0"
 				max="10"
@@ -91,7 +93,7 @@ let { params = $bindable() } = $props();
 			クロソイドの緩和係数
 			<input
 				type="number"
-				class="w-full bg-slate-50 rounded border px-3 py-2"
+				class={inputBaseClass}
 				bind:value={params.tension}
 				min="0.3"
 				max="1.4"
@@ -105,7 +107,7 @@ let { params = $bindable() } = $props();
 			指数
 			<input
 				type="number"
-				class="w-full bg-slate-50 rounded border px-3 py-2"
+				class={inputBaseClass}
 				bind:value={params.power}
 				min="0"
 				max="10"
@@ -118,7 +120,7 @@ let { params = $bindable() } = $props();
 		色
 		<input
 			type="color"
-			class="w-full bg-slate-50 rounded border px-3 py-2"
+			class={inputBaseClass}
 			bind:value={params.color}
 		/>
 	</label>

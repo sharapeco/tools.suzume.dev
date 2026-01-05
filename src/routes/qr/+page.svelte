@@ -1,4 +1,5 @@
 <script>
+import { inputBaseClass } from "$components/inputClasses.js";
 import NavPills from "$components/NavPills.svelte";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { QRCode } from "$lib/qrcode.js";
@@ -175,7 +176,7 @@ let results = $derived(
 
 	{#if mode === "string"}
 		<textarea
-			class="w-full bg-slate-50 rounded border px-3 py-2"
+			class={inputBaseClass}
 			placeholder="内容を入力..."
 			bind:value={input}
 		></textarea>
@@ -190,21 +191,21 @@ let results = $derived(
 	{:else if mode === "mailto"}
 		<div>
 			<input
-				class="w-full bg-slate-50 rounded border px-3 py-2"
+				class={inputBaseClass}
 				placeholder="宛先"
 				bind:value={mailto.to}
 			/>
 		</div>
 		<div class="mt-2">
 			<input
-				class="w-full bg-slate-50 rounded border px-3 py-2"
+				class={inputBaseClass}
 				placeholder="件名"
 				bind:value={mailto.subject}
 			/>
 		</div>
 		<div class="mt-2">
 			<textarea
-				class="w-full bg-slate-50 rounded border px-3 py-2"
+				class={inputBaseClass}
 				placeholder="本文"
 				bind:value={mailto.body}
 				rows="7"
@@ -213,14 +214,14 @@ let results = $derived(
 	{:else if mode === "ssid"}
 		<div>
 			<input
-				class="w-full bg-slate-50 rounded border px-3 py-2"
+				class={inputBaseClass}
 				placeholder="SSID"
 				bind:value={ssid.ssid}
 			/>
 		</div>
 		<div class="mt-2">
 			<input
-				class="w-full bg-slate-50 rounded border px-3 py-2"
+				class={inputBaseClass}
 				placeholder="パスワード"
 				bind:value={ssid.password}
 			/>
