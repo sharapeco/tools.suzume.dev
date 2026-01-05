@@ -203,4 +203,10 @@ let svgContent = $derived(generate(params));
 		max-width: 100%;
 		max-height: 100%;
 	}
+
+	.copied {
+		transform-origin: 50% 100%;
+		animation: copy-animation 1200ms ease; /* copy-animation は app.css に定義済み */
+		animation-fill-mode: both;
+	}
 </style>
