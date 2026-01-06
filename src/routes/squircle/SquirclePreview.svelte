@@ -1,8 +1,5 @@
 <script>
-import {
-	buttonResultClass,
-	buttonSizeSmallClass,
-} from "$components/inputClasses";
+import { buttonResultClass, buttonSizeClass } from "$components/inputClasses";
 import { getClothoidSquircle } from "./clothoid";
 import { getSuperEllipse } from "./superellipse";
 
@@ -154,7 +151,7 @@ let svgContent = $derived(generate(params));
 		<div class="flex-1">
 			<button
 				type="button"
-				class={`w-full ${buttonSizeSmallClass} ${buttonResultClass}`}
+				class={`w-full ${buttonSizeClass} ${buttonResultClass}`}
 				onclick={downloadSVG}
 			>
 				保存
@@ -163,7 +160,7 @@ let svgContent = $derived(generate(params));
 		<div class="flex-1 relative">
 			<button
 				type="button"
-				class={`w-full ${buttonSizeSmallClass} ${buttonResultClass}`}
+				class={`w-full ${buttonSizeClass} ${buttonResultClass}`}
 				onclick={copySVG}
 			>
 				コピー
