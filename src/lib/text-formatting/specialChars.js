@@ -116,7 +116,7 @@ export const specialChars = {
 	65039: ["control", "VS16"],
 	65529: ["control", "IAA"],
 	65530: ["control", "IAS"],
-	65531: ["control", "IAT"]
+	65531: ["control", "IAT"],
 	// 0xFFFC: ["control", "OBJ"],
 	// 0xFFFD: ["control", "REPL"],
 };

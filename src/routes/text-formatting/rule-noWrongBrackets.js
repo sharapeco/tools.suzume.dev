@@ -22,23 +22,23 @@ export default function noWrongBrackets(context) {
 				{
 					regex: /≪(.{1,30}?)≫/g,
 					replace: "《$1》",
-					message: "≪...≫ のかわりに《...》を使いましょう"
+					message: "≪...≫ のかわりに《...》を使いましょう",
 				},
 				{
 					regex: /<<(.{1,30}?)>>/g,
 					replace: "《$1》",
-					message: "<<...>> のかわりに《...》を使いましょう"
+					message: "<<...>> のかわりに《...》を使いましょう",
 				},
 				{
 					regex: /＜(.{1,30}?)＞/g,
 					replace: "〈$1〉",
-					message: "＜...＞ のかわりに〈...〉を使いましょう"
+					message: "＜...＞ のかわりに〈...〉を使いましょう",
 				},
 				{
 					regex: /<(.{1,30}?)>/g,
 					replace: "〈$1〉",
-					message: "<...> のかわりに〈...〉を使いましょう"
-				}
+					message: "<...> のかわりに〈...〉を使いましょう",
+				},
 			];
 			for (const { regex, replace, message } of patterns) {
 				const matches = Array.from(text.matchAll(regex));
@@ -46,15 +46,18 @@ export default function noWrongBrackets(context) {
 					report(
 						node,
 						new RuleError(message, {
-							padding: locator.range([match.index, match.index + match[0].length]),
+							padding: locator.range([
+								match.index,
+								match.index + match[0].length,
+							]),
 							fix: fixer.replaceTextRange(
 								[match.index, match.index + match[0].length],
-								match[0].replace(regex, replace)
-							)
-						})
+								match[0].replace(regex, replace),
+							),
+						}),
 					);
 				}
 			}
-		}
+		},
 	};
 }

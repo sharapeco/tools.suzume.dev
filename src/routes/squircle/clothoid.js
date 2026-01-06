@@ -46,22 +46,22 @@ export function getClothoidSquircle(w, h, r, rScale, aTension, decimals = 3) {
 		{ type: "v", values: [lineVLength] },
 		{
 			type: "c",
-			values: [0, rC * tension, -(rC * (1 - tension)), rC, -rC, rC]
+			values: [0, rC * tension, -(rC * (1 - tension)), rC, -rC, rC],
 		},
 
 		{ type: "h", values: [-lineHLength] },
 
 		{
 			type: "c",
-			values: [-(rC * tension), 0, -rC, -(rC * (1 - tension)), -rC, -rC]
+			values: [-(rC * tension), 0, -rC, -(rC * (1 - tension)), -rC, -rC],
 		},
 
 		{ type: "v", values: [-lineVLength] },
 		{
 			type: "c",
-			values: [0, -(rC * tension), rC * (1 - tension), -rC, rC, -rC]
+			values: [0, -(rC * tension), rC * (1 - tension), -rC, rC, -rC],
 		},
-		{ type: "z", values: [] }
+		{ type: "z", values: [] },
 	];
 
 	return pathData

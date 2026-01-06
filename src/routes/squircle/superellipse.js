@@ -19,7 +19,7 @@ export function getSuperEllipse(w, h, power, decimals = 3) {
 		{ type: "C", values: [w2 * (1 + k), h, w, h2 * (1 + k), w, h2] },
 		{ type: "C", values: [w, h2 * (1 - k), w2 * (1 + k), 0, w2, 0] },
 		{ type: "C", values: [w2 * (1 - k), 0, 0, h2 * (1 - k), 0, h2] },
-		{ type: "z", values: [] }
+		{ type: "z", values: [] },
 	];
 
 	return pathData

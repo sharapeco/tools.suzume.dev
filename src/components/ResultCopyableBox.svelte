@@ -1,7 +1,9 @@
 <script>
 import { outputDisplayClass } from "$components/inputClasses.js";
 
+/** @type {string|null|undefined}*/
 export let value = "";
+/** @type {string|null|undefined}*/
 export let error = null;
 export let name = "";
 export let breakClass = "";

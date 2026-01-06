@@ -9,37 +9,43 @@ export const TOO_MANY_FILES = "too-many-files";
 // File Errors
 export const getInvalidTypeRejectionErr = (accept) => {
 	accept = Array.isArray(accept) && accept.length === 1 ? accept[0] : accept;
-	const messageSuffix = Array.isArray(accept) ? `one of ${accept.join(", ")}` : accept;
+	const messageSuffix = Array.isArray(accept)
+		? `one of ${accept.join(", ")}`
+		: accept;
 	return {
 		code: FILE_INVALID_TYPE,
-		message: `File type must be ${messageSuffix}`
+		message: `File type must be ${messageSuffix}`,
 	};
 };
 
 export const getTooLargeRejectionErr = (maxSize) => {
 	return {
 		code: FILE_TOO_LARGE,
-		message: `File is larger than ${maxSize} bytes`
+		message: `File is larger than ${maxSize} bytes`,
 	};
 };
 
 export const getTooSmallRejectionErr = (minSize) => {
 	return {
 		code: FILE_TOO_SMALL,
-		message: `File is smaller than ${minSize} bytes`
+		message: `File is smaller than ${minSize} bytes`,
 	};
 };
 
 export const TOO_MANY_FILES_REJECTION = {
 	code: TOO_MANY_FILES,
-	message: "Too many files"
+	message: "Too many files",
 };
 
 // Firefox versions prior to 53 return a bogus MIME type for every file drag, so dragovers with
 // that MIME type will always be accepted
 export function fileAccepted(file, accept) {
-	const isAcceptable = file.type === "application/x-moz-file" || accepts(file, accept);
-	return [isAcceptable, isAcceptable ? null : getInvalidTypeRejectionErr(accept)];
+	const isAcceptable =
+		file.type === "application/x-moz-file" || accepts(file, accept);
+	return [
+		isAcceptable,
+		isAcceptable ? null : getInvalidTypeRejectionErr(accept),
+	];
 }
 
 export function fileMatchSize(file, minSize, maxSize) {
@@ -47,8 +53,10 @@ export function fileMatchSize(file, minSize, maxSize) {
 		if (isDefined(minSize) && isDefined(maxSize)) {
 			if (file.size > maxSize) return [false, getTooLargeRejectionErr(maxSize)];
 			if (file.size < minSize) return [false, getTooSmallRejectionErr(minSize)];
-		} else if (isDefined(minSize) && file.size < minSize) return [false, getTooSmallRejectionErr(minSize)];
-		else if (isDefined(maxSize) && file.size > maxSize) return [false, getTooLargeRejectionErr(maxSize)];
+		} else if (isDefined(minSize) && file.size < minSize)
+			return [false, getTooSmallRejectionErr(minSize)];
+		else if (isDefined(maxSize) && file.size > maxSize)
+			return [false, getTooLargeRejectionErr(maxSize)];
 	}
 	return [true, null];
 }
@@ -57,7 +65,13 @@ function isDefined(value) {
 	return value !== undefined && value !== null;
 }
 
-export function allFilesAccepted({ files, accept, minSize, maxSize, multiple }) {
+export function allFilesAccepted({
+	files,
+	accept,
+	minSize,
+	maxSize,
+	multiple,
+}) {
 	if (!multiple && files.length > 1) {
 		return false;
 	}
@@ -89,7 +103,7 @@ export function isEvtWithFiles(event) {
 	// https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#file
 	return Array.prototype.some.call(
 		event.dataTransfer.types,
-		(type) => type === "Files" || type === "application/x-moz-file"
+		(type) => type === "Files" || type === "application/x-moz-file",
 	);
 }
 
@@ -98,7 +112,9 @@ export function isKindFile(item) {
 }
 
 function isIe(userAgent) {
-	return userAgent.indexOf("MSIE") !== -1 || userAgent.indexOf("Trident/") !== -1;
+	return (
+		userAgent.indexOf("MSIE") !== -1 || userAgent.indexOf("Trident/") !== -1
+	);
 }
 
 function isEdge(userAgent) {

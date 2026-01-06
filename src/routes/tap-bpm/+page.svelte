@@ -3,6 +3,7 @@ import { onMount } from "svelte";
 import {
 	buttonPrimaryClass,
 	buttonSecondaryClass,
+	buttonSizeClass,
 } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 
@@ -134,7 +135,7 @@ function beatEffect() {
 		<button
 			type="button"
 			onclick={beat}
-			class={`js-tap-button ${buttonPrimaryClass} py-8 px-12 text-2xl shadow-lg w-full max-w-md h-48 active:bg-indigo-700`}
+			class={`js-tap-button ${buttonPrimaryClass} py-8 px-12 text-2xl rounded-lg shadow-lg w-full max-w-md h-48 active:bg-indigo-700`}
 		>
 			Tap!
 		</button>
@@ -142,7 +143,7 @@ function beatEffect() {
 		<button
 			type="button"
 			onclick={resetBpm}
-			class={`mt-4 ${buttonSecondaryClass}`}
+			class={`mt-4 ${buttonSizeClass} ${buttonSecondaryClass}`}
 		>
 			リセット
 		</button>

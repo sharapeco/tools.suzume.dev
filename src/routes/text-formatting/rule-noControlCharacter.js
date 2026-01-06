@@ -27,10 +27,13 @@ export default function noControlCharacter(context) {
 					node,
 					new RuleError(`制御文字が含まれます ${name ?? ""}`, {
 						index: match.index,
-						fix: fixer.replaceTextRange([match.index, match.index + match[0].length], "")
-					})
+						fix: fixer.replaceTextRange(
+							[match.index, match.index + match[0].length],
+							"",
+						),
+					}),
 				);
 			}
-		}
+		},
 	};
 }

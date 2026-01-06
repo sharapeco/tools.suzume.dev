@@ -19,8 +19,11 @@ export default function noRadical(context) {
 				report(
 					node,
 					new RuleError("CJK部首補助が含まれています", {
-						padding: locator.range([match.index, match.index + match[0].length])
-					})
+						padding: locator.range([
+							match.index,
+							match.index + match[0].length,
+						]),
+					}),
 				);
 			}
 
@@ -29,14 +32,17 @@ export default function noRadical(context) {
 				report(
 					node,
 					new RuleError("康熙部首が含まれています", {
-						padding: locator.range([match.index, match.index + match[0].length]),
+						padding: locator.range([
+							match.index,
+							match.index + match[0].length,
+						]),
 						fix: fixer.replaceTextRange(
 							[match.index, match.index + match[0].length],
-							match[0].normalize("NFKC")
-						)
-					})
+							match[0].normalize("NFKC"),
+						),
+					}),
 				);
 			}
-		}
+		},
 	};
 }

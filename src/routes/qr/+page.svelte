@@ -1,6 +1,7 @@
 <script>
 import {
 	buttonResultClass,
+	buttonSizeClass,
 	inputBaseClass,
 	resultBackgroundClass,
 } from "$components/inputClasses.js";
@@ -282,7 +283,7 @@ let results = $derived(
 						<div class="flex-1">
 							<button
 								type="button"
-								class={`w-full ${buttonResultClass}`}
+								class={`w-full ${buttonSizeClass} ${buttonResultClass}`}
 								onclick={() => download(result)}
 							>
 								保存
@@ -291,7 +292,7 @@ let results = $derived(
 						<div class="flex-1">
 							<button
 								type="button"
-								class={`w-full ${buttonResultClass}`}
+								class={`w-full ${buttonSizeClass} ${buttonResultClass}`}
 								onclick={() => copy(result)}
 							>
 								コピー

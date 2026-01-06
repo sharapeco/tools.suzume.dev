@@ -13301,7 +13301,9 @@ const entries = [
 	["鬃", [143, 233, 254]],
 	["鯸", [143, 234, 254]],
 	["鵻", [143, 235, 254]],
-	["黵", [143, 236, 254]]
+	["黵", [143, 236, 254]],
 ];
 
-export default new Map(entries.map(([ch, bytes]) => [ch, new Uint8Array(bytes)]));
+export default new Map(
+	entries.map(([ch, bytes]) => [ch, new Uint8Array(bytes)]),
+);

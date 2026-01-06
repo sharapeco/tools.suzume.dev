@@ -3,7 +3,8 @@
 
 import { stripVerticalForms } from "$lib/zenkaku";
 
-const verticalFormsRE = /[︐︑︒︓︔︕︖︗︘︙︰︱︲︳︴︵︶︷︸︹︺︻︼︽︾︿﹀﹁﹂﹃﹄﹇﹈]/gu;
+const verticalFormsRE =
+	/[︐︑︒︓︔︕︖︗︘︙︰︱︲︳︴︵︶︷︸︹︺︻︼︽︾︿﹀﹁﹂﹃﹄﹇﹈]/gu;
 
 /**
  * @param {RuleContext} context
@@ -20,14 +21,17 @@ export default function noVerticalForms(context) {
 				report(
 					node,
 					new RuleError("縦組用字形が含まれています", {
-						padding: locator.range([match.index, match.index + match[0].length]),
+						padding: locator.range([
+							match.index,
+							match.index + match[0].length,
+						]),
 						fix: fixer.replaceTextRange(
 							[match.index, match.index + match[0].length],
-							stripVerticalForms(match[0])
-						)
-					})
+							stripVerticalForms(match[0]),
+						),
+					}),
 				);
 			}
-		}
+		},
 	};
 }

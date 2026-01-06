@@ -23,47 +23,47 @@ export const textLinter = linter(async (view) => {
 		plugins: [
 			{
 				pluginId: "text",
-				plugin: textlintText
-			}
+				plugin: textlintText,
+			},
 		],
 		rules: [
 			{
 				ruleId: "no-control-character",
-				rule: noControlCharacter
+				rule: noControlCharacter,
 			},
 			{
 				ruleId: "no-dumb-quotes",
-				rule: noDumbQuotes
+				rule: noDumbQuotes,
 			},
 			{
 				ruleId: "no-hyphen-between-years",
-				rule: noHyphenBetweenYears
+				rule: noHyphenBetweenYears,
 			},
 			{
 				ruleId: "no-radical",
-				rule: noRadical
+				rule: noRadical,
 			},
 			{
 				ruleId: "no-private-use-area",
-				rule: noPrivateUseArea
+				rule: noPrivateUseArea,
 			},
 			{
 				ruleId: "no-space-between-japanese-chars",
-				rule: noSpaceBetweenJapaneseChars
+				rule: noSpaceBetweenJapaneseChars,
 			},
 			{
 				ruleId: "no-vertical-forms",
-				rule: noVerticalForms
+				rule: noVerticalForms,
 			},
 			{
 				ruleId: "no-wrong-brackets",
-				rule: noWrongBrackets
+				rule: noWrongBrackets,
 			},
 			{
 				ruleId: "no-regional-indicator-symbol",
-				rule: noRegionalIndicatorSymbol
-			}
-		]
+				rule: noRegionalIndicatorSymbol,
+			},
+		],
 	});
 	return result.messages.map(textlintMessageToDiagnostic);
 });
@@ -77,7 +77,7 @@ function textlintMessageToDiagnostic(message) {
 		from: message.range[0],
 		to: message.range[1],
 		message: message.message,
-		severity: textlintSeverityToDiagnosticSeverity(message.severity)
+		severity: textlintSeverityToDiagnosticSeverity(message.severity),
 	};
 }
 

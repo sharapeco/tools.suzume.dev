@@ -18,10 +18,13 @@ export default function noRegionalIndicatorSymbol(context) {
 				report(
 					node,
 					new RuleError("地域指示子記号が含まれています", {
-						padding: locator.range([match.index, match.index + match[0].length])
-					})
+						padding: locator.range([
+							match.index,
+							match.index + match[0].length,
+						]),
+					}),
 				);
 			}
-		}
+		},
 	};
 }
