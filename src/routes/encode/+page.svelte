@@ -9,10 +9,10 @@ import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { NaiveTextEncoder } from "$lib/encoding/NaiveTextEncoder";
 import {
 	convertToNumericCharacterReference,
-	decodeHTMLEntities,
 	encodeHTMLEntities as escapeHTMLReservedCharacters,
 } from "$lib/text/htmlEntity";
 import { normalize } from "$lib/text/zenkaku";
+import { decodeHTMLEntities } from "$utils/htmlEntity";
 
 /** @type {HTMLTextAreaElement|null} */
 let inputRef = $state(null);
