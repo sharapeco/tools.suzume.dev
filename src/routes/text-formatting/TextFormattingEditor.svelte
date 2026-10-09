@@ -10,7 +10,7 @@ import {
 	lineNumbers,
 } from "@codemirror/view";
 import CodeMirror from "svelte-codemirror-editor";
-import tabIcon from "$lib/assets/tab.svg";
+import tabIcon from "$assets/tab.svg";
 import { textLinter } from "./linter";
 import { plainTextKeymap } from "./plainTextKeymap";
 import { specialCharsHighlighter } from "./specialCharsHighlighter";

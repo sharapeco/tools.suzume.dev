@@ -9,6 +9,9 @@ const config = {
 		alias: {
 			$lib: path.resolve("./src/lib"),
 			$components: path.resolve("./src/components"),
+			$assets: path.resolve("./src/assets"),
+			$actions: path.resolve("./src/actions"),
+			$utils: path.resolve("./src/utils"),
 		},
 	},
 	preprocess: vitePreprocess(),
