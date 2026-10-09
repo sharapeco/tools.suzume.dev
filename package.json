@@ -9,6 +9,8 @@
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+		"test": "vitest",
+		"test:run": "vitest run",
 		"lint": "biome check",
 		"fix": "biome check --write",
 		"postinstall": "patch-package"
@@ -42,6 +44,7 @@
 		"tailwindcss": "^3.3.5",
 		"typescript": "^5.9.3",
 		"vite": "^7.3.0",
+		"vitest": "^5.0.3",
 		"wrangler": "^4.22.0"
 	}
 }
