@@ -7,7 +7,7 @@ import {
 } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import ToggleSegment from "$components/ToggleSegment.svelte";
-import { QRCode } from "$lib/qrcode.js";
+import { QRCode } from "$lib/qr/qrcode.js";
 
 /** @typedef {{ content: string, ecl: string, svg: string, url: string }} Result */
 

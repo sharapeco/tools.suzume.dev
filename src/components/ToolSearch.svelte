@@ -1,9 +1,9 @@
 <script>
 import { browser } from "$app/environment";
 import { clickOutside } from "$lib/clickOutside.js";
-import { getKey } from "$lib/eventUtil.js";
+import { getKey } from "$lib/keyboard.js";
 import { getPlatform } from "$lib/platform.js";
-import { katakanaToHiragana } from "$lib/zenkaku.js";
+import { katakanaToHiragana } from "$lib/text/zenkaku.js";
 
 /**
  * @typedef {Object} Props

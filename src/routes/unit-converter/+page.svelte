@@ -1,9 +1,9 @@
 <script>
 import { inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
-import { convert, converters } from "./unitConverter";
+import { convert, converters } from "$lib/unit/unitConverter";
 
-/** @type {import("./unitConverter").ConverterDef} */
+/** @type {import("$lib/unit/unitConverter").ConverterDef} */
 const defaultConverter = converters[0];
 let converter = $state(defaultConverter);
 

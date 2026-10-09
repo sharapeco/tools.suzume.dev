@@ -3,9 +3,9 @@ import { onDestroy, onMount } from "svelte";
 import { browser } from "$app/environment";
 import { codeInlineClass, inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
-import { getKey } from "$lib/eventUtil";
+import { getKey } from "$lib/keyboard";
 import { getPlatform } from "$lib/platform";
-import { specialChars } from "$lib/text-formatting/specialChars";
+import { specialChars } from "$lib/text/specialChars";
 
 /** @typedef {{letter: string, sp?: [string, string], code: string, link: string, copied: boolean}} Result */
 

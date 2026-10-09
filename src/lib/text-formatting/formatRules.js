@@ -8,7 +8,7 @@ import {
 	stripJISX0201Kana,
 	stripVerticalForms,
 	toFullwidthForm,
-} from "$lib/zenkaku";
+} from "$lib/text/zenkaku";
 
 /** @type {FormatRule[]} */
 export const formatRules = [

@@ -7,7 +7,7 @@ import {
 	isJinmeiKanji,
 	isJoyoKanji,
 	isRemovedJoyoKanji2010,
-} from "$lib/kanji";
+} from "$lib/text/kanji";
 
 /**
  * @typedef {Object} Result

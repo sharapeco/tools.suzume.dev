@@ -4,7 +4,7 @@ import { inputBaseClass } from "$components/inputClasses.js";
 import ResultCopyableBox from "$components/ResultCopyableBox.svelte";
 import ResultLabel from "$components/ResultLabel.svelte";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
-import { supersub } from "$lib/supersub";
+import { supersub } from "$lib/text/supersub";
 import {
 	hiraganaToKatakana,
 	katakanaToHiragana,
@@ -12,7 +12,7 @@ import {
 	stripJISX0201Kana,
 	toFullwidthForm,
 	toJISX0201Kana,
-} from "$lib/zenkaku";
+} from "$lib/text/zenkaku";
 
 /** @type {HTMLTextAreaElement|null} */
 let inputRef = $state(null);

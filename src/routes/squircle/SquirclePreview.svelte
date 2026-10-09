@@ -1,9 +1,9 @@
 <script>
 import { buttonResultClass, buttonSizeClass } from "$components/inputClasses";
-import { getClothoidSquircle } from "./clothoid";
-import { getSuperEllipse } from "./superellipse";
+import { getClothoidSquircle } from "$lib/squircle/clothoid";
+import { getSuperEllipse } from "$lib/squircle/superellipse";
 
-/** @typedef {import("./params").Params} Params */
+/** @typedef {import("$lib/squircle/params").Params} Params */
 
 /**
  * @typedef {Object} Props

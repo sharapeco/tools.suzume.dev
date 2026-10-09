@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getKey } from "./eventUtil";
+import { getKey } from "./keyboard";
 
 /**
  * @param {Partial<KeyboardEvent>} init
