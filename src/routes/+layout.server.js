@@ -1,4 +1,4 @@
-import { tools } from "$lib/tool-list";
+import { tools } from "$lib/tools";
 
 export async function load() {
 	return {

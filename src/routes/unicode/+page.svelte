@@ -3,9 +3,10 @@ import { onDestroy, onMount } from "svelte";
 import { browser } from "$app/environment";
 import { codeInlineClass, inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
-import { getKey } from "$lib/eventUtil";
-import { getPlatform } from "$lib/platform";
-import { specialChars } from "$lib/text-formatting/specialChars";
+import { getKey } from "$lib/keyboard";
+import { specialChars } from "$lib/text/specialChars";
+import { decodeUnicodeNotation } from "$lib/text/unicodeNotation";
+import { getPlatform } from "$utils/platform";
 
 /** @typedef {{letter: string, sp?: [string, string], code: string, link: string, copied: boolean}} Result */
 
@@ -26,18 +27,7 @@ let hoveredIndex = $state(-1);
 function update(input) {
 	const newResults = [];
 
-	const pInput = input.replaceAll(
-		/ *(?:\bU\+([0-9A-Fa-f]{4,6})\b|\\u([0-9A-Fa-f]{4})|\\u\{([0-9A-Fa-f]{1,6})\})/g,
-		(_, c1, c2, c3) => {
-			const hex = c1 ?? c2 ?? c3;
-			const codePoint = Number.parseInt(hex, 16);
-			try {
-				return String.fromCodePoint(codePoint);
-			} catch {
-				return "?";
-			}
-		},
-	);
+	const pInput = decodeUnicodeNotation(input);
 	for (const letter of pInput) {
 		const codePoint = letter.codePointAt(0);
 		if (codePoint === undefined) {

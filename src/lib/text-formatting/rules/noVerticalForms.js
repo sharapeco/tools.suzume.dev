@@ -1,7 +1,7 @@
 /** @typedef {import('@textlint/types').TextlintRuleContext} RuleContext */
 /** @typedef {import('@textlint/ast-node-types').TxtNode} TxtNode */
 
-import { stripVerticalForms } from "$lib/zenkaku";
+import { stripVerticalForms } from "$lib/text/zenkaku";
 
 const verticalFormsRE =
 	/[︐︑︒︓︔︕︖︗︘︙︰︱︲︳︴︵︶︷︸︹︺︻︼︽︾︿﹀﹁﹂﹃﹄﹇﹈]/gu;

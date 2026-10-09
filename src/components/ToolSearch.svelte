@@ -1,9 +1,9 @@
 <script>
+import { clickOutside } from "$actions/clickOutside.js";
 import { browser } from "$app/environment";
-import { clickOutside } from "$lib/clickOutside.js";
-import { getKey } from "$lib/eventUtil.js";
-import { getPlatform } from "$lib/platform.js";
-import { katakanaToHiragana } from "$lib/zenkaku.js";
+import { getKey } from "$lib/keyboard.js";
+import { fuzzyMatch, matchSegments } from "$lib/text/fuzzyMatch.js";
+import { getPlatform } from "$utils/platform.js";
 
 /**
  * @typedef {Object} Props
@@ -28,7 +28,9 @@ let q = $state("");
 
 let results = $derived(
 	tools.filter(
-		(tool) => !tool.disabled && (match(tool.route, q) || match(tool.title, q)),
+		(tool) =>
+			!tool.disabled &&
+			(fuzzyMatch(tool.route, q) || fuzzyMatch(tool.title, q)),
 	),
 );
 
@@ -110,81 +112,11 @@ function inputHandler() {
 		selectedIndex = 0;
 	}
 }
-
-/**
- * テキストがクエリにマッチするかどうかを判定する
- *
- * @param {string} aText
- * @param {string} aQuery
- * @returns {boolean} マッチするかどうか
- */
-function match(aText, aQuery) {
-	const text = filterQuery(aText);
-	const query = filterQuery(aQuery);
-	if (query === "") {
-		return true;
-	}
-	let p = 0;
-	for (const c of query) {
-		const mp = text.indexOf(c, p);
-		if (mp === -1) {
-			return false;
-		}
-		p = mp + 1;
-	}
-	return true;
-}
-
-/**
- * @param {string} query
- * @returns {string} 無視する文字を除去した文字列
- */
-function filterQuery(query) {
-	return katakanaToHiragana(query).toLocaleLowerCase();
-}
-
-/**
- * 入力文字列部分をHTMLハイライトする
- *
- * @param {string} text ハイライトする文字列
- * @param {string} query 入力文字列
- * @returns {string} ハイライトしたHTML
- */
-function highlight(text, query) {
-	if (query === "") {
-		return text;
-	}
-	const fText = filterQuery(text);
-	const fQuery = filterQuery(query);
-	let html = "";
-	let p = 0;
-	for (const char of fQuery) {
-		const mp = fText.indexOf(char, p);
-		if (mp === -1) {
-			html += escapeHtml(text.slice(p));
-			return html;
-		}
-		html += escapeHtml(text.slice(p, mp));
-		html += `<span class="font-bold">${escapeHtml(text.slice(mp, mp + 1))}</span>`;
-		p = mp + 1;
-	}
-	html += escapeHtml(text.slice(p));
-	return html;
-}
-
-/**
- * HTMLエスケープする
- *
- * @param {string} text
- * @returns {string} エスケープしたHTML
- */
-function escapeHtml(text) {
-	return text
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;");
-}
 </script>
+
+{#snippet highlighted(/** @type {string} */ text)}
+	{#each matchSegments(text, q) as segment}{#if segment.matched}<span class="font-bold">{segment.text}</span>{:else}{segment.text}{/if}{/each}
+{/snippet}
 
 <div class="relative" use:clickOutside onclick_outside={() => (open = false)}>
 	<input
@@ -214,9 +146,9 @@ function escapeHtml(text) {
 					onclick={() => (open = false)}
 					tabindex="-1"
 				>
-					<div class="">{@html highlight(tool.title, q)}</div>
+					<div class="">{@render highlighted(tool.title)}</div>
 					<div class="mt-1 font-mono text-xs opacity-70">
-						{@html highlight(tool.route, q)}
+						{@render highlighted(tool.route)}
 					</div>
 				</a>
 			{/each}

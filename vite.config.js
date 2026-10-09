@@ -1,5 +1,5 @@
 import { sveltekit } from "@sveltejs/kit/vite";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
 	plugins: [sveltekit()],
@@ -8,5 +8,9 @@ export default defineConfig({
 	},
 	define: {
 		"process.env.TIMING": false,
+	},
+	test: {
+		include: ["src/**/*.test.js"],
+		environment: "node",
 	},
 });

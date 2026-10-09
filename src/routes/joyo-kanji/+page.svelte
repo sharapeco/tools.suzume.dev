@@ -1,65 +1,19 @@
 <script>
 import { inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
-import {
-	getYearOfKyoikuKanji,
-	isAddedJoyoKanji2010,
-	isJinmeiKanji,
-	isJoyoKanji,
-	isRemovedJoyoKanji2010,
-} from "$lib/kanji";
-
-/**
- * @typedef {Object} Result
- * @property {string} char - 文字
- * @property {boolean} isKanji - 漢字かどうか
- * @property {boolean} isJoyo - 常用漢字かどうか
- * @property {boolean} isJinmei - 人名用漢字かどうか
- * @property {number} kyoikuYear - 教育漢字の場合の学年（0は教育漢字でない）
- * @property {boolean} isAdded2010 - 2010年に追加された常用漢字かどうか
- * @property {boolean} isRemoved2010 - 2010年に削除された常用漢字かどうか
- */
+import { classifyKanji } from "$lib/joyo-kanji/joyoKanji";
 
 /** @type {HTMLTextAreaElement|null} */
 let inputRef = $state(null);
 
-/** @type {Array<Result>} */
+/** @type {Array<import("$lib/joyo-kanji/joyoKanji").KanjiInfo>} */
 let results = $state([]);
 
 /**
  * @param {string} input
  */
 function update(input) {
-	results = Array.from(input).map((char) => {
-		const isKanji = /^[一-龥朗-鶴]+$/.test(char);
-		if (!isKanji) {
-			return {
-				char,
-				isKanji: false,
-				isJoyo: false,
-				isJinmei: false,
-				kyoikuYear: 0,
-				isAdded2010: false,
-				isRemoved2010: false,
-			};
-		}
-
-		const kyoikuYear = getYearOfKyoikuKanji(char);
-		const isJoyo = isJoyoKanji(char);
-		const isJinmei = isJinmeiKanji(char);
-		const isAdded2010 = isAddedJoyoKanji2010(char);
-		const isRemoved2010 = isRemovedJoyoKanji2010(char);
-
-		return {
-			char,
-			isKanji,
-			isJoyo,
-			isJinmei,
-			kyoikuYear,
-			isAdded2010,
-			isRemoved2010,
-		};
-	});
+	results = Array.from(input).map(classifyKanji);
 }
 </script>
 

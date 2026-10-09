@@ -13,7 +13,19 @@
 3. デザインシステム
 	1. カラーコードを直接使用している箇所があればテーマカラーとして設定ファイルに追い出すこと
 	2. フォントサイズ、マージン、パディングなどもデザインシステムに基づいて統一すること
-4. 共通ロジックの管理
-	1. `src/routes` 内に共通ロジックが存在する場合、`src/lib` に移動すること。
-	2. 移動後、`$lib` エイリアスを使用してインポートすること。
-	3. 必要に応じて、モジュールのテストを追加すること。
+4. ロジックの管理
+	1. ロジックは `src/routes` やコンポーネントに書かず、`src/lib` に置くこと。ツール固有のロジックも同様。
+	2. `src/lib` には環境に依存しない純粋なロジックだけを置くこと。`$app/*`、DOM、ブラウザ API（`navigator`、`localStorage` など）は使わない。
+	3. 環境に依存する処理は、純粋な部分を `src/lib` に切り出したうえで、薄いラッパーを `src/utils`、Svelte Action を `src/actions` に置くこと。
+	4. `src/lib` のモジュールには、同じディレクトリに `*.test.js` でテストを書くこと（`pnpm test`）。
+
+## ディレクトリ構成
+
+| ディレクトリ | エイリアス | 内容 |
+| --- | --- | --- |
+| `src/lib` | `$lib` | 純粋なロジック。ドメインごとにディレクトリを分ける（`text`, `encoding`, `qr`, `image`, `joyo-kanji`, `squircle`, `unit`, `text-formatting` など） |
+| `src/utils` | `$utils` | ブラウザ環境に依存する処理（`platform`, `storage` など） |
+| `src/actions` | `$actions` | Svelte Action |
+| `src/components` | `$components` | 共通コンポーネント |
+| `src/assets` | `$assets` | 画像などの静的アセット（import して使うもの） |
+| `src/routes` | | ページと、そのページ専用のコンポーネント・UI のつなぎ（CodeMirror の拡張など） |

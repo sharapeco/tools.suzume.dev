@@ -6,6 +6,7 @@ import {
 	buttonSizeClass,
 } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
+import { calcBpm } from "$lib/bpm";
 
 let bpm = $state("--");
 let bps = $state("--");
@@ -25,11 +26,7 @@ function beat() {
 		bps = "--";
 	} else {
 		count++;
-		const elapsed = now - startTime;
-		const bpmValue = (count / elapsed) * 60000;
-		bpm = bpmValue.toFixed(1);
-		bps = (bpmValue / 60).toFixed(2);
-		msec = (60000 / bpmValue).toFixed(1);
+		({ bpm, bps, msec } = calcBpm(count, now - startTime));
 	}
 
 	beatEffect();

@@ -1,7 +1,7 @@
 <script>
 import ToggleSegment from "$components/ToggleSegment.svelte";
-import { restoreFromStorage, saveToStorage } from "$lib/storage";
-import { formatRules } from "./formatRules";
+import { formatRules } from "$lib/text-formatting/formatRules";
+import { restoreFromStorage, saveToStorage } from "$utils/storage";
 import TextFormattingCopy from "./TextFormattingCopy.svelte";
 import TextFormattingEditor from "./TextFormattingEditor.svelte";
 

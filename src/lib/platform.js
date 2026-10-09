@@ -1,13 +1,10 @@
-import { browser } from "$app/environment";
-
 /**
+ * User-Agent からプラットフォームを判定する
+ *
+ * @param {string} ua
  * @return {string}
  */
-export function getPlatform() {
-	if (!browser) {
-		return "server";
-	}
-	const ua = navigator.userAgent;
+export function detectPlatform(ua) {
 	if (/\b(?:Mac OS X|macOS|iOS|iPadOS)\b/.test(ua)) {
 		return "apple";
 	}

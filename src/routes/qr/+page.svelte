@@ -7,7 +7,8 @@ import {
 } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import ToggleSegment from "$components/ToggleSegment.svelte";
-import { QRCode } from "$lib/qrcode.js";
+import { buildPayload } from "$lib/qr/payload.js";
+import { buildQRCodeSvg } from "$lib/qr/svg.js";
 
 /** @typedef {{ content: string, ecl: string, svg: string, url: string }} Result */
 
@@ -54,73 +55,6 @@ const svgSize = 256;
 let copiedECL = $state("");
 
 /**
- * @typedef {object} InputProps
- * @property {string} mode
- * @property {string} input
- * @property {{ to: string, subject: string, body: string }} mailto
- * @property {{ ssid: string, password: string }} ssid
- */
-/**
- * @param {InputProps} props
- */
-function getInput(props) {
-	const { mode, input, mailto, ssid } = props;
-	switch (mode) {
-		case "string":
-			return convertNewline(input);
-		case "mailto":
-			if (mailto.to === "") {
-				return "";
-			}
-			if (mailto.subject === "" && mailto.body === "") {
-				return `mailto:${mailto.to}`;
-			}
-			return `mailto:${mailto.to}?subject=${mailto.subject}&body=${mailto.body.replace(/\r\n|\r|\n/g, "\r\n")}`;
-		case "ssid":
-			if (ssid.ssid === "" || ssid.password === "") {
-				return "";
-			}
-			return `WIFI:T:WPA;S:${ssid.ssid};P:${ssid.password};;`;
-		default:
-			return "";
-	}
-}
-
-const newlinesMap = {
-	CRLF: "\r\n",
-	LF: "\n",
-	CR: "\r",
-};
-
-/**
- * @param {string} input 入力文字列
- * @returns {string} 改行コードを変換した文字列
- */
-function convertNewline(input) {
-	return input.replace(/\r\n|\r|\n/g, newlinesMap[newline]);
-}
-
-/**
- * @param {string} content
- * @param {string} ecl
- * @param {string} drawMethod
- * @returns {string}
- */
-function buildQRCode(content, ecl, drawMethod) {
-	return new QRCode({
-		content,
-		ecl,
-		container: "svg-viewbox",
-		swap: true,
-		join: false,
-		predefined: drawMethod === "predefined",
-		pretty: true,
-		width: svgSize,
-		height: svgSize,
-	}).svg();
-}
-
-/**
  * @param {Result} result
  */
 function download(result) {
@@ -140,11 +74,11 @@ function copy(result) {
 		copiedECL = "";
 	}, 1200);
 }
-let content = $derived(getInput({ mode, input, mailto, ssid }));
+let content = $derived(buildPayload({ mode, input, mailto, ssid, newline }));
 let results = $derived(
 	content !== ""
 		? ECLs.map((ecl) => {
-				const svg = buildQRCode(content, ecl, drawMethod);
+				const svg = buildQRCodeSvg(content, ecl, drawMethod, svgSize);
 				return {
 					content,
 					ecl,

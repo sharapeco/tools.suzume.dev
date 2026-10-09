@@ -20,7 +20,7 @@
 		},
 		"includes": [
 			"src/**/*",
-			"!src/lib/qrcode.js",
+			"!src/lib/qr/qrcode.js",
 			"!src/components/dropzone/Dropzone.svelte",
 			"!node_modules/**"
 		]
@@ -48,7 +48,7 @@
 			}
 		},
 		{
-			"includes": ["src/lib/text-formatting/specialChars.js"],
+			"includes": ["src/lib/text/specialChars.js"],
 			"linter": {
 				"rules": {
 					"complexity": {

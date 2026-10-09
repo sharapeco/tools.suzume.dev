@@ -1,26 +1,4 @@
-/**
- * @param {string} c
- * @returns {boolean}
- */
-export function isHiragana(c) {
-	return "ぁ" <= c && c <= "ん";
-}
-
-/**
- * @param {string} c
- * @returns {boolean}
- */
-export function isKatakana(c) {
-	return "ァ" <= c && c <= "ン";
-}
-
-/**
- * @param {string} c
- * @returns {boolean}
- */
-export function isKanji(c) {
-	return /^[一-龥朗-鶴]+$/.test(c);
-}
+import { isKanji } from "$lib/text/charType";
 
 /**
  * @param {string} c
@@ -103,4 +81,44 @@ export function isJinmeiKanji(c) {
 	return /^[丑丞乃之也亘亥亦亨亮伊伍伎伶伽佑侃侑倖倭偲允冴冶凌凜凪凱勁匡卯叡只叶吾呂哉唄啄喬嘉圭尭奈奎媛嬉孟宏宥寅峻崚嵐嵩嵯嶺巌巳巴巽庄弘弥彗彦彪彬怜恕悌惇惟惣慧憧拳捷捺敦斐於旦旭旺昂昌昴晃晋晏晟晨曽智暉暢曙朋朔李杏杜柊柚柾栗栞桂桐梓梢梧梨椋椎椰椿楊楓楠榛槙槻樺橘檀欣欽毅毬汀汐汰沙洲洵洸浩淳渚渥湧滉漱澪熙熊燎燦燿爽爾猪獅玖玲琉琢琳瑚瑛瑞瑠瑶瑳璃甫皐皓眉眸睦瞭瞳矩碧碩磯祐禄禎秦稀稔稜穣竣笙笹紗紘紬絃絢綜綸綺綾緋翔翠耀耶聡肇胡胤脩舜艶芙芹苑茉茄茅茜莉莞菖菫萌萩葵蒔蒼蓉蓮蔦蕉蕗藍藤蘭虎虹蝶衿袈裟詢誼諄諒赳輔辰迪遥遼邑那郁酉醇采錦鎌阿隼雛霞靖鞠須頌颯馨駒駿魁鮎鯉鯛鳩鳳鴻鵬鶴鷹鹿麟麿黎黛亀]+$/.test(
 		c,
 	);
+}
+
+/**
+ * @typedef {Object} KanjiInfo
+ * @property {string} char - 文字
+ * @property {boolean} isKanji - 漢字かどうか
+ * @property {boolean} isJoyo - 常用漢字かどうか
+ * @property {boolean} isJinmei - 人名用漢字かどうか
+ * @property {number} kyoikuYear - 教育漢字の場合の学年（0は教育漢字でない）
+ * @property {boolean} isAdded2010 - 2010年に追加された常用漢字かどうか
+ * @property {boolean} isRemoved2010 - 2010年に削除された常用漢字かどうか
+ */
+
+/**
+ * 文字が常用漢字・人名用漢字・教育漢字のどれにあたるかを調べる
+ *
+ * @param {string} char
+ * @returns {KanjiInfo}
+ */
+export function classifyKanji(char) {
+	if (!isKanji(char)) {
+		return {
+			char,
+			isKanji: false,
+			isJoyo: false,
+			isJinmei: false,
+			kyoikuYear: 0,
+			isAdded2010: false,
+			isRemoved2010: false,
+		};
+	}
+	return {
+		char,
+		isKanji: true,
+		isJoyo: isJoyoKanji(char),
+		isJinmei: isJinmeiKanji(char),
+		kyoikuYear: getYearOfKyoikuKanji(char),
+		isAdded2010: isAddedJoyoKanji2010(char),
+		isRemoved2010: isRemovedJoyoKanji2010(char),
+	};
 }

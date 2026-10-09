@@ -1,11 +1,11 @@
 <script>
 import { resultBackgroundClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
-import { tools } from "$lib/tool-list";
+import { tools } from "$lib/tools";
 import SquircleControls from "./SquircleControls.svelte";
 import SquirclePreview from "./SquirclePreview.svelte";
 
-/** @typedef {import("$lib/tool-list").Tool} Tool */
+/** @typedef {import("$lib/tools").Tool} Tool */
 
 /** @type {Tool|undefined} */
 const tool = tools.find((t) => t.route === "/squircle");
@@ -13,7 +13,7 @@ if (!tool) {
 	throw new Error("Tool not found");
 }
 
-/** @typedef {import("./params").Params} Params */
+/** @typedef {import("$lib/squircle/params").Params} Params */
 /** @type {Params} */
 let params = $state({
 	type: "clothoid",

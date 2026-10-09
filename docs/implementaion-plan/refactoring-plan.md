@@ -55,5 +55,12 @@
     - **DOM操作**: Svelte Action (`use:action`) へ移動する。
     - **ブラウザAPI依存**: どうしても必要な場合のみ残すが、可能な限りロジックを分離する。
 
+### ✅ Phase 5: src の整理とテストの導入
+1. ✅ **vitest の導入**: `pnpm test` でテストを実行できるようにし、`src/lib` のモジュールにテストを追加した。
+2. ✅ **assets の移動**: `src/lib/assets` を `src/assets`（`$assets`）に移動し、未使用の画像を削除した。
+3. ✅ **lib の再編**: `src/lib` をドメインごとのディレクトリに分け、routes にあった純粋なロジックも移動した。
+4. ✅ **環境依存の分離**: `$app/*` や DOM に依存する処理を `src/utils`（`$utils`）と `src/actions`（`$actions`）に移動した。
+5. ✅ **ページからのロジック切り出し**: ToolSearch、unicode、qr、joyo-kanji、stegano-image、tap-bpm のロジックを `src/lib` に切り出した。
+
 ## 4. 次のアクション
 Phase 1 から順次実行する。
