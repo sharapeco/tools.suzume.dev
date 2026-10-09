@@ -1,12 +1,12 @@
 <script>
 import { inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
-import { classifyKanji } from "$lib/text/kanji";
+import { classifyKanji } from "$lib/joyo-kanji/joyoKanji";
 
 /** @type {HTMLTextAreaElement|null} */
 let inputRef = $state(null);
 
-/** @type {Array<import("$lib/text/kanji").KanjiInfo>} */
+/** @type {Array<import("$lib/joyo-kanji/joyoKanji").KanjiInfo>} */
 let results = $state([]);
 
 /**

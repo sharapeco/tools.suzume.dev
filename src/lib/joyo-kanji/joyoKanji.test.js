@@ -3,24 +3,10 @@ import {
 	classifyKanji,
 	getYearOfKyoikuKanji,
 	isAddedJoyoKanji2010,
-	isHiragana,
 	isJinmeiKanji,
 	isJoyoKanji,
-	isKanji,
-	isKatakana,
 	isRemovedJoyoKanji2010,
-} from "./kanji";
-
-describe("文字種の判定", () => {
-	it("ひらがな・カタカナ・漢字を判定する", () => {
-		expect(isHiragana("あ")).toBe(true);
-		expect(isHiragana("ア")).toBe(false);
-		expect(isKatakana("ア")).toBe(true);
-		expect(isKatakana("あ")).toBe(false);
-		expect(isKanji("雀")).toBe(true);
-		expect(isKanji("あ")).toBe(false);
-	});
-});
+} from "./joyoKanji";
 
 describe("漢字の分類", () => {
 	it("教育漢字の学年を返す", () => {
