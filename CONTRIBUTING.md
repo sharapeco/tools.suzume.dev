@@ -23,7 +23,7 @@
 
 | ディレクトリ | エイリアス | 内容 |
 | --- | --- | --- |
-| `src/lib` | `$lib` | 純粋なロジック。ドメインごとにディレクトリを分ける（`text`, `encoding`, `qr`, `image`, `joyo-kanji`, `squircle`, `unit`, `text-formatting` など） |
+| `src/lib` | `$lib` | 純粋なロジック。ドメインごとにディレクトリを分ける（`text`, `encoding`, `qr`, `image`, `joyo-kanji`, `squircle`, `unit`, `text-formatting`, `ui` など） |
 | `src/utils` | `$utils` | ブラウザ環境に依存する処理（`platform`, `storage` など） |
 | `src/actions` | `$actions` | Svelte Action |
 | `src/components` | `$components` | 共通コンポーネント |
