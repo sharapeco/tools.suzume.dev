@@ -104,3 +104,43 @@ export function isJinmeiKanji(c) {
 		c,
 	);
 }
+
+/**
+ * @typedef {Object} KanjiInfo
+ * @property {string} char - 文字
+ * @property {boolean} isKanji - 漢字かどうか
+ * @property {boolean} isJoyo - 常用漢字かどうか
+ * @property {boolean} isJinmei - 人名用漢字かどうか
+ * @property {number} kyoikuYear - 教育漢字の場合の学年（0は教育漢字でない）
+ * @property {boolean} isAdded2010 - 2010年に追加された常用漢字かどうか
+ * @property {boolean} isRemoved2010 - 2010年に削除された常用漢字かどうか
+ */
+
+/**
+ * 文字が常用漢字・人名用漢字・教育漢字のどれにあたるかを調べる
+ *
+ * @param {string} char
+ * @returns {KanjiInfo}
+ */
+export function classifyKanji(char) {
+	if (!isKanji(char)) {
+		return {
+			char,
+			isKanji: false,
+			isJoyo: false,
+			isJinmei: false,
+			kyoikuYear: 0,
+			isAdded2010: false,
+			isRemoved2010: false,
+		};
+	}
+	return {
+		char,
+		isKanji: true,
+		isJoyo: isJoyoKanji(char),
+		isJinmei: isJinmeiKanji(char),
+		kyoikuYear: getYearOfKyoikuKanji(char),
+		isAdded2010: isAddedJoyoKanji2010(char),
+		isRemoved2010: isRemovedJoyoKanji2010(char),
+	};
+}

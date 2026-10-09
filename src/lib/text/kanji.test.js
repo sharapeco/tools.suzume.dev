@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+	classifyKanji,
 	getYearOfKyoikuKanji,
 	isAddedJoyoKanji2010,
 	isHiragana,
@@ -46,5 +47,35 @@ describe("漢字の分類", () => {
 	it("人名用漢字を判定する", () => {
 		expect(isJinmeiKanji("杏")).toBe(true);
 		expect(isJinmeiKanji("愛")).toBe(false);
+	});
+});
+
+describe("classifyKanji", () => {
+	it("漢字でない文字はすべて false", () => {
+		expect(classifyKanji("あ")).toEqual({
+			char: "あ",
+			isKanji: false,
+			isJoyo: false,
+			isJinmei: false,
+			kyoikuYear: 0,
+			isAdded2010: false,
+			isRemoved2010: false,
+		});
+	});
+
+	it("教育漢字の情報を返す", () => {
+		expect(classifyKanji("学")).toMatchObject({
+			isKanji: true,
+			isJoyo: true,
+			kyoikuYear: 1,
+		});
+	});
+
+	it("2010年に人名用漢字から常用漢字に追加された字", () => {
+		expect(classifyKanji("岡")).toMatchObject({
+			isKanji: true,
+			isJinmei: false,
+			isAdded2010: true,
+		});
 	});
 });
