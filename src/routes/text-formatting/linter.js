@@ -1,10 +1,12 @@
 import { linter } from "@codemirror/lint";
-import { lintText } from "$lib/text-formatting/textlint";
 
 /** @typedef {import('@codemirror/lint').Diagnostic} Diagnostic */
 /** @typedef {import('@textlint/kernel').TextlintMessage} TextlintMessage */
 
 export const textLinter = linter(async (view) => {
+	// textlint は Node.js の process に依存しており、Cloudflare Workers 上の SSR で
+	// 読み込むと落ちるため、ブラウザで lint するときに初めて読み込む
+	const { lintText } = await import("$lib/text-formatting/textlint");
 	const messages = await lintText(view.state.doc.toString());
 	return messages.map(textlintMessageToDiagnostic);
 });
