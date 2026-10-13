@@ -5,9 +5,6 @@ import { restoreFromStorage, saveToStorage } from "$utils/storage";
 import TextFormattingCopy from "./TextFormattingCopy.svelte";
 import TextFormattingEditor from "./TextFormattingEditor.svelte";
 
-// プリレンダリングを無効にすることで500エラー回避
-export const prerender = false;
-
 let input = $state(restoreFromStorage("text-formatting.input", ""));
 
 /** @type {"edit" | "copy"} */
