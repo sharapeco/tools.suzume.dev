@@ -133,8 +133,11 @@ function inputHandler() {
 		oninput={inputHandler}
 	/>
 	{#if open}
+		<!-- mousedown でフォーカスが移ると input の blur でプルダウンが閉じ、クリックが届かなくなるため防ぐ -->
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div
 			class="dropdown absolute z-40 top-full left-0 right-0 mt-1 p-1 bg-white rounded border shadow-md"
+			onmousedown={(event) => event.preventDefault()}
 		>
 			{#each results as tool, index}
 				<a
