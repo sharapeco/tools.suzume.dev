@@ -13,9 +13,12 @@ import {
 	toFullwidthForm,
 	toJISX0201Kana,
 } from "$lib/text/zenkaku";
+import { focusOnToolSelect } from "$utils/focusOnToolSelect";
 
 /** @type {HTMLTextAreaElement|null} */
 let inputRef = $state(null);
+
+focusOnToolSelect(() => inputRef);
 
 /** @type {string} 入力文字列 */
 let input = $state("");
@@ -122,6 +125,7 @@ function update() {
 	<textarea
 		class={inputBaseClass}
 		placeholder="文字列を入力..."
+		aria-label="変換する文字列"
 		oninput={update}
 		bind:this={inputRef}
 	></textarea>

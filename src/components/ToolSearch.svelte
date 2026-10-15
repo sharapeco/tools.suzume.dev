@@ -1,6 +1,7 @@
 <script>
 import { clickOutside } from "$actions/clickOutside.js";
 import { browser } from "$app/environment";
+import { goto } from "$app/navigation";
 import { getKey } from "$lib/keyboard.js";
 import { fuzzyMatch, matchSegments } from "$lib/text/fuzzyMatch.js";
 import { getPlatform } from "$utils/platform.js";
@@ -93,7 +94,11 @@ function keydownHandler(event) {
 		case "Enter":
 			event.preventDefault();
 			if (open && results[selectedIndex]) {
-				location.href = results[selectedIndex].route;
+				const route = results[selectedIndex].route;
+				// レイアウトは遷移後も残るので、検索欄を空に戻す
+				q = "";
+				open = false;
+				goto(route);
 			}
 			break;
 		case "Escape":
