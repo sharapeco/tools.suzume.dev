@@ -6,6 +6,7 @@ import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { getKey } from "$lib/keyboard";
 import { specialChars } from "$lib/text/specialChars";
 import { decodeUnicodeNotation } from "$lib/text/unicodeNotation";
+import { focusOnToolSelect } from "$utils/focusOnToolSelect";
 import { getPlatform } from "$utils/platform";
 
 /** @typedef {{letter: string, sp?: [string, string], code: string, link: string, copied: boolean}} Result */
@@ -14,6 +15,8 @@ const platform = getPlatform();
 
 /** @type {HTMLInputElement|null} */
 let inputRef = $state(null);
+
+focusOnToolSelect(() => inputRef);
 
 /** @type {Array<Result>} */
 let results = $state([]);
@@ -130,6 +133,7 @@ onDestroy(() => {
 		type="text"
 		class={inputBaseClass}
 		placeholder="調べたい文字またはコードを入力..."
+		aria-label="調べたい文字またはコード"
 		oninput={() => inputRef && update(inputRef.value)}
 		bind:this={inputRef}
 	/>

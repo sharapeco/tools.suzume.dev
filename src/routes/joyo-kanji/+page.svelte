@@ -4,12 +4,15 @@ import { inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { classifyKanji } from "$lib/joyo-kanji/joyoKanji";
 import { placeTooltip } from "$lib/ui/tooltipPlacement";
+import { focusOnToolSelect } from "$utils/focusOnToolSelect";
 import KanjiHistoryTooltip from "./KanjiHistoryTooltip.svelte";
 
 const TOOLTIP_ID = "kanji-history-tooltip";
 
 /** @type {HTMLTextAreaElement|null} */
 let inputRef = $state(null);
+
+focusOnToolSelect(() => inputRef);
 
 /** @type {Array<import("$lib/joyo-kanji/joyoKanji").KanjiInfo>} */
 let results = $state([]);
@@ -190,6 +193,7 @@ function letterClasses(result) {
 		name="input"
 		class={inputBaseClass}
 		placeholder="ここに文章を入力..."
+		aria-label="調べる文章"
 		oninput={() => inputRef && update(inputRef.value)}
 		bind:this={inputRef}
 	></textarea>

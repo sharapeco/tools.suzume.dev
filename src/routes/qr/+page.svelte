@@ -9,11 +9,17 @@ import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import ToggleSegment from "$components/ToggleSegment.svelte";
 import { buildPayload } from "$lib/qr/payload.js";
 import { buildQRCodeSvg } from "$lib/qr/svg.js";
+import { focusOnToolSelect } from "$utils/focusOnToolSelect";
 
 /** @typedef {{ content: string, ecl: string, svg: string, url: string }} Result */
 
 /** @type {string} 入力文字列 */
 let input = $state("");
+
+/** @type {HTMLTextAreaElement|null} */
+let inputRef = $state(null);
+
+focusOnToolSelect(() => inputRef);
 
 /** @type {{ to: string, subject: string, body: string }} */
 let mailto = $state({ to: "", subject: "", body: "" });
@@ -124,7 +130,9 @@ let results = $derived(
 		<textarea
 			class={inputBaseClass}
 			placeholder="内容を入力..."
+			aria-label="QRコードにする内容"
 			bind:value={input}
+			bind:this={inputRef}
 		></textarea>
 		<div class="mt-2">
 			<ToggleSegment

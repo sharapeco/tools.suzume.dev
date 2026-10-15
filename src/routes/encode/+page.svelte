@@ -12,10 +12,13 @@ import {
 	encodeHTMLEntities as escapeHTMLReservedCharacters,
 } from "$lib/text/htmlEntity";
 import { normalize } from "$lib/text/zenkaku";
+import { focusOnToolSelect } from "$utils/focusOnToolSelect";
 import { decodeHTMLEntities } from "$utils/htmlEntity";
 
 /** @type {HTMLTextAreaElement|null} */
 let inputRef = $state(null);
+
+focusOnToolSelect(() => inputRef);
 
 /** @type {string} 入力文字列 */
 let input = $state("");
@@ -165,6 +168,7 @@ function update() {
 	<textarea
 		class={inputBaseClass}
 		placeholder="エンコード／デコードする文字列を入力..."
+		aria-label="エンコード／デコードする文字列"
 		oninput={update}
 		bind:this={inputRef}
 	></textarea>

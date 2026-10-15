@@ -11,6 +11,7 @@ import {
 } from "@codemirror/view";
 import CodeMirror from "svelte-codemirror-editor";
 import tabIcon from "$assets/tab.svg";
+import { focusOnToolSelect } from "$utils/focusOnToolSelect";
 import { textLinter } from "./linter";
 import { plainTextKeymap } from "./plainTextKeymap";
 import { specialCharsHighlighter } from "./specialCharsHighlighter";
@@ -22,6 +23,11 @@ import { specialCharsHighlighter } from "./specialCharsHighlighter";
 
 /** @type {Props} */
 let { input = $bindable() } = $props();
+
+/** @type {import("@codemirror/view").EditorView | null} */
+let view = $state(null);
+
+focusOnToolSelect(() => view);
 
 const extensions = [
 	lineNumbers(),
@@ -40,6 +46,7 @@ const extensions = [
 
 <CodeMirror
 	bind:value={input}
+	onready={(editorView) => (view = editorView)}
 	extensions={extensions}
 	useTab={false}
 	tabSize={4}
