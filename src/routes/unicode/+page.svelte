@@ -9,7 +9,7 @@ import { decodeUnicodeNotation } from "$lib/text/unicodeNotation";
 import { focusOnToolSelect } from "$utils/focusOnToolSelect";
 import { getPlatform } from "$utils/platform";
 
-/** @typedef {{letter: string, sp?: [string, string], code: string, link: string, copied: boolean}} Result */
+/** @typedef {{letter: string, sp?: import("$lib/text/specialChars").SpecialChar, code: string, link: string, copied: boolean}} Result */
 
 const platform = getPlatform();
 
@@ -148,7 +148,7 @@ onDestroy(() => {
 			>
 				<div class="font-hiragino letter text-4xl text-center">
 					{#if result.sp != null}
-						<span class="sp sp-{result.sp[0]}">{result.sp[1]}</span>
+						<span class="sp sp-{result.sp.type}">{result.sp.label}</span>
 					{:else}
 						{result.letter}
 					{/if}
@@ -179,14 +179,21 @@ onDestroy(() => {
 	}
 
 	.letter {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		line-height: 1;
 		min-height: 1.1em;
 	}
 
 	.sp {
-		display: inline-block;
-		vertical-align: middle;
+		display: inline-flex;
+		min-height: 2rem;
+		min-width: 2rem;
+		justify-content: center;
+		align-items: center;
 		line-height: 1;
+		text-align: center;
 		opacity: 0.5;
 	}
 
@@ -206,7 +213,20 @@ onDestroy(() => {
 		border: dashed 1px;
 	}
 
-	.sp-fullwidth {
-		color: theme(colors.amber.300);
+	.sp-invisible,
+	.sp-nbsp {
+		padding: 0.2em;
+		font-family: monospace;
+		font-size: 35%;
+		white-space: pre-line;
+		border: dashed 1px;
+	}
+
+	.sp-invisible {
+		color: theme(colors.amber.600);
+	}
+
+	.sp-nbsp {
+		color: theme(colors.fuchsia.500);
 	}
 </style>

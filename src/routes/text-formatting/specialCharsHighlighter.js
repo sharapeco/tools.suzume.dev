@@ -11,8 +11,8 @@ const re = new RegExp(
 		"\u{200B}-\u{200F}",
 		// CJK部首補助, 康熙部首
 		"\u{2E80}-\u{2EF3}\u{2F00}-\u{2FDF}",
-		// 全角スペース
-		"\u{3000}",
+		// NBSP, 各種幅のスペース, NNBSP, MMSP, 全角スペース
+		"\u{00A0}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}",
 		// 私用領域
 		"\u{E000}-\u{F8FF}\u{FFF80}-\u{FFFFF}\u{10FF80}-\u{10FFFF}",
 		// Vertical Forms, CJK Compatibility Forms
@@ -24,8 +24,9 @@ const re = new RegExp(
 export const specialCharsHighlighter = highlightSpecialChars({
 	specialChars: re,
 	render(code, description, placeholder) {
-		// @ts-expect-error
-		const [type, replacer] = specialChars[code] ?? ["unknown", null];
+		const sp = specialChars[code];
+		const type = sp?.type ?? "unknown";
+		const replacer = sp?.label ?? null;
 		const span = document.createElement("span");
 		span.setAttribute("aria-label", description ?? "");
 		span.setAttribute("contenteditable", "false");
@@ -36,6 +37,10 @@ export const specialCharsHighlighter = highlightSpecialChars({
 		} else if (type === "control") {
 			span.classList.add("cm-lintRange", "cm-lintRange-error");
 			span.appendChild(createControlCharacter(replacer ?? placeholder));
+		} else if (type === "invisible" || type === "nbsp") {
+			// 空白類は幅を保つため文字そのものを枠付きで表示する
+			span.classList.add(`cm-charType-${type}`);
+			span.textContent = String.fromCodePoint(code);
 		} else if (
 			(code >= 0x2e80 && code <= 0x2ef3) ||
 			(code >= 0x2f00 && code <= 0x2fdf)
