@@ -21,7 +21,7 @@ export default function noControlCharacter(context) {
 				if (match.index == null) return;
 
 				const codePoint = match[0].codePointAt(0);
-				const name = codePoint != null ? specialChars[codePoint][1] : null;
+				const name = codePoint != null ? specialChars[codePoint]?.label : null;
 
 				report(
 					node,

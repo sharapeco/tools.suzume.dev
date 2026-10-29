@@ -79,7 +79,8 @@ const extensions = [
 			paddingBottom: "3px",
 		},
 		".cm-specialChar": {
-			color: "#f59e0b",
+			color: "#334155",
+			opacity: "0.5",
 		},
 		".cm-tab": {
 			minWidth: "0.5em",
@@ -90,8 +91,13 @@ const extensions = [
 			backgroundPosition: "0.15em 50%",
 			backgroundRepeat: "no-repeat",
 		},
-		".cm-charType-fullwidth": {
-			fontFamily: '"ヒラギノ角ゴシック", "ヒラギノ角ゴ ProN", sans-serif',
+		".cm-charType-invisible": {
+			color: "#f59e0b",
+			boxShadow: "inset 0 0 0 1px currentColor",
+		},
+		".cm-charType-nbsp": {
+			color: "#e879f9",
+			boxShadow: "inset 0 0 0 1px currentColor",
 		},
 		".cm-charType-radical": {
 			color: "#d946ef",
