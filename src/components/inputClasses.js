@@ -22,7 +22,7 @@ export const buttonPrimaryClass =
 export const buttonSecondaryClass =
 	"text-gray-900 bg-slate-100 hover:bg-slate-200 border-slate-200 focus:ring-2 focus:ring-gray-400";
 export const buttonResultClass =
-	"transition bg-white hover:bg-indigo-100 active:bg-indigo-200";
+	"transition bg-white hover:bg-gray-100 active:bg-gray-200";
 
 // 画像生成結果背景
 export const resultBackgroundClass = "bg-slate-100 rounded-lg p-4";
