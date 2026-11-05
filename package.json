@@ -13,7 +13,8 @@
 		"test:run": "vitest run",
 		"lint": "biome check",
 		"fix": "biome check --write",
-		"postinstall": "patch-package"
+		"postinstall": "patch-package",
+		"gen:unicode": "node scripts/build-unicode-names.js"
 	},
 	"dependencies": {
 		"@codemirror/commands": "^6.10.1",

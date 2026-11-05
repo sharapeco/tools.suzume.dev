@@ -8,8 +8,10 @@ import { specialChars } from "$lib/text/specialChars";
 import { decodeUnicodeNotation } from "$lib/text/unicodeNotation";
 import { focusOnToolSelect } from "$utils/focusOnToolSelect";
 import { getPlatform } from "$utils/platform";
+import { charInfoLoader } from "$utils/unicodeCharInfo";
+import CharInfoPanel from "./CharInfoPanel.svelte";
 
-/** @typedef {{letter: string, sp?: import("$lib/text/specialChars").SpecialChar, code: string, link: string, copied: boolean}} Result */
+/** @typedef {{letter: string, cp: number, sp?: import("$lib/text/specialChars").SpecialChar, code: string, copied: boolean}} Result */
 
 const platform = getPlatform();
 
@@ -21,13 +23,61 @@ focusOnToolSelect(() => inputRef);
 /** @type {Array<Result>} */
 let results = $state([]);
 
-/** @type {number} */
+/** マウスポインタが乗っている文字。⌘/Ctrl+C の対象 */
 let hoveredIndex = $state(-1);
+
+/** 最後にポインタが乗った文字。固定していなければこれを詳細に表示する */
+let previewIndex = $state(-1);
+
+/** クリック／タップで固定した文字 */
+let selectedIndex = $state(-1);
+
+const panelIndex = $derived(selectedIndex >= 0 ? selectedIndex : previewIndex);
+const panelResult = $derived(results[panelIndex]);
+
+/** @type {import("$lib/unicode/charInfo").CharInfo|undefined} */
+let info = $state(undefined);
+let infoError = $state(false);
+
+$effect(() => {
+	const cp = panelResult?.cp;
+	if (cp == null) {
+		info = undefined;
+		infoError = false;
+		return;
+	}
+
+	infoError = false;
+	// info を読むと依存関係になってしまうので、ローカル変数で判定する
+	const cached = charInfoLoader.peek(cp);
+	info = cached;
+	if (cached) {
+		return;
+	}
+
+	let cancelled = false;
+	charInfoLoader
+		.get(cp)
+		.then((r) => {
+			if (!cancelled) {
+				info = r;
+			}
+		})
+		.catch(() => {
+			if (!cancelled) {
+				infoError = true;
+			}
+		});
+	return () => {
+		cancelled = true;
+	};
+});
 
 /**
  * @param {string} input
  */
 function update(input) {
+	/** @type {Result[]} */
 	const newResults = [];
 
 	const pInput = decodeUnicodeNotation(input);
@@ -39,14 +89,32 @@ function update(input) {
 		const hex = codePoint.toString(16).padStart(4, "0").toUpperCase();
 		newResults.push({
 			letter,
+			cp: codePoint,
 			sp: specialChars[codePoint],
 			code: `U+${hex}`,
-			link: `https://www.compart.com/en/unicode/U+${hex}`,
 			copied: false,
 		});
 	}
 
+	// 同じ位置に同じ文字が残っていれば、固定・プレビューを維持する
+	const keep = (/** @type {number} */ index) =>
+		index >= 0 && newResults[index]?.letter === results[index]?.letter
+			? index
+			: -1;
+	selectedIndex = keep(selectedIndex);
+	previewIndex = keep(previewIndex);
+	hoveredIndex = keep(hoveredIndex);
+
 	results = newResults;
+	charInfoLoader.prefetch(newResults.map((r) => r.cp));
+}
+
+/**
+ * @param {number} index
+ */
+function toggleSelect(index) {
+	selectedIndex = selectedIndex === index ? -1 : index;
+	previewIndex = index;
 }
 
 /**
@@ -60,6 +128,8 @@ function keydownHandler(event) {
 
 	if (isCopy) {
 		handleKeyboardCopy(event);
+	} else if (key === "Escape" && selectedIndex >= 0) {
+		selectedIndex = -1;
 	}
 }
 
@@ -112,7 +182,7 @@ onDestroy(() => {
 	{#snippet description()}
 		<div class="flex flex-col gap-2">
 			<p>
-				入力した文字のUnicodeコードポイントや、その文字の情報へのリンクを提供します。
+				入力した文字のUnicodeコードポイントや、文字名・ブロック・注釈などの情報を表示します。
 			</p>
 			<p>
 					文字のかわりに <code class={codeInlineClass}>U+XXXX</code>
@@ -140,11 +210,18 @@ onDestroy(() => {
 
 	<div class="mt-3 flex flex-wrap gap-1">
 		{#each results as result, index}
-			<a
-				href={result.link}
+			<button
+				type="button"
 				class="flex flex-col p-2 rounded hover:bg-blue-50 relative"
-				onmouseenter={() => (hoveredIndex = index)}
+				class:selected={index === selectedIndex}
+				aria-pressed={index === selectedIndex}
+				aria-label={result.code}
+				onmouseenter={() => {
+					hoveredIndex = index;
+					previewIndex = index;
+				}}
 				onmouseleave={() => (hoveredIndex = -1)}
+				onclick={() => toggleSelect(index)}
 			>
 				<div class="font-hiragino letter text-4xl text-center">
 					{#if result.sp != null}
@@ -167,15 +244,36 @@ onDestroy(() => {
 						</div>
 					</div>
 				{/if}
-			</a>
+			</button>
 		{/each}
 	</div>
+
+	{#if panelResult}
+		<CharInfoPanel
+			letter={panelResult.letter}
+			cp={panelResult.cp}
+			sp={panelResult.sp}
+			{info}
+			error={infoError}
+			pinned={selectedIndex >= 0}
+			onUnpin={() => (selectedIndex = -1)}
+		/>
+	{:else if results.length > 0}
+		<p class="mt-4 text-sm text-gray-500">
+			マウスポインタを合わせるか、タップで詳細を表示
+		</p>
+	{/if}
 </SimpleToolLayout>
 
 <style lang="postcss">
 	.copied {
 		animation: copy-animation 1200ms ease;
 		animation-fill-mode: both;
+	}
+
+	.selected {
+		background-color: theme(colors.indigo.50);
+		box-shadow: inset 0 0 0 2px theme(colors.indigo.400);
 	}
 
 	.letter {

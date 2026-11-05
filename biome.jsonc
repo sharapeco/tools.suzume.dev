@@ -7,11 +7,11 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": ["src/**/*", "!src/app.css"]
+		"includes": ["src/**/*", "!src/app.css", "!src/lib/unicode/data"]
 	},
 	"formatter": {
 		"enabled": true,
-		"includes": ["src/**/*", "!src/app.css"]
+		"includes": ["src/**/*", "!src/app.css", "!src/lib/unicode/data"]
 	},
 	"linter": {
 		"enabled": true,
