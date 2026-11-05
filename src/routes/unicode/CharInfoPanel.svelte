@@ -92,8 +92,12 @@ function copy() {
 				onclick={onUnpin}
 			>
 				<!-- 針の先 (12, 21) が下端の中央に来るように切り出す -->
+				<!-- 水平な縁は楕円にして、斜め上から見た形にする -->
 				<svg viewBox="6 2 12 19" fill="currentColor" aria-hidden="true">
-					<path d="M9 3h6l-1 6 3 3v2h-4v6l-1 1-1-1v-6H7v-2l3-3z" />
+					<!-- 針 -->
+					<path d="M11.4 14h1.2v6.3l-0.6 0.7-0.6-0.7z" />
+					<!-- 頭とつば -->
+					<path d="M9 3A3 1 0 0 1 15 3l-1 6 3 3v2A5 1.3 0 0 1 7 14v-2l3-3z" />
 				</svg>
 			</button>
 		{/key}
@@ -210,8 +214,8 @@ function copy() {
 	 * 針の先を回転の中心にして -45° 傾ける。回転後の translateY は針の向きに沿った移動になる
 	 */
 	.pin {
-		--pin-w: 24px;
-		--pin-h: 38px;
+		--pin-w: 20px;
+		--pin-h: 32px;
 		position: absolute;
 		z-index: 1;
 		left: calc(14px - var(--pin-w) / 2);
@@ -220,7 +224,7 @@ function copy() {
 		height: var(--pin-h);
 		transform-origin: 50% 100%;
 		transform: rotate(-45deg);
-		animation: pin-stab 200ms ease-out both;
+		animation: pin-stab 180ms ease-out both;
 	}
 
 	.pin svg {
@@ -228,21 +232,31 @@ function copy() {
 		height: 100%;
 	}
 
-	/* ばねのように行き過ぎてから戻る */
+	/*
+	 * 前半 (〜40%): 針の向きにまっすぐ刺さる（少し行き過ぎて戻る）
+	 * 後半: 刺さった針の先を中心に、ばねのように揺れて止まる
+	 */
 	@keyframes pin-stab {
 		0% {
 			transform: rotate(-45deg) translateY(-20px);
 			opacity: 0;
 		}
-		35% {
-			transform: rotate(-45deg) translateY(4px);
+		25% {
+			transform: rotate(-45deg) translateY(2px);
+			opacity: 0.5;
+		}
+		40% {
+			transform: rotate(-45deg) translateY(0);
 			opacity: 1;
 		}
 		55% {
-			transform: rotate(-45deg) translateY(-2px);
+			transform: rotate(-37deg) translateY(0);
 		}
-		75% {
-			transform: rotate(-45deg) translateY(1px);
+		70% {
+			transform: rotate(-50deg) translateY(0);
+		}
+		85% {
+			transform: rotate(-43deg) translateY(0);
 		}
 		100% {
 			transform: rotate(-45deg) translateY(0);
