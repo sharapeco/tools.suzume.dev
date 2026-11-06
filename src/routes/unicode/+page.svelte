@@ -4,6 +4,7 @@ import { browser } from "$app/environment";
 import { codeInlineClass, inputBaseClass } from "$components/inputClasses.js";
 import SimpleToolLayout from "$components/SimpleToolLayout.svelte";
 import { getKey } from "$lib/keyboard";
+import { wrapSelection } from "$lib/text/insertNotation";
 import { specialChars } from "$lib/text/specialChars";
 import { decodeUnicodeNotation } from "$lib/text/unicodeNotation";
 import { focusOnToolSelect } from "$utils/focusOnToolSelect";
@@ -72,6 +73,39 @@ $effect(() => {
 		cancelled = true;
 	};
 });
+
+/**
+ * 入力欄のカーソル位置。ボタンを押すと入力欄はフォーカスを失うので、blur 時に記憶しておく。
+ * 一度もフォーカスしていなければ null（末尾に挿入する）
+ * @type {{start: number, end: number} | null}
+ */
+let savedSelection = null;
+
+function saveSelection() {
+	if (inputRef?.selectionStart != null && inputRef.selectionEnd != null) {
+		savedSelection = {
+			start: inputRef.selectionStart,
+			end: inputRef.selectionEnd,
+		};
+	}
+}
+
+/**
+ * カーソル位置に \u{} を挿入し、{ と } の間にカーソルを置く
+ */
+function insertNotation() {
+	if (!inputRef) {
+		return;
+	}
+	const length = inputRef.value.length;
+	const { start, end } = savedSelection ?? { start: length, end: length };
+	const result = wrapSelection(inputRef.value, start, end, "\\u{", "}");
+	inputRef.value = result.value;
+	update(result.value);
+	inputRef.focus();
+	inputRef.setSelectionRange(result.cursor, result.cursor);
+	savedSelection = { start: result.cursor, end: result.cursor };
+}
 
 /**
  * @param {string} input
@@ -198,15 +232,26 @@ onDestroy(() => {
 		</div>
 	{/snippet}
 
-	<input
-		name="input"
-		type="text"
-		class={inputBaseClass}
-		placeholder="調べたい文字またはコードを入力..."
-		aria-label="調べたい文字またはコード"
-		oninput={() => inputRef && update(inputRef.value)}
-		bind:this={inputRef}
-	/>
+	<div class="flex">
+		<input
+			name="input"
+			type="text"
+			class="{inputBaseClass} flex-1 min-w-0 rounded-r-none"
+			placeholder="調べたい文字またはコードを入力..."
+			aria-label="調べたい文字またはコード"
+			oninput={() => inputRef && update(inputRef.value)}
+			onblur={saveSelection}
+			bind:this={inputRef}
+		/>
+		<button
+			type="button"
+			class="-ml-px shrink-0 rounded-r border px-3 font-mono text-sm bg-indigo-50 text-indigo-700 hover:bg-indigo-100 active:bg-indigo-200 focus:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+			aria-label={"コードポイントの書式 \\u{} を挿入"}
+			onclick={insertNotation}
+		>
+			\u&#123; &#125;
+		</button>
+	</div>
 
 	<div class="mt-3 flex flex-wrap gap-1">
 		{#each results as result, index}
